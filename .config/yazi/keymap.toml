@@ -79,7 +79,7 @@ append_keymap = [
   { on = [
     "g",
     "o",
-  ], run = "cd ~/documents/obsidian-vaults", desc = "Go to the obsidian directory" },
+  ], run = "cd ~/dotfiles/", desc = "Go to dotfiles directory" },
   { on = [
     "g",
     "e",

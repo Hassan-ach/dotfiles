@@ -6,15 +6,14 @@
 #   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 # fi
 
+
 # ==============================
 # Oh My Zsh & Theme Configuration
 # ==============================
 # Path to Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 #
-export PATH=$PATH:/usr/bin/nvim
-export NVIM=/usr/bin/nvim
-
+export PATH="$HOME/.config/composer/vendor/bin:$PATH"
 # Reevaluate the prompt string each time it's displaying a prompt
 setopt prompt_subst
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
@@ -77,7 +76,7 @@ alias lg="lazygit"
 alias ld="lazydocker"
 
 # # Node.js Aliases
-# alias nrd='npm run dev'
+alias nrd='npm run dev'
 # alias ys='yarn start'
 # alias yd='yarn dev'
 #
@@ -126,6 +125,7 @@ alias nf='neofetch'
 alias ff='fastfetch'
 alias pf='pfetch'
 
+
 # TTY-based Tools
 alias tt='ttyper'
 alias tc='tty-clock -t'
@@ -159,6 +159,7 @@ alias .5='cd ../../../../..'
 
 # Eza (Enhanced ls) Aliases
 alias dir="eza --color=always --git --no-filesize --icons=always --no-time --no-user --no-permissions"
+alias ll="eza --color=always --git --no-filesize --icons=always --no-time --no-user --no-permissions"
 alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"
 alias lsp="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user"
 alias lsa="eza --color=always --long --git --icons=always -b -a --total-size"
@@ -232,9 +233,13 @@ f() {
     nvim "$selection"
   fi
 }
-
+#
 # Powerlevel10k Prompt
 # ==============================
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 # [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+pf
+
+[ -f "/home/bagi/.ghcup/env" ] && . "/home/bagi/.ghcup/env" # ghcup-envexport PATH="/home/bagi/.config/herd-lite/bin:$PATH"
+export PHP_INI_SCAN_DIR="/home/bagi/.config/herd-lite/bin:$PHP_INI_SCAN_DIR"
