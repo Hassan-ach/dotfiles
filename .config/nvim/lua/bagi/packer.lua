@@ -73,7 +73,7 @@ return require("packer").startup(function(use)
     use("folke/zen-mode.nvim")
     --use("github/copilot.vim")
     use("eandrju/cellular-automaton.nvim")
-    use("laytan/cloak.nvim")
+    -- use("laytan/cloak.nvim")
     use("m4xshen/autoclose.nvim")
     use 'numToStr/Comment.nvim'
     use "pocco81/auto-save.nvim"
