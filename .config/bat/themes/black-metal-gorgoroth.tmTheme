@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plist version="1.0">
+<dict>
+    <key>name</key>
+    <string>Black Metal (Gorgoroth)</string>
+    <key>settings</key>
+    <array>
+        <dict>
+            <key>settings</key>
+            <dict>
+                <key>background</key>
+                <string>#000000</string>
+                <key>foreground</key>
+                <string>#c1c1c1</string>
+                <key>comment</key>
+                <string>#888888</string>
+                <key>string</key>
+                <string>#9b8d7f</string>
+                <key>keyword</key>
+                <string>#5f8787</string>
+                <key>function</key>
+                <string>#8c7f70</string>
+            </dict>
+        </dict>
+    </array>
+</dict>
+</plist>

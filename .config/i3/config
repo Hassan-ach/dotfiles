@@ -19,8 +19,8 @@ exec_always --no-startup-id ~/.config/polybar/launch_polybar.sh
 exec_always feh --bg-scale ~/dotfiles/bd.jpg
 
 #set touchpad to default
-exec_always --no-startup-id xinput set-prop 19 "libinput Tapping Enabled" 1
-exec_always --no-startup-id xinput set-prop 19 "libinput Natural Scrolling Enabled" 1
+exec_always --no-startup-id xinput set-prop 15 "libinput Tapping Enabled" 1
+exec_always --no-startup-id xinput set-prop 15 "libinput Natural Scrolling Enabled" 1
 
 
 # Font for window titles. Will also be used by the bar unless a different font
@@ -250,15 +250,14 @@ bindsym $mod+c exec "~/.config/i3/lockscreen.sh"
 # client.background        $base
 
 # Color Scheme
-set $background      #990000
-set $background_alt  #373B41
-set $foreground      #e6ebef
-set $primary         #00aaff
-set $primary_alt     #F0C674
-set $secondary       #4c7899
-set $alert           #A54242
-set $border_inactive #222D31
-
+set $background      #000000
+set $background_alt  #121212
+set $foreground      #c1c1c1
+set $primary         #5f8787
+set $primary_alt     #9b8d7f
+set $secondary       #888888
+set $alert           #5f8787
+set $border_inactive #121212
 # Colors for window borders, background, text, and indicators.
 #                       border              background          text                 indicator
 client.focused          $primary            $secondary          $foreground          $primary

@@ -1,0 +1,16 @@
+[character]
+success_symbol = "[❯](#cf6a4c)"
+error_symbol = "[❯](#ff5555)"
+
+[directory]
+style = "bold #9b8d7f"
+
+[git_branch]
+style = "bold #5f8787"
+
+[git_status]
+style = "bold #9b8d7f"
+
+[package]
+disabled = true
+

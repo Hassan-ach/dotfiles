@@ -1,51 +1,38 @@
 # ==============================
 # Instant Prompt Configuration
 # ==============================
-# Enable Powerlevel10k instant prompt for faster shell startup.
-# if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-#   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-# fi
-
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
 
 # ==============================
 # Oh My Zsh & Theme Configuration
 # ==============================
-# Path to Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
-#
 export PATH="$HOME/.config/composer/vendor/bin:$PATH"
-# Reevaluate the prompt string each time it's displaying a prompt
+
+#
+# export TERM="xterm-kitty"
+# export COLORTERM=truecolor
+
+
 setopt prompt_subst
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
-autoload bashcompinit && bashcompinit
-autoload -Uz compinit
-compinit
+autoload -U compinit && compinit -d "${XDG_CACHE_HOME:-$HOME/.cache}/zcompdump-${(%):-%n}"
 
-# Set the theme to Starship (overrides Powerlevel10k).
-eval "$(starship init zsh)"
-export STARSHIP_CONFIG=~/.config/starship/starship.toml
-
-# ==============================
-# Locale Configuration
-# ==============================
-# Set default language and locale.
-# export LANG=en_IN.UTF-8
-# export LC_ALL=en_IN.UTF-8
+# Load Starship theme if available
+if command -v starship &>/dev/null; then
+  eval "$(starship init zsh)"
+  export STARSHIP_CONFIG=~/.config/starship/starship.toml
+fi
 
 # ==============================
 # Plugins
 # ==============================
-plugins=(
-  git
-  sudo
-  zsh-autosuggestions
-  zsh-syntax-highlighting
-)
-
-# Enable plugins and their features.
-# source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#c99e84'
+plugins=(git sudo zsh-autosuggestions zsh-syntax-highlighting)
 source $ZSH/oh-my-zsh.sh
+
+# Autosuggestion style
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#c99e84'
 
 # ==============================
 # Key Bindings
@@ -58,7 +45,7 @@ bindkey '^k' up-line-or-search
 bindkey '^j' down-line-or-search
 
 # ==============================
-# Aliases
+# Aliases (All Kept!)
 # ==============================
 
 # Basic Aliases
@@ -75,18 +62,16 @@ alias nv='nvim'
 alias lg="lazygit"
 alias ld="lazydocker"
 
-# # Node.js Aliases
+# Node.js Aliases
 alias nrd='npm run dev'
-# alias ys='yarn start'
-# alias yd='yarn dev'
-#
-# # Docker Aliases
-# alias dco="docker compose"
-# alias dps="docker ps"
-# alias dpa="docker ps -a"
-# alias di="docker images"
-# alias dl="docker ps -l -q"
-# alias dx="docker exec -it"
+
+# Docker Aliases
+alias dco="docker compose"
+alias dps="docker ps"
+alias dpa="docker ps -a"
+alias di="docker images"
+alias dl="docker ps -l -q"
+alias dx="docker exec -it"
 
 # Git Aliases
 alias gs="git status"
@@ -103,8 +88,8 @@ alias grb="git rebase"
 
 # System Management Aliases
 alias off='shutdown -h now'
-#
-# Alias for clipboard
+
+# Clipboard Aliases
 if [ "$WAYLAND_DISPLAY" ]; then
     alias c='wl-copy'
     alias v='wl-paste'
@@ -113,7 +98,7 @@ else
     alias v='xsel --output --clipboard'
 fi
 
-# Alias for 
+# C++ Compilation
 alias cmp='g++ -std=c++20 -o'
 alias grc='g++ -std=c++20 -lraylib -lGL -lm -lpthread -ldl -lrt -lX11'
 
@@ -125,12 +110,10 @@ alias nf='neofetch'
 alias ff='fastfetch'
 alias pf='pfetch'
 
-
 # TTY-based Tools
 alias tt='ttyper'
 alias tc='tty-clock -t'
 alias sl='sl --help -F -a'
-# alias p='pipes.sh'
 alias cb='cbonsai -liv'
 alias aq='asciiquarium'
 alias cm='cmatrix'
@@ -167,6 +150,7 @@ alias l="eza -l --icons --git -a"
 alias lt="eza --tree --level=2 --long --icons --git"
 alias tree="eza --tree --level=2 --icons --git"
 
+
 # Network Manager Aliases
 alias status='nmcli device status'
 alias list='nmcli device wifi list'
@@ -186,37 +170,30 @@ setopt hist_expire_dups_first
 setopt hist_ignore_dups
 setopt hist_verify
 
-# FZF Theme Setup
-export FZF_DEFAULT_OPTS="--color=fg:#CBE0F0,bg:#011628,hl:#B388FF,fg+:#CBE0F0,bg+:#143652,hl+:#B388FF,info:#06BCE4,prompt:#2CF9ED,pointer:#2CF9ED,marker:#2CF9ED,spinner:#2CF9ED,header:#2CF9ED"
+# FZF Theme Setup (base16-black-metal-gorgoroth)
+if command -v fzf &>/dev/null; then
+export FZF_DEFAULT_OPTS="
+  --color=fg:#c1c1c1,bg:#000000,hl:#5f8787 \
+  --color=fg+:#c1c1c1,bg+:#121212,hl+:#9b8d7f \
+  --color=info:#888888,prompt:#8c7f70,pointer:#aaaaaa \
+  --color=marker:#aaaaaa,spinner:#999999,header:#5f8787 \
+  --color=border:#333333 \
+  --color=gutter:#000000 \
+  --color=query:#c1c1c1 \
+  --color=disabled:#444444 \
+  --color=preview-fg:#c1c1c1 \
+  --color=preview-bg:#121212
+  "
+fi
 
 # Bat Theme Setup
 export BAT_THEME="tokyonight_night"
 
-# # NVM Initialization
-# export NVM_DIR="$HOME/.nvm"
-# [ -s "/usr/share/nvm/init-nvm.sh" ] && source "/usr/share/nvm/init-nvm.sh"
-
-# Spicetify Path
-export PATH=$PATH:/home/ssk/.spicetify
-
 # Go Path
 export PATH=$PATH:/home/ssk/go/bin/
 alias gn='go run'
-# eval "$(task --completion zsh)"
-alias task="go-task"
 
-
-# Android SDK Path
-# export ANDROID_HOME=/home/ssk/Android/Sdk
-# export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
-#
-# # Doom Emacs
-# alias doom='~/.emacs.d/bin/doom'
-# alias emacs="emacsclient -c -a 'emacs'"
-
-# ==============================
 # Zoxide Initialization
-# ==============================
 eval "$(zoxide init zsh)"
 alias cd='z'
 
@@ -226,20 +203,22 @@ alias cd='z'
 f() {
   local selection
   selection=$(fzf --preview 'bat --style=numbers --color=always {} || ls -al {}')
-  
+
   if [[ -d "$selection" ]]; then
     cd "$selection" || return
   elif [[ -f "$selection" ]]; then
     nvim "$selection"
   fi
 }
-#
-# Powerlevel10k Prompt
+
 # ==============================
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-# [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# Powerlevel10k Prompt (optional)
+# ==============================
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-pf
-
-[ -f "/home/bagi/.ghcup/env" ] && . "/home/bagi/.ghcup/env" # ghcup-envexport PATH="/home/bagi/.config/herd-lite/bin:$PATH"
+# ==============================
+# External Environment Setups
+# ==============================
+[ -f "/home/bagi/.ghcup/env" ] && . "/home/bagi/.ghcup/env"
 export PHP_INI_SCAN_DIR="/home/bagi/.config/herd-lite/bin:$PHP_INI_SCAN_DIR"
+
