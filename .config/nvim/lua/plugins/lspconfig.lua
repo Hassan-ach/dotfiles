@@ -30,6 +30,7 @@ return {
           "prismals",
           "yamlls",
           "jsonls",
+
           "eslint",
           -- "hls",
           "marksman",

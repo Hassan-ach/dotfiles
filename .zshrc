@@ -1,9 +1,9 @@
 # ==============================
 # Instant Prompt Configuration
 # ==============================
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
+# if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+#   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+# fi
 
 # ==============================
 # Oh My Zsh & Theme Configuration
@@ -60,18 +60,18 @@ alias nv='nvim'
 
 # Lazy aliases
 alias lg="lazygit"
-alias ld="lazydocker"
+# alias ld="lazydocker"
 
 # Node.js Aliases
 alias nrd='npm run dev'
 
 # Docker Aliases
-alias dco="docker compose"
-alias dps="docker ps"
-alias dpa="docker ps -a"
-alias di="docker images"
-alias dl="docker ps -l -q"
-alias dx="docker exec -it"
+# alias dco="docker compose"
+# alias dps="docker ps"
+# alias dpa="docker ps -a"
+# alias di="docker images"
+# alias dl="docker ps -l -q"
+# alias dx="docker exec -it"
 
 # Git Aliases
 alias gs="git status"
@@ -99,8 +99,8 @@ else
 fi
 
 # C++ Compilation
-alias cmp='g++ -std=c++20 -o'
-alias grc='g++ -std=c++20 -lraylib -lGL -lm -lpthread -ldl -lrt -lX11'
+# alias cmp='g++ -std=c++20 -o'
+# alias grc='g++ -std=c++20 -lraylib -lGL -lm -lpthread -ldl -lrt -lX11'
 
 # Yazi Alias
 alias y='yazi'
@@ -127,11 +127,11 @@ alias tn='tmux new -s'
 alias td='tmux detach'
 
 # Yay Package Manager Aliases
-alias update='yay -Sy'
-alias upgrade='yay -Syu'
-alias install='yay -S'
-alias remove='yay -Rns'
-alias search='yay -Ss'
+# alias update='yay -Sy'
+# alias upgrade='yay -Syu'
+# alias install='yay -S'
+# alias remove='yay -Rns'
+# alias search='yay -Ss'
 
 # Directory Navigation Aliases
 alias ..='cd ..'
@@ -141,14 +141,13 @@ alias .4='cd ../../../..'
 alias .5='cd ../../../../..'
 
 # Eza (Enhanced ls) Aliases
-alias dir="eza --color=always --git --no-filesize --icons=always --no-time --no-user --no-permissions"
 alias ll="eza --color=always --git --no-filesize --icons=always --no-time --no-user --no-permissions"
 alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"
 alias lsp="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user"
 alias lsa="eza --color=always --long --git --icons=always -b -a --total-size"
 alias l="eza -l --icons --git -a"
-alias lt="eza --tree --level=2 --long --icons --git"
-alias tree="eza --tree --level=2 --icons --git"
+alias lt="eza --tree --level=3 --long --icons --git"
+# alias tree="eza --tree --level=3 --icons --git"
 
 
 # Network Manager Aliases
@@ -162,13 +161,23 @@ alias disconnect='nmcli device disconnect'
 # ==============================
 
 # History Settings
-HISTFILE=$HOME/.zsh_history
-SAVEHIST=1000
-HISTSIZE=999
-setopt share_history
-setopt hist_expire_dups_first
-setopt hist_ignore_dups
-setopt hist_verify
+HISTFILE="$HOME/.zsh_history"  # Location of history file
+HISTSIZE=5000                   # Number of lines kept in memory
+SAVEHIST=5000                   # Number of lines saved to file
+setopt EXTENDED_HISTORY         # Record timestamp and duration
+setopt INC_APPEND_HISTORY_TIME  # Add commands immediately with timestamps
+setopt HIST_FCNTL_LOCK          # Safe file locking (prevents corruption)
+
+# History management options
+setopt APPEND_HISTORY         # Append to history file instead of overwriting
+setopt SHARE_HISTORY          # Share history between sessions
+setopt HIST_IGNORE_ALL_DUPS   # Remove older duplicate commands
+setopt HIST_SAVE_NO_DUPS      # Don't save duplicates to history file
+setopt HIST_IGNORE_SPACE      # Don't save commands starting with space
+setopt HIST_REDUCE_BLANKS     # Remove superfluous whitespace
+setopt HIST_VERIFY            # Show expanded command before execution
+setopt HIST_EXPIRE_DUPS_FIRST # Expire duplicates first when trimming
+
 
 # FZF Theme Setup (base16-black-metal-gorgoroth)
 if command -v fzf &>/dev/null; then
@@ -191,11 +200,11 @@ export BAT_THEME="tokyonight_night"
 
 # Go Path
 export PATH=$PATH:/home/ssk/go/bin/
-alias gn='go run'
+# alias gn='go run'
 
 # Zoxide Initialization
 eval "$(zoxide init zsh)"
-alias cd='z'
+# alias cd='z'
 
 # ==============================
 # Fzf alias and key bindings
@@ -221,4 +230,4 @@ f() {
 # ==============================
 [ -f "/home/bagi/.ghcup/env" ] && . "/home/bagi/.ghcup/env"
 export PHP_INI_SCAN_DIR="/home/bagi/.config/herd-lite/bin:$PHP_INI_SCAN_DIR"
-
+eval "$(fzf --zsh)"
