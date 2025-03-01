@@ -1,6 +1,7 @@
 # i3 config file (v4)
 
- for_window [class="^.*"] border pixel 0
+for_window [class="^.*"] border pixel 0
+for_window [class=".*"] opacity 1
 
 # set mod key (Mod1=<Alt>, Mod4=<Super>)
 set $mod Mod4
