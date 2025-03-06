@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Prompt for password once
+read -sp "Enter your password: " password
+echo # Add a newline for better formatting
+
+# Use the password for sudo (securely pass it via stdin)
+echo "$password" | sudo -S systemctl start mariadb
+
+# Check if MariaDB started successfully
+if sudo systemctl is-active --quiet mariadb; then
+    echo "MariaDB started successfully."
+else
+    echo "Failed to start MariaDB. Please check the service status."
+    sudo systemctl status mariadb
+    exit 1
+fi
+
+# Use the same password for MySQL authentication
+mariadb -u bagi -p"$password"

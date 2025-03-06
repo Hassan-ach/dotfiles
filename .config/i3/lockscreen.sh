@@ -1,42 +1,59 @@
 #!/bin/sh
 
-# Define colors
-BLANK='#00000000'
-CLEAR='#ffffff22'
-DEFAULT='#a6e3a1'
-TEXT='#cdd6f4'
-WRONG='#f38ba8'
-VERIFYING='#74c7ec'
+alpha='dd'
 
+# Unified Dark Color Palette
+BG='#121212'        # Background (Very Dark Gray)
+FG='#c1c1c1'        # Foreground (Soft Light Gray)
+ACCENT='#888888'    # Accent Color (Muted Gray-Blue)
+HIGHLIGHT='#999999' # Slightly Brighter Accent
+ERROR='#5f8787'     # Cool Muted Cyan for Errors
+SUCCESS='#9b8d7f'   # Muted Warm Beige for Success
+WARNING='#8c7f70'   # Soft Brownish Accent
+
+# Transparency & Effects
+BLANK='#00000000' # Fully Transparent
+CLEAR='#12121288' # Semi-transparent Dark Gray
 
 i3lock \
-  --insidever-color=$CLEAR     \
-  --ringver-color=$VERIFYING   \
-  \
-  --insidewrong-color=$CLEAR   \
-  --ringwrong-color=$WRONG     \
-  \
-  --inside-color=$BLANK        \
-  --ring-color=$DEFAULT        \
-  --line-color=$BLANK          \
-  --separator-color=$DEFAULT   \
-  \
-  --verif-color=$TEXT          \
-  --wrong-color=$TEXT          \
-  --time-color=$TEXT           \
-  --date-color=$TEXT           \
-  --layout-color=$TEXT         \
-  --keyhl-color=$WRONG         \
-  --bshl-color=$WRONG          \
-  \
-  --time-size=24               \
-  --date-size=16               \
-  --layout-size=24             \
-  \
-  --screen 1                   \
-  --blur 9                     \
-  --clock                      \
-  --indicator                  \
-  --time-str="%I:%M:%S %p"     \
-  --date-str="%a, %Y-%b-%d"    \
-  --keylayout 1
+    --insidever-color=$CLEAR \
+    --ringver-color=$SUCCESS \
+    \
+    --insidewrong-color=$CLEAR \
+    --ringwrong-color=$ERROR \
+    \
+    --inside-color=$BLANK \
+    --ring-color=$ACCENT \
+    --line-color=$BLANK \
+    --separator-color=$HIGHLIGHT \
+    \
+    --verif-color=$FG \
+    --wrong-color=$FG \
+    --time-color=$HIGHLIGHT \
+    --date-color=$HIGHLIGHT \
+    --layout-color=$FG \
+    --keyhl-color=$WARNING \
+    --bshl-color=$ERROR \
+    \
+    --time-size=32 \
+    --date-size=22 \
+    --layout-size=24 \
+    --radius=140 \
+    --ring-width=10 \
+    \
+    --screen 1 \
+    --blur 7 \
+    --clock \
+    --indicator \
+    --time-str="%I:%M:%S %p" \
+    --date-str="%a, %d %B %Y" \
+    \
+    --pass-media-keys \
+    --pass-screen-keys \
+    --pass-volume-keys \
+    \
+    --time-font="Iosevka Term" \
+    --date-font="Iosevka Term" \
+    --layout-font="Iosevka Term" \
+    --verif-font="Iosevka Term" \
+    --wrong-font="Iosevka Term"

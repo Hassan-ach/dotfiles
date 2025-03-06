@@ -1,0 +1,121 @@
+#!/usr/bin/env bash
+
+# Function to display usage
+usage() {
+    echo "Usage: $0 [directory_path]"
+    echo "If no directory is provided, will use fzf to select from ~/dotfiles and ~/programming"
+    exit 1
+}
+
+# Get the directory path as argument or prompt if not provided
+if [[ $# -eq 1 ]]; then
+    # If an argument is provided, use it
+    selected="$1"
+elif [[ $# -eq 0 ]]; then
+    # If no argument, use fzf to select
+    selected=$(find ~/dotfiles ~/programming -mindepth 1 -maxdepth 3 -type d | fzf)
+
+    # Exit if no directory selected
+    if [[ -z "$selected" ]]; then
+        echo "No directory selected."
+        exit 1
+    fi
+else
+    # Invalid number of arguments
+    usage
+fi
+
+# Validate the selected directory
+if [[ ! -d "$selected" ]]; then
+    echo "Error: '$selected' is not a valid directory."
+    exit 1
+fi
+
+# Create a safe session name (replace dots and spaces with underscores)
+session_name=$(basename "$selected" | tr '. ' '_')
+
+# Function to create project-specific windows and commands
+setup_project_windows() {
+    local base_path="$1"
+    local session="$2"
+
+    # Always create an initial shell window in the project directory
+    tmux send-keys -t "${session}:1" "cd \"$base_path\"" C-m
+
+    # Detect project type and set up accordingly
+    if [[ -f "$base_path/artisan" && -d "$base_path/vendor" ]]; then
+        # Laravel project
+        # Rename first window to shell
+        tmux rename-window -t "${session}:1" "shell"
+
+        # Start MariaDB window with secure start function
+        tmux new-window -t "$session" -n "db"
+        tmux send-keys -t "${session}:db" "cd \"$base_path\"" C-m
+        tmux send-keys -t "${session}:db" '~/.local/bin/start_database' C-m
+
+        # Composer dev window
+        tmux new-window -t "$session" -n "server"
+        tmux send-keys -t "${session}:server" "cd \"$base_path\"" C-m
+        tmux send-keys -t "${session}:server" "composer run dev" C-m
+
+        # Nvim window
+        tmux new-window -t "$session" -n "nvim"
+        tmux send-keys -t "${session}:nvim" "cd \"$base_path\"" C-m
+        tmux send-keys -t "${session}:nvim" "nvim ." C-m
+
+    elif [[ -f "$base_path/package.json" ]]; then
+        # JavaScript/Node.js project
+        # Rename first window to shell
+        tmux rename-window -t "${session}:1" "shell"
+
+        # NPM dev window
+        tmux new-window -t "$session" -n "server"
+        tmux send-keys -t "${session}:server" "cd \"$base_path\"" C-m
+        tmux send-keys -t "${session}:server" "npm run dev" C-m
+
+        # Nvim window (prefer src directory)
+        tmux new-window -t "$session" -n "nvim"
+        if [[ -d "$base_path/src" ]]; then
+            tmux send-keys -t "${session}:nvim" "cd \"$base_path/src\"" C-m
+        else
+            tmux send-keys -t "${session}:nvim" "cd \"$base_path\"" C-m
+        fi
+        tmux send-keys -t "${session}:nvim" "nvim ." C-m
+
+    else
+        # Generic project, just rename first window and open nvim
+        tmux rename-window -t "${session}:1" "shell"
+
+        # Nvim window
+        tmux new-window -t "$session" -n "nvim"
+        tmux send-keys -t "${session}:nvim" "cd \"$base_path\"" C-m
+        tmux send-keys -t "${session}:nvim" "nvim ." C-m
+    fi
+}
+
+# Main tmux session creation and attachment logic
+create_or_attach_session() {
+    # Check if session already exists
+    if ! tmux has-session -t "$session_name" 2>/dev/null; then
+        # Create new detached session
+        tmux new-session -d -s "$session_name" -c "$selected"
+
+        # Setup project-specific windows
+        setup_project_windows "$selected" "$session_name"
+    fi
+
+    # Attach to the session
+    if [[ -z "$TMUX" ]]; then
+        # Not currently in a tmux session, so attach
+        tmux attach -t "$session_name"
+    else
+        # Already in a tmux session, so switch client
+        tmux switch-client -t "$session_name"
+    fi
+}
+
+# Source this function in the tmux session
+tmux source-file ~/.local/bin/tmux-dev-session
+
+# Execute the main logic
+create_or_attach_session
