@@ -5,11 +5,11 @@ alpha='dd'
 # Unified Dark Color Palette
 BG='#121212'        # Background (Very Dark Gray)
 FG='#c1c1c1'        # Foreground (Soft Light Gray)
-ACCENT='#888888'    # Accent Color (Muted Gray-Blue)
-HIGHLIGHT='#999999' # Slightly Brighter Accent
+ACCENT='#f0f8f0'    # Accent Color (Muted Gray-Blue)
+HIGHLIGHT='#f9f0f9' # Slightly Brighter Accent
 ERROR='#5f8787'     # Cool Muted Cyan for Errors
-SUCCESS='#9b8d7f'   # Muted Warm Beige for Success
-WARNING='#8c7f70'   # Soft Brownish Accent
+SUCCESS='#5f5f5f'   # Muted Warm Beige for Success
+WARNING='#f0a0a0'   # Soft Brownish Accent
 
 # Transparency & Effects
 BLANK='#00000000' # Fully Transparent

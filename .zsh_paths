@@ -20,7 +20,8 @@ export HISTSIZE=5000
 export SAVEHIST=5000
 
 # Bat Theme Setup
-export BAT_THEME="tokyonight_night"
+export BAT_THEME="bagi"
+export BAT_PAGER="less -RF"
 
 # Go Path
 export PATH=$PATH:/home/ssk/go/bin/
@@ -42,5 +43,7 @@ export FZF_DEFAULT_OPTS="
 fi
 
 # External Environment Setups
-[ -f "/home/bagi/.ghcup/env" ] && . "/home/bagi/.ghcup/env"
+# [ -f "/home/bagi/.ghcup/env" ] && . "/home/bagi/.ghcup/env"
 export PHP_INI_SCAN_DIR="/home/bagi/.config/herd-lite/bin:$PHP_INI_SCAN_DIR"
+
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"

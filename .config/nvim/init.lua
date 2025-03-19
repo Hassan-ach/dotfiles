@@ -83,3 +83,8 @@ vim.cmd("colorscheme base16-black-metal-gorgoroth")
 
 -- utils.fix_telescope_parens_win()
 utils.dashboard.setup_dashboard_image_colors()
+
+
+function cc()
+    vim.cmd("Telescope colorscheme")
+end

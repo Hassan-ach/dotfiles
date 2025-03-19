@@ -6,7 +6,6 @@ for_window [class=".*"] opacity 1
 # set mod key (Mod1=<Alt>, Mod4=<Super>)
 set $mod Mod4
 
-exec_always --no-startup-id xmodmap ~/.Xmodmap
 exec_always --no-startup-id tmux source-file ~/.tmux.conf
 exec --no-startup-id picom --config ~/.config/picom/picom.conf
 # exec_always --no-startup-id xrdb -merge ~/.Xresources
@@ -22,9 +21,10 @@ exec_always --no-startup-id ~/.config/polybar/launch_polybar.sh
 exec_always feh --bg-scale ~/dotfiles/bd.jpg
 
 #set touchpad to default
-exec_always --no-startup-id xinput set-prop 19 "libinput Tapping Enabled" 1
-exec_always --no-startup-id xinput set-prop 19 "libinput Natural Scrolling Enabled" 1
+exec_always --no-startup-id xinput set-prop 11 "libinput Tapping Enabled" 1
+exec_always --no-startup-id xinput set-prop 11 "libinput Natural Scrolling Enabled" 1
 
+exec_always --no-startup-id xmodmap ~/.Xmodmap
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.

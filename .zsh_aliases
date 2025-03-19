@@ -57,6 +57,13 @@ fi
 # Yazi Alias
 alias y='yazi'
 
+#Bat Alias
+# in your .bashrc/.zshrc/*rc
+alias bathelp='bat --plain --language=help'
+help() {
+    "$@" --help 2>&1 | bathelp
+}
+
 # Fastfetch and Pfetch Aliases
 alias nf='neofetch'
 alias ff='fastfetch'
@@ -109,4 +116,16 @@ alias disconnect='nmcli device disconnect'
 
 # Zoxide Initialization
 # alias cd='z'
+
+# Alias for downloading torrents
+alias torrent='aria2c --seed-time=0 --enable-dht=true --enable-peer-exchange=true \
+                --bt-enable-lpd=true --bt-max-peers=200 \
+                --bt-request-peer-speed-limit=1M --file-allocation=falloc \
+                --max-connection-per-server=16'
+
+# Alias for downloading magnet links
+alias magnet='aria2c --seed-time=0 --enable-dht=true --enable-peer-exchange=true \
+                --bt-enable-lpd=true --bt-max-peers=200 \
+                --bt-request-peer-speed-limit=1M --file-allocation=falloc \
+                --max-connection-per-server=16 --bt-metadata-only=false'
 

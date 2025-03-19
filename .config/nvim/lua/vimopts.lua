@@ -74,11 +74,11 @@ vim.opt.smartindent = true -- Smart auto-indentation
 
 -- move selections
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv") -- Shift visual selected line down
-vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv") -- Shift visual selected line up
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv") -- Shift visual selected line Up
 vim.keymap.set("n", "<leader>t", "bv~")
 
 -- colorscheme picker
-vim.keymap.set("n", "<C-n>", ":Telescope colorscheme<CR>")
+-- vim.keymap.set("n", "<leader><space>", ":Telescope colorscheme<CR>")
 
 -- remaps
 vim.g.mapleader = " "
@@ -156,8 +156,6 @@ vim.keymap.set("n", "gr", function()
         })
     end, 0)
 end)
-
-vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})
 
 vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})
 

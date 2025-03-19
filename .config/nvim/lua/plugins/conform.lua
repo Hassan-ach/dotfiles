@@ -50,7 +50,7 @@ return {
                 },
                 rustfmt = {
                     command = "rustfmt",
-                    args = { "--edition", "2021", "--config", "hard_tabs=false, tab_spaces=4" },
+                    args = { "--edition", "2021", "--config", "hard_tabs=false", "--config", "tab_spaces=4" },
                     stdin = true,
                 },
                 stylua = {
