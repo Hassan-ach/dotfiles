@@ -8,7 +8,7 @@ alias cl='clear'
 alias e='exit'
 
 # Editor Aliases
-alias nv='nvim'
+alias vi='nvim'
 
 # Lazy aliases
 alias lg="lazygit"

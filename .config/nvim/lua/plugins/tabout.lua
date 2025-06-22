@@ -33,11 +33,11 @@ return {
 		event = "InsertCharPre", -- Set the event to 'InsertCharPre' for better compatibility
 		priority = 1000,
 	},
-	{
-		"L3MON4D3/LuaSnip",
-		keys = function()
-			-- Disable default tab keybinding in LuaSnip
-			return {}
-		end,
-	},
+	-- {
+	-- 	"L3MON4D3/LuaSnip",
+	-- 	keys = function()
+	-- 		-- Disable default tab keybinding in LuaSnip
+	-- 		return {}
+	-- 	end,
+	-- },
 }

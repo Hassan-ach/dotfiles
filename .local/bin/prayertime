@@ -1,0 +1,605 @@
+#!/usr/bin/node
+import https from "node:https";
+import path from "node:path";
+import fs from "node:fs";
+import readline from "node:readline";
+import { exit } from "node:process";
+
+const debuggingMode = process.env.debuggingMode;
+function dd(message) {
+    if (!debuggingMode) return;
+
+    const err = new Error();
+    const stackLines = err.stack.split("\n").slice(2); // Skip first lines (Error message and current function)
+
+    // Extract caller info
+    const callerLine = stackLines[0]?.trim();
+    const parts =
+        callerLine.match(/at (.+?) \((.*):(\d+):(\d+)\)/) ||
+        callerLine.match(/at (.*):(\d+):(\d+)/);
+
+    if (parts) {
+        const functionName =
+            parts[1] !== "Object.<anonymous>" ? parts[1] : "(anonymous)";
+        const fileName = parts[2];
+        const lineNumber = parts[3];
+
+        console.log(
+            `[DEBUG] ${fileName}:${lineNumber} (${functionName}):`,
+            message,
+        );
+    } else {
+        console.log("[DEBUG] (unknown location):", message);
+    }
+}
+const configPath = path.join(process.env.HOME, ".config/prayerTime.json");
+
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+});
+const sanitize = (str) => {
+    if (!str) return str; // Handle null or undefined
+    str = str.replace(/[^a-zA-Z0-9\s-]/g, ""); // More restrictive regex
+    return str;
+};
+
+const draw = {
+    colorize: (str, colorId = 0) => {
+        return str ? `\x1b[38;5;${colorId}m${str}\x1b[0m` : str;
+    },
+    line: (char = "-", width = process.stdout.columns, center = false) => {
+        if (center && width !== process.stdout.columns) {
+            const pading = Math.max(
+                0,
+                Math.floor((process.stdout.columns - width) / 2),
+            );
+            console.log(" ".repeat(pading) + char.repeat(width));
+        } else {
+            console.log(char.repeat(width));
+        }
+    },
+    center: (text, w = process.stdout.columns) => {
+        //
+        const width = Math.min(w, process.stdout.columns);
+        const pading = Math.max(0, Math.floor((width - text.length) / 2));
+        const str = " ".repeat(pading) + text;
+        console.log(str);
+    },
+    str: (str = "", colorId = 1, center = false) => {
+        //
+
+        if (center) {
+            const pading = Math.max(
+                0,
+                Math.floor((process.stdout.columns - str.length) / 2),
+            );
+            console.log(" ".repeat(pading) + draw.colorize(str, colorId));
+        } else {
+            console.log(draw.colorize(str, colorId));
+        }
+    },
+};
+const DATE = new Date();
+//const Mosque = `
+//                                    C*
+//                                    |
+//                                   / \\
+//                                  /   \\
+//                       |          [===]
+//                      / \\          I I
+//                   .-"""""-.       |_|
+//                 .' .       \`.    (___)
+//               .'.' .':\`. \`.\`.\`.   | |
+//              /  :  :  :  :  :  \\  | |
+//            __IIIOIIIOIIIOIIIOIII__| |
+//           T^^^^^^^^^^^^^^^^^^^^^^^| |
+//           |   _      ___      _   | |
+//           |  /^\\   .' | \`.   /^\\  | |
+//           |  |_| :/   |   \\: |_|  | |
+//           |      :|   |   |:      | |
+//           |......:|  c|c  |:......I I
+//           |======:|___|___|:======|_|
+//           "------/_________\\------"
+//                  "---------"
+//`;
+
+const showHelp = () => {
+    const helpMessage = `
+Usage:
+  prayertime [OPTIONS]
+
+This CLI fetches and displays prayer times for a specified city and country, with optional customization through a configuration file.
+
+Options:
+  -h, --help         Show this help message and exit.
+  -c, --config       Display the current configuration file (~/.config/prayertime.json).
+  -r, --reset        Reset the configuration file to default values.
+  --city <city>      Set the city for prayer times (overrides config).
+  --country <country> Set the country for prayer times (overrides config).
+  --color <primeID> <secondID> Set the color scheme for display (overrides config).
+
+Configuration File:
+  The CLI reads preferences from ~/.config/prayertime.json. Example:
+  {
+      "city": "Agadir",
+      "country": "Morocco",
+      "primeColor": 192
+      "secondColor": 8  
+  }
+
+Examples:
+  - Get prayer times using the configured city and country:
+    prayertime
+
+  - Fetch prayer times for a specific city:
+    prayertime --city Casablanca
+
+  - Change display color:
+    prayertime --color 31 7
+
+Notes:
+  - The Color option use the ANSI escape code, for more information (https://en.wikipedia.org/wiki/ANSI_escape_code)
+  - The CLI caches results for the current day to improve performance.
+  - Uses the Aladhan API (https://api.aladhan.com/) for accurate prayer timings.
+`;
+    console.log(helpMessage);
+};
+
+const askQuestion = (query) => {
+    return new Promise((resolve) => {
+        rl.question(query, (answer) => {
+            resolve(answer);
+        });
+    });
+};
+const askForConfig = async () => {
+    //
+    const country = sanitize(await askQuestion("what's your country? "));
+    const city = sanitize(await askQuestion("what's your city? "));
+    rl.close();
+    const config = `
+{
+    "city": "${city}",
+    "country": "${country}",
+    "primaryColor": "0",
+    "secondaryColor": "32"
+}
+`;
+    try {
+        fs.writeFileSync(configPath, config);
+    } catch (e) {
+        dd(e);
+        console.log("Something Happened. Please try again");
+        exit(-1);
+    }
+    return config;
+};
+
+const getConfigFile = async () => {
+    //
+    try {
+        const configFile = fs.readFileSync(configPath, "utf8");
+        const res = JSON.parse(configFile);
+        return res;
+    } catch (e) {
+        //
+        dd(e);
+        console.log(
+            `the config file must be exist in ${configPath}\n making new configuration... `,
+        );
+        const config = await askForConfig();
+        const res = JSON.parse(config);
+        return res;
+    }
+};
+const configFile = await getConfigFile();
+
+const setConfigFile = async () => {
+    //
+    try {
+        if (!fs.existsSync(configPath)) {
+            //
+            console.log(
+                `the config file must be exist in ${configPath}\n use ${process.argv[1].split("/").reverse()[0]} -r or --reset to set new configuration `,
+            );
+            exit(0);
+        } else {
+            //
+            fs.writeFileSync(configPath, JSON.stringify(configFile));
+            return null;
+        }
+    } catch (e) {
+        dd(e);
+        console.log("there is some error please try again");
+        exit(-1);
+    }
+};
+const setColorSchema = async (
+    PrimeId = sanitize(process.argv[3]),
+    SecondId = sanitize(process.argv[4]),
+) => {
+    //
+    if (!PrimeId || !SecondId) {
+        const fileName = process.argv[1].split("/").reverse()[0];
+        const usage = `
+Usage:
+
+${fileName} --color <PrimaryColor ID> <SecondaryColor ID>`;
+        console.log(usage);
+        exit(-1);
+    }
+    const primeId = parseInt(PrimeId);
+    const secondId = parseInt(SecondId);
+    if (
+        isNaN(primeId) ||
+        primeId < 0 ||
+        primeId > 255 ||
+        isNaN(secondId) ||
+        secondId < 0 ||
+        secondId > 255
+    ) {
+        dd(".");
+        const fileName = process.argv[1].split("/").reverse()[0];
+        const pading = " ".repeat(fileName.length);
+        const usage = `
+Usage:
+
+${fileName} ${PrimeId} ${SecondId}
+${pading + " |" + " ".repeat(PrimeId.length) + "|"}
+${pading + "this must be int 0-255"} 
+`;
+        console.log(usage);
+        exit(-1);
+    }
+
+    configFile.primaryColor = primeId;
+    configFile.secondaryColor = secondId;
+    await setConfigFile();
+};
+const setConfigValue = async (key, value) => {
+    if (!value) {
+        const fileName = process.argv[1].split("/").reverse()[0];
+        const usage = `
+Usage:
+
+${fileName} --${key} <${key}Name>`;
+        console.log(usage);
+        exit(-1);
+    }
+    configFile[key] = value;
+    await setConfigFile();
+};
+
+const getColorSchema = () => {
+    //
+    let primaryColor, secondaryColor;
+    try {
+        //
+        primaryColor = configFile.primaryColor;
+        if (!primaryColor) {
+            throw new Error("primary color is undefined");
+        }
+    } catch (e) {
+        dd(e);
+        console.log(
+            "There is problem with the primary color field in the configuration file\nprimary color is undefined",
+        );
+        exit(-1);
+    }
+    try {
+        //
+        secondaryColor = configFile.secondaryColor;
+        if (!secondaryColor) {
+            throw new Error("secondary color is undefined");
+        }
+    } catch (e) {
+        dd(e);
+        console.log(
+            "There is problem with the secondary color field in the configuration file\nsecondary color is undefined",
+        );
+        exit(-1);
+    }
+    return [primaryColor, secondaryColor];
+};
+const getConfigValue = (key) => {
+    try {
+        const value = configFile[key];
+        if (!value) {
+            throw new Error(`${key} is undefined`);
+        }
+        return value;
+    } catch (e) {
+        dd(e);
+        console.log(
+            `there is prob with the ${key} field in the counfiguration file\n `,
+            e.message,
+        );
+        exit(-1);
+    }
+};
+const showConfig = () => {
+    //
+    console.log(configFile);
+};
+const reset = async () => {
+    //
+    await askForConfig();
+};
+const prayes = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
+
+const getDate = () => {
+    dd(".");
+    const date = DATE;
+    const timeNow = date.toLocaleTimeString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit",
+    });
+    const dayNow = date
+        .toLocaleDateString("fr-CA")
+        .split("-")
+        .reverse()
+        .join("-");
+    return { timeNow, dayNow };
+};
+const getFromCache = async () => {
+    dd(".");
+    const cachePath = path.join(process.env.HOME, ".cache/prayerTime");
+    //
+    try {
+        //
+        if (!fs.existsSync(cachePath)) {
+            return null;
+        }
+        const [cachedDate, cachedData] = fs
+            .readFileSync(cachePath, "utf-8")
+            .split("\n");
+
+        const cacheDate = new Date(cachedDate);
+        const timeNow = getDate();
+
+        if (
+            isNaN(cacheDate.getTime()) ||
+            cacheDate.toDateString() !== DATE.toDateString()
+        ) {
+            return null;
+        }
+        const parsedData = JSON.parse(cachedData);
+        return parsedData;
+    } catch (err) {
+        //
+        dd(err);
+        return null;
+    }
+};
+
+const addToCache = async (buffer) => {
+    dd(".");
+    //
+    const cachePath = path.join(process.env.HOME, ".cache/prayerTime");
+    const date = DATE;
+    const content = date.toLocaleString() + "\n" + buffer;
+
+    try {
+        fs.writeFileSync(cachePath, content);
+        return null;
+    } catch (err) {
+        //
+        dd(err);
+        return null;
+    }
+};
+
+const prayerTimeFetch = async (city, country) => {
+    dd(".");
+    const options = {
+        hostname: "api.aladhan.com",
+
+        path: `/v1/timingsByCity/today?city=${encodeURIComponent(city)}&country=${encodeURIComponent(country)}`,
+        method: "GET",
+    };
+    const result = new Promise((resolve, reject) => {
+        try {
+            //
+            const req = https.get(options, (res) => {
+                let data = "";
+                res.on("data", (chunk) => {
+                    data += chunk;
+                });
+                res.on("end", () => {
+                    const parsedData = JSON.parse(data);
+                    dd(parsedData);
+                    if (parsedData.code === 200) {
+                        //
+                        addToCache(data);
+                        resolve(parsedData);
+                    } else {
+                        reject(parsedData);
+                    }
+                });
+                res.on("error", (e) => {
+                    dd(e);
+                    reject(e);
+                });
+            });
+            req.on("error", (e) => {
+                dd(e);
+                reject(e);
+            });
+            req.end();
+        } catch (e) {
+            //
+            dd(e);
+            reject(e);
+        }
+    });
+    return result;
+};
+
+const getData = async () => {
+    dd(".");
+    //
+    let data;
+    try {
+        //
+        data = await getFromCache();
+        if (!data) {
+            //
+            const [CITY, COUNTRY] = [
+                getConfigValue("city"),
+                getConfigValue("country"),
+            ];
+            data = await prayerTimeFetch(CITY, COUNTRY);
+        }
+    } catch (apiError) {
+        //
+        dd(apiError);
+        console.log("connection error plase try again");
+        exit(-1);
+    }
+    return [data.data.timings, data.data.date.gregorian.date];
+};
+
+const getTheNextPraye = (reqDay, Timings) => {
+    const { timeNow, dayNow } = getDate();
+    var nexPrayeIdx = 0;
+
+    for (let i = 0; i < 5; i++) {
+        ///
+        if (reqDay == dayNow && Timings[prayes[i]] > timeNow) {
+            //
+            nexPrayeIdx = i;
+            break;
+        }
+    }
+    return nexPrayeIdx;
+};
+
+const getTimeDef = (reqDay, Timings, nexPrayeIdx) => {
+    //
+    const today = DATE;
+    let [day, month, year] = reqDay.split("-").map(Number);
+    let [hours, minutes] = Timings[prayes[parseInt(nexPrayeIdx)]]
+        .split(":")
+        .map(Number);
+    const prayerDate = new Date(year, month - 1, day, hours, minutes);
+    if (prayerDate < today) {
+        prayerDate.setDate(prayerDate.getDate() + 1);
+    }
+    const def = prayerDate - today;
+    const defHoures = Math.floor(def / (1000 * 60 * 60));
+    const defMinutes = Math.floor((def % (1000 * 60 * 60)) / (1000 * 60));
+    const defFormat = `${defHoures !== 0 ? `${defHoures}h:` : ""}${String(defMinutes).padStart(2, "0")}m`;
+    return defFormat;
+};
+
+const printPrayers = async () => {
+    dd(".");
+    const [Timings, reqDay] = await getData();
+    const nextIdx = getTheNextPraye(reqDay, Timings);
+    const defTime = getTimeDef(reqDay, Timings, nextIdx);
+    draw.line("-", 20);
+    draw.center("✨ PRAYER TIMES ✨", 19);
+    draw.line("-", 20);
+
+    for (let i = 0; i < 5; ++i) {
+        if (i == nextIdx) {
+            //
+            draw.str(
+                `${prayes[i]}: ${Timings[prayes[i]]} ( ${defTime} )`,
+                configFile.secondaryColor,
+                false,
+            );
+        } else {
+            draw.str(
+                `${prayes[i]}: ${Timings[prayes[i]]}`,
+                configFile.primaryColor,
+                false,
+            );
+        }
+    }
+};
+
+async function main() {
+    //
+    const option = sanitize(process.argv[2]);
+    switch (option) {
+        case "-h":
+        case "--help":
+            showHelp();
+            break;
+        case "-c":
+            console.log(configFile);
+            break;
+        case "-r":
+        case "--reset":
+            try {
+                //
+                await reset();
+            } catch (e) {
+                //
+                dd(e);
+                console.log(e);
+            }
+            break;
+        case "--city":
+            const city = sanitize(process.argv[3]);
+            try {
+                //
+                await setConfigValue("city", city);
+                await prayerTimeFetch(
+                    getConfigValue("city"),
+                    getConfigValue("country"),
+                );
+            } catch (apiError) {
+                //
+                dd(apiError);
+                console.log(
+                    `
+connection error plase try again 
+or the <${draw.colorize(city)}> in not a valide one
+`,
+                );
+                exit(-1);
+            }
+            break;
+        case "--country":
+            const country = sanitize(process.argv[3]);
+            try {
+                //
+                await setConfigValue("country", country);
+                await prayerTimeFetch(
+                    getConfigValue("city"),
+                    getConfigValue("country"),
+                );
+            } catch (apiError) {
+                //
+                dd(apiError);
+                console.log(
+                    `
+connection error plase try again 
+or the <${draw.colorize(country)}> in not a valide one
+`,
+                );
+                exit(-1);
+            }
+            break;
+        case "--color":
+            try {
+                //
+                await setColorSchema();
+            } catch (e) {
+                //
+                dd(e);
+                console.log("Something Happened. Please try again\nor the ");
+                exit(-1);
+            }
+        default:
+            option ? console.log("ignoring " + option) : true;
+            await printPrayers();
+            break;
+    }
+    exit(0);
+}
+
+main();

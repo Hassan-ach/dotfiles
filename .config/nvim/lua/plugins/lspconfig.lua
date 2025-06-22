@@ -1,263 +1,277 @@
 return {
-    {
-        "williamboman/mason.nvim",
-        config = function()
-            require("mason").setup({
-                PATH = "prepend",
-            })
-        end,
-    },
-    {
-        "williamboman/mason-lspconfig.nvim",
-        config = function()
-            require("mason-lspconfig").setup({
-                ensure_installed = {
-                    -- "nil_ls",
-                    "bashls",
-                    "lua_ls",
-                    "rust_analyzer",
-                    "gopls",
-                    "templ",
-                    "html",
-                    "cssls",
-                    "emmet_language_server",
-                    "htmx",
-                    "tailwindcss",
-                    "ts_ls",
-                    -- "tsserver",
-                    "pylsp",
-                    "clangd",
-                    "prismals",
-                    "yamlls",
-                    "jsonls",
-                    "jdtls",
-                    "eslint",
-                    -- "hls",
-                    "marksman",
-                    "sqlls",
-                    "wgsl_analyzer",
-                    "texlab",
-                    "intelephense",
-                    -- "nim_langserver",
-                    "zls",
-                },
-            })
-        end,
-    },
-    {
-        "neovim/nvim-lspconfig",
-        config = function()
-            -- local capabilities = require("cmp_nvim_lsp").default_capabilities()
-            local capabilities = vim.lsp.protocol.make_client_capabilities()
-            capabilities.textDocument.completion = {
-                completionItem = {
-                    snippetSupport = true,
-                }
-            }
+	{
+		"williamboman/mason.nvim",
+		config = function()
+			require("mason").setup({
+				PATH = "prepend",
+			})
+		end,
+	},
+	{
+		"williamboman/mason-lspconfig.nvim",
+		config = function()
+			require("mason-lspconfig").setup({
+				ensure_installed = {
+					-- "nil_ls",
+					"bashls",
+					"lua_ls",
+					"rust_analyzer",
+					"gopls",
+					"templ",
+					"html",
+					"cssls",
+					"emmet_language_server",
+					"htmx",
+					"tailwindcss",
+					"ts_ls",
+					-- "tsserver",
+					"pylsp",
+					"clangd",
+					"prismals",
+					"yamlls",
+					"jsonls",
+					"jdtls",
+					"eslint",
+					-- "hls",
+					"marksman",
+					"sqlls",
+					"wgsl_analyzer",
+					"texlab",
+					"intelephense",
+					-- "nim_langserver",
+					"zls",
+				},
+			})
+		end,
+	},
+	{
+		"neovim/nvim-lspconfig",
+		config = function()
+			-- local capabilities = require("cmp_nvim_lsp").default_capabilities()
+			local capabilities = vim.lsp.protocol.make_client_capabilities()
+			capabilities.textDocument.completion = {
+				completionItem = {
+					snippetSupport = true,
+				},
+			}
 
-            local lspconfig = require("lspconfig")
+			local lspconfig = require("lspconfig")
 
-            lspconfig.jdtls.setup({
-                capabilities = capabilities,
-            })
-            lspconfig.nil_ls.setup({
-                capabilities = capabilities,
-            })
-            lspconfig.sqlls.setup({
-                capabilities = capabilities,
-            })
-            lspconfig.intelephense.setup({
-                capabilities = capabilities,
-            })
-            lspconfig.texlab.setup({
-                capabilities = capabilities,
-            })
-            lspconfig.zls.setup({
-                capabilities = capabilities,
-                cmd = { "zls" },
-            })
-            lspconfig.hls.setup({
-                capabilities = capabilities,
-                single_file_support = true,
-            })
-            lspconfig.bashls.setup({
-                capabilities = capabilities,
-            })
-            lspconfig.lua_ls.setup({
-                capabilities = capabilities,
-                settings = {
-                    Lua = {
-                        diagnostics = {
-                            globals = { "vim" }, -- Recognize 'vim' as a global variable
-                        },
-                        workspace = {
-                            library = vim.api.nvim_get_runtime_file("", true), -- Include Neovim runtime files
-                        },
-                        telemetry = {
-                            enable = false,
-                        },
-                    },
-                },
-            })
-            lspconfig.wgsl_analyzer.setup({
-                capabilities = capabilities,
-            })
-            lspconfig.jsonls.setup({
-                capabilities = capabilities,
-            })
-            lspconfig.gopls.setup({
-                capabilities = capabilities,
-            })
-            lspconfig.cssls.setup({
-                capabilities = capabilities,
-            })
-            lspconfig.prismals.setup({
-                capabilities = capabilities,
-            })
-            lspconfig.yamlls.setup({
-                capabilities = capabilities,
-            })
-            lspconfig.html.setup({
-                capabilities = capabilities,
-                filetypes = {
-                    "templ",
-                    "html",
-                    "php",
-                    "css",
-                    "javascriptreact",
-                    "typescriptreact",
-                    "javascript",
-                    "typescript",
-                    "jsx",
-                    "tsx",
-                },
-            })
-            lspconfig.htmx.setup({
-                capabilities = capabilities,
-                filetypes = { "html", "templ" },
-            })
-            lspconfig.emmet_language_server.setup({
-                capabilities = capabilities,
-                filetypes = {
-                    "templ",
-                    "html",
-                    "css",
-                    "php",
-                    "javascriptreact",
-                    "typescriptreact",
-                    "javascript",
-                    "typescript",
-                    "jsx",
-                    "tsx",
-                    "markdown",
-                },
-            })
-            lspconfig.tailwindcss.setup({
-                capabilities = capabilities,
-                filetypes = {
-                    "templ",
-                    "html",
-                    "css",
-                    "javascriptreact",
-                    "typescriptreact",
-                    "javascript",
-                    "typescript",
-                    "jsx",
-                    "tsx",
-                },
-                root_dir = require("lspconfig").util.root_pattern(
-                    "tailwind.config.js",
-                    "tailwind.config.cjs",
-                    "tailwind.config.mjs",
-                    "tailwind.config.ts",
-                    "postcss.config.js",
-                    "postcss.config.cjs",
-                    "postcss.config.mjs",
-                    "postcss.config.ts",
-                    "package.json",
-                    "node_modules",
-                    ".git"
-                ),
-            })
-            lspconfig.templ.setup({
-                capabilities = capabilities,
-                filetypes = { "templ" },
-            })
-            local configs = require("lspconfig.configs")
+			-- lspconfig.jdtls.setup({
+			-- 	capabilities = capabilities,
+			-- })
+			lspconfig.nil_ls.setup({
+				capabilities = capabilities,
+			})
+			lspconfig.sqlls.setup({
+				capabilities = capabilities,
+			})
+			lspconfig.intelephense.setup({
+				capabilities = capabilities,
+			})
+			lspconfig.texlab.setup({
+				capabilities = capabilities,
+			})
+			lspconfig.zls.setup({
+				capabilities = capabilities,
+				cmd = { "zls" },
+			})
+			lspconfig.hls.setup({
+				capabilities = capabilities,
+				single_file_support = true,
+			})
+			lspconfig.bashls.setup({
+				capabilities = capabilities,
+			})
+			lspconfig.lua_ls.setup({
+				capabilities = capabilities,
+				settings = {
+					Lua = {
+						diagnostics = {
+							globals = { "vim" }, -- Recognize 'vim' as a global variable
+						},
+						workspace = {
+							library = vim.api.nvim_get_runtime_file("", true), -- Include Neovim runtime files
+						},
+						telemetry = {
+							enable = false,
+						},
+					},
+				},
+			})
+			lspconfig.wgsl_analyzer.setup({
+				capabilities = capabilities,
+			})
+			lspconfig.jsonls.setup({
+				capabilities = capabilities,
+			})
+			lspconfig.gopls.setup({
+				capabilities = capabilities,
+			})
+			lspconfig.cssls.setup({
+				capabilities = capabilities,
+			})
+			lspconfig.prismals.setup({
+				capabilities = capabilities,
+			})
+			lspconfig.yamlls.setup({
+				capabilities = capabilities,
+				settings = {
+					yaml = {
+						schemas = {
+							["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*",
+							["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] = "docker-compose*.yml",
+							-- Spring Boot application.yml schema
+							["https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/application.json"] = "application*.yml",
+						},
+						validate = true,
+						completion = true,
+						hover = true,
+					},
+				},
+			})
+			lspconfig.html.setup({
+				capabilities = capabilities,
+				filetypes = {
+					"templ",
+					"html",
+					"php",
+					"css",
+					"javascriptreact",
+					"typescriptreact",
+					"javascript",
+					"typescript",
+					"jsx",
+					"tsx",
+				},
+			})
+			lspconfig.htmx.setup({
+				capabilities = capabilities,
+				filetypes = { "html", "templ" },
+			})
+			lspconfig.emmet_language_server.setup({
+				capabilities = capabilities,
+				filetypes = {
+					"templ",
+					"html",
+					"css",
+					"php",
+					"javascriptreact",
+					"typescriptreact",
+					"javascript",
+					"typescript",
+					"jsx",
+					"tsx",
+					"markdown",
+				},
+			})
+			lspconfig.tailwindcss.setup({
+				capabilities = capabilities,
+				filetypes = {
+					"templ",
+					"html",
+					"css",
+					"javascriptreact",
+					"typescriptreact",
+					"javascript",
+					"typescript",
+					"jsx",
+					"tsx",
+				},
+				root_dir = require("lspconfig").util.root_pattern(
+					"tailwind.config.js",
+					"tailwind.config.cjs",
+					"tailwind.config.mjs",
+					"tailwind.config.ts",
+					"postcss.config.js",
+					"postcss.config.cjs",
+					"postcss.config.mjs",
+					"postcss.config.ts",
+					"package.json",
+					"node_modules",
+					".git"
+				),
+			})
+			lspconfig.templ.setup({
+				capabilities = capabilities,
+				filetypes = { "templ" },
+			})
+			lspconfig.ts_ls.setup({
+				on_attach = function(client, bufnr)
+					-- Optional: disable formatting so you can use a separate formatter like Prettier
+					client.server_capabilities.documentFormattingProvider = false
+				end,
+				capabilities = capabilities,
+				init_options = {
+					preferences = {
+						disableSuggestions = true,
+					},
+				},
+				settings = {
+					typescript = {
+						preferences = {
+							importModuleSpecifierPreference = "non-relative",
+						},
+					},
+				},
+			})
+			lspconfig.eslint.setup({
+				capabilities = capabilities,
+			})
 
-            if not configs.ts_ls then
-                configs.ts_ls = {
-                    default_config = {
-                        cmd = { "typescript-language-server", "--stdio" },
-                        capabilties = capabilities,
-                        filetypes = {
-                            "javascript",
-                            "javascriptreact",
-                            "typescript",
-                            "typescriptreact",
-                            "html",
-                        },
-                        root_dir = require("lspconfig").util.root_pattern("package.json", "tsconfig.json", ".git"),
-                        -- single_file_support = true,
-                    },
-                }
-            end
-            lspconfig.ts_ls.setup({
-                -- capabilties = capabilities,
-            })
-            lspconfig.eslint.setup({
-                capabilties = capabilities,
-            })
+			require("lspconfig").clangd.setup({
+				cmd = {
+					"clangd",
+					"--background-index",
+					"--pch-storage=memory",
+					"--all-scopes-completion",
+					"--pretty",
+					"--header-insertion=never",
+					"-j=4",
+					"--inlay-hints",
+					"--header-insertion-decorators",
+					"--function-arg-placeholders",
+					"--completion-style=detailed",
+					-- "--std=c++20",
+				},
+				filetypes = { "c", "cpp", "objc", "objcpp" },
+				root_dir = require("lspconfig").util.root_pattern("src"),
+				init_option = {
+					clangdFileStatus = true,
+					fallbackFlags = { "-std=c++2a", "-I/home/bagi/git-clone-projects/raylib/src" },
+				},
+				capabilities = vim.lsp.protocol.make_client_capabilities(),
+				single_file_support = true,
+			})
 
-            require("lspconfig").clangd.setup({
-                cmd = {
-                    "clangd",
-                    "--background-index",
-                    "--pch-storage=memory",
-                    "--all-scopes-completion",
-                    "--pretty",
-                    "--header-insertion=never",
-                    "-j=4",
-                    "--inlay-hints",
-                    "--header-insertion-decorators",
-                    "--function-arg-placeholders",
-                    "--completion-style=detailed",
-                },
-                filetypes = { "c", "cpp", "objc", "objcpp" },
-                root_dir = require("lspconfig").util.root_pattern("src"),
-                init_option = { fallbackFlags = { "-std=c++2a" } },
-                capabilities = capabilities,
-                single_file_support = true,
-            })
+			function get_python_path()
+				-- Check if there's an active virtual environment
+				local venv_path = os.getenv("VIRTUAL_ENV")
+				if venv_path then
+					return venv_path .. "/bin/python3"
+				else
+					return "/usr/bin/python3"
+				end
+			end
 
-            function get_python_path()
-                -- Check if there's an active virtual environment
-                local venv_path = os.getenv("VIRTUAL_ENV")
-                if venv_path then
-                    return venv_path .. "/bin/python3"
-                else
-                    return "/usr/bin/python3"
-                end
-            end
+			lspconfig.pylsp.setup({
+				capabilities = capabilities,
+				settings = {
+					python = {
+						pythonPath = get_python_path(),
+					},
+				},
+			})
 
-            lspconfig.pylsp.setup({
-                capabilties = capabilities,
-                settings = {
-                    python = {
-                        pythonPath = get_python_path(),
-                    },
-                },
-            })
-
-            lspconfig.marksman.setup({
-                capabilties = capabilities,
-            })
-            lspconfig.gleam.setup({
-                capabilties = capabilities,
-            })
-            lspconfig.nim_langserver.setup({
-                capabilties = capabilities,
-            })
-        end,
-    },
+			lspconfig.marksman.setup({
+				capabilities = capabilities,
+			})
+			lspconfig.gleam.setup({
+				capabilities = capabilities,
+			})
+			lspconfig.nim_langserver.setup({
+				capabilities = capabilities,
+			})
+		end,
+	},
 }

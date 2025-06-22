@@ -5,6 +5,9 @@
 # Oh My Zsh & Theme Configuration
 export ZSH="$HOME/.oh-my-zsh"
 export PATH="$HOME/.config/composer/vendor/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+export VCPKG_ROOT="$HOME/git-clone-projects/vcpkg"
+export PATH=$VCPKG_ROOT:$PATH
 
 # Terminal Configuration
 # export TERM="xterm-kitty"
@@ -25,6 +28,9 @@ export BAT_PAGER="less -RF"
 
 # Go Path
 export PATH=$PATH:/home/ssk/go/bin/
+
+# Rust Path
+export PATH=$PATH:/home/bagi/.cargo/bin/
 
 # FZF Theme Setup (base16-black-metal-gorgoroth)
 if command -v fzf &>/dev/null; then

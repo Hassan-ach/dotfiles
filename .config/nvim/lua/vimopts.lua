@@ -30,24 +30,21 @@ vim.cmd([[
   autocmd BufNewFile,BufRead *.blade.php set filetype=blade
 ]])
 
-
-
 -- vim.g.use_precompiled_parsers = true
 -- minor visual changes to panes
 vim.opt.fillchars =
-{ vert = " ", horiz = " ", horizup = " ", horizdown = " ", vertleft = " ", vertright = " ", verthoriz = " " }
+	{ vert = " ", horiz = " ", horizup = " ", horizdown = " ", vertleft = " ", vertright = " ", verthoriz = " " }
 vim.keymap.set("n", "<C-h>", "<C-w>h")
 vim.keymap.set("n", "<C-j>", "<C-w>j")
 vim.keymap.set("n", "<C-k>", "<C-w>k")
 vim.keymap.set("n", "<C-l>", "<C-w>l")
 vim.keymap.set("i", "jk", "<Esc>")
 
-
 -- vim.cmd("set guicursor=n-v-c:block-blinkon1,i-ci:ver25")
 vim.opt.guicursor = "n-v-c:block-blinkon1-CursorInsert,i:block-CursorInsert"
 
 vim.api.nvim_create_user_command("Setwd", function()
-    vim.cmd("cd " .. vim.fn.expand("%:p:h"))
+	vim.cmd("cd " .. vim.fn.expand("%:p:h"))
 end, {})
 
 -- local utils = require("utils")
@@ -63,13 +60,13 @@ vim.o.signcolumn = "no"
 vim.o.completeopt = "menuone,noselect,preview"
 
 -- Set tab width to 4 spaces
-vim.opt.tabstop = 4      -- Width of a tab character
-vim.opt.shiftwidth = 4   -- Number of spaces for auto-indentation
-vim.opt.softtabstop = 4  -- Number of spaces for <Tab> and <BS> in insert mode
+vim.opt.tabstop = 4 -- Width of a tab character
+vim.opt.shiftwidth = 4 -- Number of spaces for auto-indentation
+vim.opt.softtabstop = 4 -- Number of spaces for <Tab> and <BS> in insert mode
 vim.opt.expandtab = true -- Convert tabs to spaces
 
 -- Optional: Auto-indentation settings
-vim.opt.autoindent = true  -- Copy indent from current line
+vim.opt.autoindent = true -- Copy indent from current line
 vim.opt.smartindent = true -- Smart auto-indentation
 
 -- move selections
@@ -93,7 +90,6 @@ vim.g.mapleader = " "
 vim.keymap.set({ "n", "v" }, "<leader>y", '"+y')
 vim.keymap.set("n", "<leader>Y", '"+Y')
 
-
 -- oil.nvim setup
 vim.keymap.set("n", "<leader>N", ":Oil<CR>")
 vim.keymap.set("n", "<leader>n", ':lua require("oil").toggle_float()<CR>')
@@ -116,45 +112,44 @@ vim.keymap.set("n", "K", vim.lsp.buf.hover)
 vim.keymap.set("n", "gd", vim.lsp.buf.definition)
 vim.keymap.set("n", "gD", vim.lsp.buf.declaration)
 vim.keymap.set("n", "gr", function()
-    -- Trigger the LSP references function and populate the quickfix list
-    vim.lsp.buf.references()
+	-- Trigger the LSP references function and populate the quickfix list
+	vim.lsp.buf.references()
 
-    vim.defer_fn(function()
-        -- Set up an autocmd to remap keys in the quickfix window
-        vim.api.nvim_create_autocmd("FileType", {
-            pattern = "qf", -- Only apply this mapping in quickfix windows
-            callback = function()
-                -- Remap <Enter> to jump to the location and close the quickfix window
-                vim.api.nvim_buf_set_keymap(0, "n", "<CR>", "<CR>:cclose<CR>",
-                    { noremap = true, silent = true })
-                vim.api.nvim_buf_set_keymap(0, "n", "q", ":cclose<CR>", { noremap = true, silent = true })
+	vim.defer_fn(function()
+		-- Set up an autocmd to remap keys in the quickfix window
+		vim.api.nvim_create_autocmd("FileType", {
+			pattern = "qf", -- Only apply this mapping in quickfix windows
+			callback = function()
+				-- Remap <Enter> to jump to the location and close the quickfix window
+				vim.api.nvim_buf_set_keymap(0, "n", "<CR>", "<CR>:cclose<CR>", { noremap = true, silent = true })
+				vim.api.nvim_buf_set_keymap(0, "n", "q", ":cclose<CR>", { noremap = true, silent = true })
 
-                -- Set up <Tab> to cycle through quickfix list entries
-                vim.keymap.set("n", "<Tab>", function()
-                    local current_idx = vim.fn.getqflist({ idx = 0 }).idx
-                    local qflist = vim.fn.getqflist() -- Get the current quickfix list
-                    if current_idx >= #qflist then
-                        vim.cmd("cfirst")
-                        vim.cmd("wincmd p")
-                    else
-                        vim.cmd("cnext")
-                        vim.cmd("wincmd p")
-                    end
-                end, { noremap = true, silent = true, buffer = 0 })
+				-- Set up <Tab> to cycle through quickfix list entries
+				vim.keymap.set("n", "<Tab>", function()
+					local current_idx = vim.fn.getqflist({ idx = 0 }).idx
+					local qflist = vim.fn.getqflist() -- Get the current quickfix list
+					if current_idx >= #qflist then
+						vim.cmd("cfirst")
+						vim.cmd("wincmd p")
+					else
+						vim.cmd("cnext")
+						vim.cmd("wincmd p")
+					end
+				end, { noremap = true, silent = true, buffer = 0 })
 
-                vim.keymap.set("n", "<S-Tab>", function()
-                    local current_idx = vim.fn.getqflist({ idx = 0 }).idx
-                    if current_idx < 2 then
-                        vim.cmd("clast")
-                        vim.cmd("wincmd p")
-                    else
-                        vim.cmd("cprev")
-                        vim.cmd("wincmd p")
-                    end
-                end, { noremap = true, silent = true, buffer = 0 })
-            end,
-        })
-    end, 0)
+				vim.keymap.set("n", "<S-Tab>", function()
+					local current_idx = vim.fn.getqflist({ idx = 0 }).idx
+					if current_idx < 2 then
+						vim.cmd("clast")
+						vim.cmd("wincmd p")
+					else
+						vim.cmd("cprev")
+						vim.cmd("wincmd p")
+					end
+				end, { noremap = true, silent = true, buffer = 0 })
+			end,
+		})
+	end, 0)
 end)
 
 vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})
@@ -167,13 +162,13 @@ vim.keymap.set("n", "[e", vim.diagnostic.goto_next)
 vim.keymap.set("n", "]e", vim.diagnostic.goto_next)
 
 function leave_snippet()
-    if
-        ((vim.v.event.old_mode == "s" and vim.v.event.new_mode == "n") or vim.v.event.old_mode == "i")
-        and require("luasnip").session.current_nodes[vim.api.nvim_get_current_buf()]
-        and not require("luasnip").session.jump_active
-    then
-        require("luasnip").unlink_current()
-    end
+	if
+		((vim.v.event.old_mode == "s" and vim.v.event.new_mode == "n") or vim.v.event.old_mode == "i")
+		and require("luasnip").session.current_nodes[vim.api.nvim_get_current_buf()]
+		and not require("luasnip").session.jump_active
+	then
+		require("luasnip").unlink_current()
+	end
 end
 
 -- stop snippets when you leave to normal mode
@@ -183,8 +178,8 @@ vim.api.nvim_command([[
 
 -- make help and man open up on the side instead above
 vim.api.nvim_create_autocmd("FileType", {
-    pattern = { "help", "man" },
-    command = "wincmd L",
+	pattern = { "help", "man" },
+	command = "wincmd L",
 })
 
 vim.lsp.set_log_level("warn")
@@ -194,46 +189,46 @@ autocmd! DiagnosticChanged * lua vim.diagnostic.setloclist({open = false}) ]])
 
 vim.api.nvim_create_augroup("CreateDirs", { clear = true })
 vim.api.nvim_create_autocmd("BufWritePre", {
-    group = "CreateDirs",
-    pattern = "*",
-    callback = function()
-        local file_path = vim.fn.expand("<afile>:p:h")
-        if vim.fn.isdirectory(file_path) == 0 then
-            vim.fn.mkdir(file_path, "p")
-        end
-    end,
+	group = "CreateDirs",
+	pattern = "*",
+	callback = function()
+		local file_path = vim.fn.expand("<afile>:p:h")
+		if vim.fn.isdirectory(file_path) == 0 then
+			vim.fn.mkdir(file_path, "p")
+		end
+	end,
 })
 
 vim.api.nvim_create_autocmd("BufEnter", {
-    pattern = { "*.md" },
-    callback = function()
-        vim.cmd("set linebreak")
-        -- vim.cmd("colorscheme zenburn")
-    end,
-    nested = true,
+	pattern = { "*.md" },
+	callback = function()
+		vim.cmd("set linebreak")
+		-- vim.cmd("colorscheme zenburn")
+	end,
+	nested = true,
 })
 
 vim.api.nvim_create_autocmd({ "FileType", "VimEnter", "BufReadPre" }, {
-    pattern = { "*.md" },
-    callback = function()
-        vim.schedule(function()
-            vim.keymap.set("n", "<space>md", ":lua OpenInObsidian()<CR>", { noremap = true, silent = true })
-            vim.o.shiftwidth = 2
-        end)
-    end,
+	pattern = { "*.md" },
+	callback = function()
+		vim.schedule(function()
+			vim.keymap.set("n", "<space>md", ":lua OpenInObsidian()<CR>", { noremap = true, silent = true })
+			vim.o.shiftwidth = 2
+		end)
+	end,
 })
 
 function OpenInObsidian()
-    local file = vim.fn.expand("<cfile>")                    -- Get the file path under the cursor
-    if file:match("%.md$") then
-        local vault = "notes"                                -- Replace with your Obsidian vault name
-        local vault_path = vim.fn.expand("~/path/to/vault/") -- Adjust to your vault path
-        local relative_path = file:gsub(vault_path, "")      -- Get relative path from vault root
-        local obsidian_url = "obsidian://open?vault=" .. vault .. "&file=" .. vim.fn.fnameescape(relative_path)
-        vim.fn.system({ "open", obsidian_url })              -- macOS 'open' command to launch Obsidian
-    else
-        vim.cmd("silent open " .. file)                      -- Default behavior (for non-.md files)
-    end
+	local file = vim.fn.expand("<cfile>") -- Get the file path under the cursor
+	if file:match("%.md$") then
+		local vault = "notes" -- Replace with your Obsidian vault name
+		local vault_path = vim.fn.expand("~/path/to/vault/") -- Adjust to your vault path
+		local relative_path = file:gsub(vault_path, "") -- Get relative path from vault root
+		local obsidian_url = "obsidian://open?vault=" .. vault .. "&file=" .. vim.fn.fnameescape(relative_path)
+		vim.fn.system({ "open", obsidian_url }) -- macOS 'open' command to launch Obsidian
+	else
+		vim.cmd("silent open " .. file) -- Default behavior (for non-.md files)
+	end
 end
 
 --
@@ -245,24 +240,45 @@ end
 -- 	nested = true,
 -- })
 --
+vim.api.nvim_create_autocmd("BufEnter", {
+	pattern = { "*.csv" },
+	callback = function()
+		vim.cmd("CsvViewEnable")
+	end,
+})
 
 vim.api.nvim_create_user_command("FormatDisable", function(args)
-    vim.g.disable_autoformat = true
+	vim.g.disable_autoformat = true
 end, {
-    desc = "Disable autoformat-on-save",
+	desc = "Disable autoformat-on-save",
 })
 
 vim.api.nvim_create_user_command("FormatEnable", function()
-    vim.b.disable_autoformat = false
-    vim.g.disable_autoformat = false
+	vim.b.disable_autoformat = false
+	vim.g.disable_autoformat = false
 end, {
-    desc = "Re-enable autoformat-on-save",
+	desc = "Re-enable autoformat-on-save",
 })
 
 --harpoon keymaps
-vim.keymap.set('n', '<C-e>', function()
-    require("harpoon.ui").toggle_quick_menu()
+vim.keymap.set("n", "<C-e>", function()
+	require("harpoon.ui").toggle_quick_menu()
 end, { desc = "Toggle Harpoon quick menu" })
-vim.keymap.set('n', '<leader>a', function()
-    require("harpoon.mark").add_file()
+vim.keymap.set("n", "<leader>a", function()
+	require("harpoon.mark").add_file()
 end, { desc = "Add file to Harpoon" })
+
+vim.diagnostic.config({
+	virtual_text = true, -- inline error messages
+	signs = true, -- gutter signs
+	underline = true, -- underline error lines
+	update_in_insert = false, -- only show after leaving insert mode
+	severity_sort = true,
+})
+
+-- vim.api.nvim_create_autocmd("BufWritePre", {
+-- 	pattern = { "*.js", "*.ts", "*.jsx", "*.tsx" },
+-- 	callback = function()
+-- 		vim.lsp.buf.format({ async = true })
+-- 	end,
+-- })

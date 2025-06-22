@@ -1,4 +1,8 @@
 local function setup(_, opts)
+	if not THEME then
+		return
+	end
+
 	local type = opts and opts.type or ui.Border.ROUNDED
 	local old_build = Tab.build
 
