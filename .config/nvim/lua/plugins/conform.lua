@@ -8,6 +8,7 @@ return {
 			log_level = vim.log.levels.DEBUG,
 			formatters_by_ft = {
 				lua = { "stylua" },
+				-- java = { "google-java-format" },
 				python = { "ruff_format", "black" },
 				rust = { "rustfmt" },
 				javascript = { "prettier" },

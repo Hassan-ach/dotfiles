@@ -57,9 +57,9 @@ return {
 
 			local lspconfig = require("lspconfig")
 
-			-- lspconfig.jdtls.setup({
-			-- 	capabilities = capabilities,
-			-- })
+			lspconfig.jdtls.setup({
+				capabilities = capabilities,
+			})
 			lspconfig.nil_ls.setup({
 				capabilities = capabilities,
 			})
@@ -101,6 +101,7 @@ return {
 			})
 			lspconfig.wgsl_analyzer.setup({
 				capabilities = capabilities,
+				cmd = { "wgsl_analyzer" },
 			})
 			lspconfig.jsonls.setup({
 				capabilities = capabilities,
