@@ -26,9 +26,12 @@ exec_always --no-startup-id ~/.config/polybar/launch_polybar.sh
 exec_always feh --bg-scale ~/dotfiles/bd.jpg
 
 #set touchpad to default
-exec_always --no-startup-id xinput set-prop 15 "libinput Tapping Enabled" 1
-exec_always --no-startup-id xinput set-prop 15 "libinput Natural Scrolling Enabled" 1
+exec_always --no-startup-id xinput set-prop 11 "libinput Tapping Enabled" 1
+exec_always --no-startup-id xinput set-prop 11 "libinput Natural Scrolling Enabled" 1
 exec --no-startup-id xrandr --output HDMI-1 --mode 1600x900 --right-of eDP-1 --auto 
+exec_always --no-startup-id ~/.config/i3/keyboard-setup.sh
+
+
 
 # exec_always --no-startup-id setxkbmap -option "ctrl:nocaps" 
 # exec_always --no-startup-id setxkbmap -option "lv3:ralt_switch"
@@ -157,8 +160,8 @@ workspace 4 output $fm
 workspace 5 output $fm
 workspace 6 output $fm
 workspace 7 output $fm
-workspace 8 output $fm
-workspace 9 output $fm
+workspace 8 output $sm
+workspace 9 output $sm
 workspace 10 output $sm
 
 # We use variables to avoid repeating the names in multiple places.
