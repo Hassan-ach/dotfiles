@@ -9,7 +9,6 @@ vim.cmd("autocmd FileType sql setlocal noautoindent")
 vim.cmd("autocmd FileType sql setlocal nosmartindent")
 vim.cmd("autocmd FileType sql setlocal nocindent")
 vim.cmd("set signcolumn=no")
-
 vim.o.scrolloff = 8
 vim.opt.ignorecase = true
 
@@ -39,6 +38,7 @@ vim.keymap.set("n", "<C-j>", "<C-w>j")
 vim.keymap.set("n", "<C-k>", "<C-w>k")
 vim.keymap.set("n", "<C-l>", "<C-w>l")
 vim.keymap.set("i", "jk", "<Esc>")
+vim.keymap.set("i", "<C-[>", "<Esc>")
 
 -- vim.cmd("set guicursor=n-v-c:block-blinkon1,i-ci:ver25")
 vim.opt.guicursor = "n-v-c:block-blinkon1-CursorInsert,i:block-CursorInsert"

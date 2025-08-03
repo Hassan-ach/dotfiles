@@ -129,3 +129,8 @@ alias magnet='aria2c --seed-time=0 --enable-dht=true --enable-peer-exchange=true
                 --bt-request-peer-speed-limit=1M --file-allocation=falloc \
                 --max-connection-per-server=16 --bt-metadata-only=false'
 
+alias magnetUsb='aria2c --seed-time=0 --enable-dht=true --enable-peer-exchange=true \
+  --bt-enable-lpd=true --bt-max-peers=200 \
+  --bt-request-peer-speed-limit=1M --file-allocation=none \
+  --max-connection-per-server=16 --bt-metadata-only=false'
+

@@ -150,15 +150,30 @@ fzd() {
 # ==============================
 # System upgrade and clean
 # ==============================
-sysup (){
-    sudo pacman -Syyu
-    sudo pacman -Scc
-    sudo pacman -Rns $(pacman -Qdtq)
-    yay -Syyu
-    yay -Scc
-    yay -Rns $(yay -Qdtq)
-    echo “Done!”
+sysup() {
+    echo "==> Updating system (pacman)..."
+    sudo pacman -Syu
+
+    echo "==> Cleaning pacman cache..."
+    sudo pacman -Sc --noconfirm
+
+    echo "==> Removing orphan packages (pacman)..."
+    orphans=$(pacman -Qdtq)
+    [ -n "$orphans" ] && sudo pacman -Rns $orphans
+
+    echo "==> Updating AUR packages (yay)..."
+    yay -Syu
+
+    echo "==> Cleaning yay cache..."
+    yay -Sc --noconfirm
+
+    echo "==> Removing orphan packages (yay)..."
+    aorphans=$(yay -Qdtq)
+    [ -n "$aorphans" ] && yay -Rns $aorphans
+
+    echo "✅ Done!"
 }
+
 
 # ==============================
 # Powerlevel10k Prompt (optional)
@@ -176,11 +191,6 @@ eval "$(zoxide init zsh)"
 
 # Run FZF for shell completion
 eval "$(fzf --zsh)"
-
-#Change CapsLock -> ctrl and altgr -> Shift-R 
-setxkbmap -option ""
-setxkbmap -layout us -option "ctrl:nocaps"
-xmodmap -e "keycode 108 = Shift_R"
 
 # ==============================
 # Load Paths and Aliases
@@ -201,3 +211,4 @@ export GEMINI_API_KEY="AIzaSyCgFr8BzgC-CHz-PdCIpVvgaZGUncAvUJg"
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+

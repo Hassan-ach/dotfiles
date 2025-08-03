@@ -36,7 +36,7 @@ config.setup({
 		-- "nix",
 		"nim",
 		"vimdoc",
-		-- "go",
+		"go",
 		"rust",
 		"c",
 		"lua",
@@ -84,7 +84,8 @@ require("mappings")
 utils.color_overrides.setup_colorscheme_overrides()
 
 -- theme
-vim.cmd("colorscheme base16-black-metal-gorgoroth")
+-- vim.cmd("colorscheme base16-black-metal-gorgoroth")
+vim.cmd("colorscheme base16-rose-pine-moon")
 
 -- utils.fix_telescope_parens_win()
 utils.dashboard.setup_dashboard_image_colors()

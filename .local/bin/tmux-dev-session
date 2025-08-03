@@ -13,7 +13,7 @@ if [[ $# -eq 1 ]]; then
     selected="$1"
 elif [[ $# -eq 0 ]]; then
     # If no argument, use fzf to select
-    selected=$(find ~/dotfiles ~/programming -mindepth 1 -maxdepth 3 -type d | fzf)
+    selected=$(find ~/dotfiles ~/programming ~/Notes -mindepth 1 -maxdepth 3 -type d | fzf)
 
     # Exit if no directory selected
     if [[ -z "$selected" ]]; then
