@@ -12,35 +12,24 @@ return {
 		config = function()
 			require("mason-lspconfig").setup({
 				ensure_installed = {
-					-- "nil_ls",
 					"bashls",
 					"lua_ls",
 					"rust_analyzer",
 					"gopls",
-					"templ",
 					"html",
 					"cssls",
-					"emmet_language_server",
-					"htmx",
 					"tailwindcss",
 					"ts_ls",
-					-- "tsserver",
 					"pylsp",
 					"clangd",
-					"prismals",
 					"yamlls",
 					"jsonls",
 					"jdtls",
-					"eslint",
-					-- "hls",
 					"marksman",
-					"sqlls",
-					"wgsl_analyzer",
 					"texlab",
 					"intelephense",
-					-- "nim_langserver",
-					"zls",
 				},
+				automatic_enable = false,
 			})
 		end,
 	},
@@ -57,13 +46,10 @@ return {
 
 			local lspconfig = require("lspconfig")
 
-			lspconfig.jdtls.setup({
-				capabilities = capabilities,
-			})
-			lspconfig.nil_ls.setup({
-				capabilities = capabilities,
-			})
-			lspconfig.sqlls.setup({
+			-- lspconfig.jdtls.setup({
+			-- 	capabilities = capabilities,
+			-- })
+			lspconfig.rust_analyzer.setup({
 				capabilities = capabilities,
 			})
 			lspconfig.intelephense.setup({
@@ -71,14 +57,6 @@ return {
 			})
 			lspconfig.texlab.setup({
 				capabilities = capabilities,
-			})
-			lspconfig.zls.setup({
-				capabilities = capabilities,
-				cmd = { "zls" },
-			})
-			lspconfig.hls.setup({
-				capabilities = capabilities,
-				single_file_support = true,
 			})
 			lspconfig.bashls.setup({
 				capabilities = capabilities,
@@ -99,10 +77,6 @@ return {
 					},
 				},
 			})
-			lspconfig.wgsl_analyzer.setup({
-				capabilities = capabilities,
-				cmd = { "wgsl_analyzer" },
-			})
 			lspconfig.jsonls.setup({
 				capabilities = capabilities,
 			})
@@ -110,9 +84,6 @@ return {
 				capabilities = capabilities,
 			})
 			lspconfig.cssls.setup({
-				capabilities = capabilities,
-			})
-			lspconfig.prismals.setup({
 				capabilities = capabilities,
 			})
 			lspconfig.yamlls.setup({
@@ -146,26 +117,6 @@ return {
 					"tsx",
 				},
 			})
-			lspconfig.htmx.setup({
-				capabilities = capabilities,
-				filetypes = { "html", "templ" },
-			})
-			lspconfig.emmet_language_server.setup({
-				capabilities = capabilities,
-				filetypes = {
-					"templ",
-					"html",
-					"css",
-					"php",
-					"javascriptreact",
-					"typescriptreact",
-					"javascript",
-					"typescript",
-					"jsx",
-					"tsx",
-					"markdown",
-				},
-			})
 			lspconfig.tailwindcss.setup({
 				capabilities = capabilities,
 				filetypes = {
@@ -179,23 +130,6 @@ return {
 					"jsx",
 					"tsx",
 				},
-				root_dir = require("lspconfig").util.root_pattern(
-					"tailwind.config.js",
-					"tailwind.config.cjs",
-					"tailwind.config.mjs",
-					"tailwind.config.ts",
-					"postcss.config.js",
-					"postcss.config.cjs",
-					"postcss.config.mjs",
-					"postcss.config.ts",
-					"package.json",
-					"node_modules",
-					".git"
-				),
-			})
-			lspconfig.templ.setup({
-				capabilities = capabilities,
-				filetypes = { "templ" },
 			})
 			lspconfig.ts_ls.setup({
 				on_attach = function(client, bufnr)
@@ -216,11 +150,8 @@ return {
 					},
 				},
 			})
-			lspconfig.eslint.setup({
-				capabilities = capabilities,
-			})
 
-			require("lspconfig").clangd.setup({
+			lspconfig.clangd.setup({
 				cmd = {
 					"clangd",
 					"--background-index",
@@ -245,32 +176,11 @@ return {
 				single_file_support = true,
 			})
 
-			function get_python_path()
-				-- Check if there's an active virtual environment
-				local venv_path = os.getenv("VIRTUAL_ENV")
-				if venv_path then
-					return venv_path .. "/bin/python3"
-				else
-					return "/usr/bin/python3"
-				end
-			end
-
 			lspconfig.pylsp.setup({
 				capabilities = capabilities,
-				settings = {
-					python = {
-						pythonPath = get_python_path(),
-					},
-				},
 			})
 
 			lspconfig.marksman.setup({
-				capabilities = capabilities,
-			})
-			lspconfig.gleam.setup({
-				capabilities = capabilities,
-			})
-			lspconfig.nim_langserver.setup({
 				capabilities = capabilities,
 			})
 		end,

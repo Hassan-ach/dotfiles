@@ -8,7 +8,7 @@ return {
 			log_level = vim.log.levels.DEBUG,
 			formatters_by_ft = {
 				lua = { "stylua" },
-				-- java = { "google-java-format" },
+				java = { "clang_format_java" },
 				python = { "ruff_format", "black" },
 				rust = { "rustfmt" },
 				javascript = { "prettier" },
@@ -30,6 +30,14 @@ return {
 				bash = { "shfmt" },
 			},
 			formatters = {
+				clang_format_java = {
+					command = "clang-format",
+					args = {
+						"--assume-filename=.java",
+						"--style={IndentWidth: 4, TabWidth: 4, UseTab: Never}",
+					},
+					stdin = true,
+				},
 				clang_format = {
 					command = "clang-format",
 					args = { "--style={IndentWidth: 4, TabWidth: 4, UseTab: Never}" },

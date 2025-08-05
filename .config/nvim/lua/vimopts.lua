@@ -5,9 +5,9 @@ vim.cmd("set ts=2")
 vim.cmd("set cmdheight=0")
 vim.cmd("set termguicolors")
 vim.cmd("set scrolloff=5")
-vim.cmd("autocmd FileType sql setlocal noautoindent")
-vim.cmd("autocmd FileType sql setlocal nosmartindent")
-vim.cmd("autocmd FileType sql setlocal nocindent")
+-- vim.cmd("autocmd FileType sql setlocal noautoindent")
+-- vim.cmd("autocmd FileType sql setlocal nosmartindent")
+-- vim.cmd("autocmd FileType sql setlocal nocindent")
 vim.cmd("set signcolumn=no")
 vim.o.scrolloff = 8
 vim.opt.ignorecase = true
@@ -72,7 +72,7 @@ vim.opt.smartindent = true -- Smart auto-indentation
 -- move selections
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv") -- Shift visual selected line down
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv") -- Shift visual selected line Up
-vim.keymap.set("n", "<leader>t", "bv~")
+-- vim.keymap.set("n", "<leader>t", "bv~")
 
 -- colorscheme picker
 -- vim.keymap.set("n", "<leader><space>", ":Telescope colorscheme<CR>")
@@ -179,7 +179,7 @@ vim.api.nvim_command([[
 -- make help and man open up on the side instead above
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = { "help", "man" },
-	command = "wincmd L",
+	command = "wincmd nvim",
 })
 
 vim.lsp.set_log_level("warn")
@@ -208,28 +208,28 @@ vim.api.nvim_create_autocmd("BufEnter", {
 	nested = true,
 })
 
-vim.api.nvim_create_autocmd({ "FileType", "VimEnter", "BufReadPre" }, {
-	pattern = { "*.md" },
-	callback = function()
-		vim.schedule(function()
-			vim.keymap.set("n", "<space>md", ":lua OpenInObsidian()<CR>", { noremap = true, silent = true })
-			vim.o.shiftwidth = 2
-		end)
-	end,
-})
-
-function OpenInObsidian()
-	local file = vim.fn.expand("<cfile>") -- Get the file path under the cursor
-	if file:match("%.md$") then
-		local vault = "notes" -- Replace with your Obsidian vault name
-		local vault_path = vim.fn.expand("~/path/to/vault/") -- Adjust to your vault path
-		local relative_path = file:gsub(vault_path, "") -- Get relative path from vault root
-		local obsidian_url = "obsidian://open?vault=" .. vault .. "&file=" .. vim.fn.fnameescape(relative_path)
-		vim.fn.system({ "open", obsidian_url }) -- macOS 'open' command to launch Obsidian
-	else
-		vim.cmd("silent open " .. file) -- Default behavior (for non-.md files)
-	end
-end
+-- vim.api.nvim_create_autocmd({ "FileType", "VimEnter", "BufReadPre" }, {
+-- 	pattern = { "*.md" },
+-- 	callback = function()
+-- 		vim.schedule(function()
+-- 			vim.keymap.set("n", "<space>md", ":lua OpenInObsidian()<CR>", { noremap = true, silent = true })
+-- 			vim.o.shiftwidth = 2
+-- 		end)
+-- 	end,
+-- })
+--
+-- function OpenInObsidian()
+-- 	local file = vim.fn.expand("<cfile>") -- Get the file path under the cursor
+-- 	if file:match("%.md$") then
+-- 		local vault = "notes" -- Replace with your Obsidian vault name
+-- 		local vault_path = vim.fn.expand("~/path/to/vault/") -- Adjust to your vault path
+-- 		local relative_path = file:gsub(vault_path, "") -- Get relative path from vault root
+-- 		local obsidian_url = "obsidian://open?vault=" .. vault .. "&file=" .. vim.fn.fnameescape(relative_path)
+-- 		vim.fn.system({ "open", obsidian_url }) -- macOS 'open' command to launch Obsidian
+-- 	else
+-- 		vim.cmd("silent open " .. file) -- Default behavior (for non-.md files)
+-- 	end
+-- end
 
 --
 -- vim.api.nvim_create_autocmd("BufLeave", {

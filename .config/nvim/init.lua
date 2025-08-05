@@ -26,15 +26,10 @@ require("lazy").setup("plugins", {
 	},
 })
 
-vim.filetype.add({ extension = { templ = "templ" } })
-vim.filetype.add({ extension = { nim = "nim" }, filename = { ["Nim"] = "nim" } })
-
 -- treesitter config
 local config = require("nvim-treesitter.configs")
 config.setup({
 	ensure_installed = {
-		-- "nix",
-		"nim",
 		"vimdoc",
 		"go",
 		"rust",
@@ -51,7 +46,6 @@ config.setup({
 		-- "gleam",
 		"wgsl",
 		"php",
-		-- "nim",
 		"sql",
 		"markdown",
 		"java",
@@ -60,7 +54,6 @@ config.setup({
 		"json",
 		"xml",
 		"dockerfile",
-		-- "latex",
 	},
 	-- sql being slow on large files :(
 	highlight = {
@@ -78,16 +71,15 @@ config.setup({
 })
 
 -- language specific mappings go here
--- require("cool_stuff")
 require("mappings")
 
-utils.color_overrides.setup_colorscheme_overrides()
-
 -- theme
--- vim.cmd("colorscheme base16-black-metal-gorgoroth")
 vim.cmd("colorscheme base16-rose-pine-moon")
+-- vim.cmd("colorscheme base16-black-metal-gorgoroth")
+-- vim.api.nvim_set_hl(0, "Normal", { fg = "#c1c1c1", bg = "#121212" })
+-- vim.api.nvim_set_hl(0, "NormalFloat", { fg = "#c1c1c1", bg = "#121212" })
 
--- utils.fix_telescope_parens_win()
+utils.color_overrides.setup_colorscheme_overrides()
 utils.dashboard.setup_dashboard_image_colors()
 
 function C(arg)
