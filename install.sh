@@ -3,7 +3,6 @@
 # --------------------------------------------
 # Arch Linux Installation Script
 # Primary Desktop: i3
-# FallbacK Desktop: GNOME (minimal setup)
 # --------------------------------------------
 
 LOG_FILE="arch_install_log_$(date +%Y%m%d_%H%M%S).log"
