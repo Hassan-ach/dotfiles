@@ -28,6 +28,8 @@ return {
 				css = { "prettier" },
 				php = { "pint", "php_cs_fixer" }, -- Corrected PHP formatters
 				bash = { "shfmt" },
+				-- For filetypes without a formatter:
+				["_"] = { "trim_whitespace", "trim_newlines" },
 			},
 			formatters = {
 				clang_format_java = {
@@ -86,7 +88,7 @@ return {
 							"--indent-type",
 							"Spaces",
 							"--indent-width",
-							"4",
+							"2",
 						}
 					end,
 					stdin = true,

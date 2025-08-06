@@ -8,6 +8,6 @@ return {
 				-- width = 1.00,
 			},
 		})
-		vim.keymap.set("n", "<leader>zz", ":ZenMode<CR>")
+		vim.keymap.set("n", "<leader>zz", ":ZenMode<CR>", { desc = "Zen mode" })
 	end,
 }

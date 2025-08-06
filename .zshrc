@@ -152,24 +152,24 @@ fzd() {
 # ==============================
 sysup() {
     echo "==> Updating system (pacman)..."
-    sudo pacman -Syu
+    sudo pacman -Syu --noconfirm
 
     echo "==> Cleaning pacman cache..."
     sudo pacman -Sc --noconfirm
 
     echo "==> Removing orphan packages (pacman)..."
     orphans=$(pacman -Qdtq)
-    [ -n "$orphans" ] && sudo pacman -Rns $orphans
+    [ -n "$orphans" ] && sudo pacman -Rns $orphans --noconfirm
 
     echo "==> Updating AUR packages (yay)..."
-    yay -Syu
+    yay -Syu --noconfirm
 
     echo "==> Cleaning yay cache..."
     yay -Sc --noconfirm
 
     echo "==> Removing orphan packages (yay)..."
     aorphans=$(yay -Qdtq)
-    [ -n "$aorphans" ] && yay -Rns $aorphans
+    [ -n "$aorphans" ] && yay -Rns $aorphans --noconfirm
 
     echo "✅ Done!"
 }

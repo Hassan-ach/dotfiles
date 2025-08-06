@@ -81,14 +81,3 @@ vim.cmd("colorscheme base16-rose-pine-moon")
 
 utils.color_overrides.setup_colorscheme_overrides()
 utils.dashboard.setup_dashboard_image_colors()
-
-function C(arg)
-	arg = arg or "default"
-	if arg == "rust" then
-		vim.cmd("colorscheme base16-gruvbox-material-dark-hard")
-	elseif arg == "md" then
-		vim.cmd("colorscheme vagun")
-	else
-		vim.cmd("Telescope colorscheme")
-	end
-end

@@ -79,6 +79,7 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv") -- Shift visual selected line Up
 
 -- remaps
 vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
 
 -- zig
 -- vim.g.zig_fmt_autosave = 0
@@ -87,12 +88,12 @@ vim.g.mapleader = " "
 -- vim.keymap.set("n", "<leader>n", ":Neotree filesystem reveal right<CR>")
 
 --yank to systeme clipboard
-vim.keymap.set({ "n", "v" }, "<leader>y", '"+y')
-vim.keymap.set("n", "<leader>Y", '"+Y')
+vim.keymap.set({ "n", "v" }, "<leader>y", '"+y', { desc = "yank to systeme clipboard" })
+vim.keymap.set("n", "<leader>Y", '"+Y', { desc = "yank to systeme clipboard" })
 
 -- oil.nvim setup
-vim.keymap.set("n", "<leader>N", ":Oil<CR>")
-vim.keymap.set("n", "<leader>n", ':lua require("oil").toggle_float()<CR>')
+-- vim.keymap.set("n", "<leader>N", ":Oil<CR>")
+-- vim.keymap.set("n", "<leader>n", ':lua require("oil").toggle_float()<CR>')
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "<C-f>", "<C-f>zz")
@@ -105,12 +106,12 @@ vim.keymap.set("i", "<C-n>", "<C-x><C-n>", { noremap = true, silent = true })
 vim.keymap.set("i", "<C-l>", "<C-x><C-l>", { noremap = true, silent = true })
 
 -- spell check
-vim.keymap.set("n", "<leader>ll", ":setlocal spell spelllang=en_us<CR>")
+vim.keymap.set("n", "<leader>ll", ":setlocal spell spelllang=en_us<CR>", { desc = "spell checker for EN" })
 
 -- lsp setup
 vim.keymap.set("n", "K", vim.lsp.buf.hover)
-vim.keymap.set("n", "gd", vim.lsp.buf.definition)
-vim.keymap.set("n", "gD", vim.lsp.buf.declaration)
+vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go definition" })
+vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "Go declaration" })
 vim.keymap.set("n", "gr", function()
 	-- Trigger the LSP references function and populate the quickfix list
 	vim.lsp.buf.references()
@@ -152,10 +153,10 @@ vim.keymap.set("n", "gr", function()
 	end, 0)
 end)
 
-vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})
+vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "code action" })
 
 -- see error
-vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float)
+vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "open float diagnostic" })
 
 -- go to errors
 vim.keymap.set("n", "[e", vim.diagnostic.goto_next)
@@ -282,3 +283,13 @@ vim.diagnostic.config({
 -- 		vim.lsp.buf.format({ async = true })
 -- 	end,
 -- })
+function C(arg)
+	arg = arg or "default"
+	if arg == "rust" then
+		vim.cmd("colorscheme base16-gruvbox-material-dark-hard")
+	elseif arg == "md" then
+		vim.cmd("colorscheme vagun")
+	else
+		vim.cmd("Telescope colorscheme")
+	end
+end
