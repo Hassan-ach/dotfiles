@@ -97,7 +97,7 @@ return {
 			},
 			windows = { width_nofocus = 25 },
 			-- Move stuff to the minifiles trash instead of it being gone forever.
-			options = { permanent_delete = false },
+			options = { permanent_delete = false, use_as_default_explorer = false },
 		},
 		config = function(_, opts)
 			local minifiles = require("mini.files")

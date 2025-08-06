@@ -16,6 +16,14 @@ return {
 							end)
 							:totable()
 					end,
+					auto_preview = true, -- Enable or disable automatic preview
+					auto_accept = false, -- Automatically accept the selected action
+					position = "cursor", -- Position of the picker window
+					winborder = "single", -- Border style for picker and preview windows
+					custom_keys = {
+						{ key = "m", pattern = "Fill match arms" },
+						{ key = "r", pattern = "Rename.*" }, -- Lua pattern matching
+					},
 				},
 			},
 		},

@@ -3,10 +3,7 @@ return {
 	{
 		"iamcco/markdown-preview.nvim",
 		ft = "markdown",
-		build = function()
-			require("lazy").load({ plugins = { "markdown-preview.nvim" } })
-			vim.fn["mkdp#util#install"]()
-		end,
+		build = "cd app && npm install",
 		keys = {
 			{
 				"<leader>cp",

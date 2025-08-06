@@ -38,12 +38,8 @@ config.setup({
 		"python",
 		"html",
 		"css",
-		-- "javascript",
-		-- "typescript",
 		"prisma",
 		"haskell",
-		-- "zig",
-		-- "gleam",
 		"wgsl",
 		"php",
 		"sql",
@@ -74,10 +70,9 @@ config.setup({
 require("mappings")
 
 -- theme
-vim.cmd("colorscheme base16-rose-pine-moon")
+vim.cmd("colorscheme rose-pine")
+utils.color_overrides.apply_transparent_theme()
 -- vim.cmd("colorscheme base16-black-metal-gorgoroth")
--- vim.api.nvim_set_hl(0, "Normal", { fg = "#c1c1c1", bg = "#121212" })
--- vim.api.nvim_set_hl(0, "NormalFloat", { fg = "#c1c1c1", bg = "#121212" })
 
 utils.color_overrides.setup_colorscheme_overrides()
 utils.dashboard.setup_dashboard_image_colors()

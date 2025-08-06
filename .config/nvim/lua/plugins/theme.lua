@@ -52,4 +52,13 @@ return {
 	{
 		"RRethy/base16-nvim",
 	},
+	{
+		"rose-pine/neovim",
+		as = "rose-pine",
+		config = function()
+			require("rose-pine").setup({
+				-- disable_background = true,
+			})
+		end,
+	},
 }

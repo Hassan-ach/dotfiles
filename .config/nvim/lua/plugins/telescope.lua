@@ -59,7 +59,7 @@ return {
 			vim.keymap.set("n", "<leader>fz", ":Telescope zoxide list<CR>", { desc = "Zoxide jump list" })
 			vim.keymap.set("n", "<leader>fv", builtin.help_tags, { desc = "Search help tags" })
 
-			-- vim.keymap.set("n", "<leader>ss", builtin.spell_suggest, {}) -- not as i expected
+			vim.keymap.set("n", "<leader>ss", builtin.spell_suggest, {}) -- not as i expected
 		end,
 	},
 	{
