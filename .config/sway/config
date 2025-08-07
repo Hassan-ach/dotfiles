@@ -28,7 +28,7 @@ default_floating_border pixel 4
 
 # Startup applications:
 exec --no-startup-id variety
-bindsym $mod+shift+o exec --no-startup-id smile 
+bindsym $mod+shift+o exec --no-startup-id smile
 bindsym $mod+p exec --no-startup-id ~/.config/rofi/powermenu.sh
 
 xwayland force
@@ -278,4 +278,3 @@ client.urgent           $alert              $alert              $foreground     
 #======#
 include /etc/sway/config-vars.d/*
 include /etc/sway/config.d/*
-

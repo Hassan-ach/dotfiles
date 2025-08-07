@@ -70,9 +70,5 @@ config.setup({
 require("mappings")
 
 -- theme
-vim.cmd("colorscheme rose-pine")
-utils.color_overrides.apply_transparent_theme()
--- vim.cmd("colorscheme base16-black-metal-gorgoroth")
-
 utils.color_overrides.setup_colorscheme_overrides()
-utils.dashboard.setup_dashboard_image_colors()
+vim.cmd("colorscheme rose-pine")

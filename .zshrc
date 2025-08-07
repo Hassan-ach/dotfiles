@@ -207,8 +207,11 @@ fi
 export GOOGLE_API_KEY="AIzaSyCgFr8BzgC-CHz-PdCIpVvgaZGUncAvUJg"
 export GEMINI_API_KEY="AIzaSyCgFr8BzgC-CHz-PdCIpVvgaZGUncAvUJg"
 
+## Sway Stuff
+export XDG_CURRENT_DESKTOP=sway
+export XDG_SESSION_DESKTOP=sway
+export XDG_SESSION_TYPE=wayland
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
-

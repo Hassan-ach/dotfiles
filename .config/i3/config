@@ -6,8 +6,8 @@ for_window [class=".*"] opacity 1
 # set mod key (Mod1=<Alt>, Mod4=<Super>)
 set $mod Mod4
 
-# set monitors varibles 
-set $fm eDP-1 
+# set monitors varibles
+set $fm eDP-1
 set $sm HDMI-1
 
 exec_always --no-startup-id tmux source-file ~/.tmux.conf
@@ -15,7 +15,7 @@ exec --no-startup-id picom --config ~/.config/picom/picom.conf
 
 # exec_always --no-startup-id xrdb -merge ~/.Xresources
 # exec_always --no-startup-id setxkbmap -option :nocaps
-# exec_always --no-startup-id setxkbmap -option 
+# exec_always --no-startup-id setxkbmap -option
 # exec --no-startup-id variety
 # exec_always --no-startup-id autotiling
 # exec_always --no-startup-id xborders
@@ -23,17 +23,17 @@ exec --no-startup-id picom --config ~/.config/picom/picom.conf
 # kill any hanging polybar processes
 exec_always killall polybar
 exec_always --no-startup-id ~/.config/polybar/launch_polybar.sh
-exec_always feh --bg-scale ~/dotfiles/bd.jpg
+exec_always feh --bg-scale ~/bgs/cool-bg.jpg
 
 #set touchpad to default
 exec_always --no-startup-id xinput set-prop 15 "libinput Tapping Enabled" 1
 exec_always --no-startup-id xinput set-prop 15 "libinput Natural Scrolling Enabled" 1
-exec --no-startup-id xrandr --output HDMI-1 --mode 1600x900 --right-of eDP-1 --auto 
-exec_always --no-startup-id ~/.config/i3/keyboard-setup.sh
+exec --no-startup-id xrandr --output HDMI-1 --mode 1600x900 --right-of eDP-1 --auto
+exec_always --no-startup-id ~/.local/bin/keyboard-setup.sh
 
 
 
-# exec_always --no-startup-id setxkbmap -option "ctrl:nocaps" 
+# exec_always --no-startup-id setxkbmap -option "ctrl:nocaps"
 # exec_always --no-startup-id setxkbmap -option "lv3:ralt_switch"
 # exec_always --no-startup-id xmodmap -e "keycode 108 = Escape"
 
@@ -241,7 +241,13 @@ bindsym $mod+c exec "~/.config/i3/lockscreen.sh"
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
+####################################
+############## Themes ##############
+####################################
 
+########################
+    ## CATPPUCCIN ##
+########################
 # set $rosewater #f5e0dc
 # set $flamingo  #f2cdcd
 # set $pink      #f5c2e7
@@ -277,19 +283,50 @@ bindsym $mod+c exec "~/.config/i3/lockscreen.sh"
 # client.placeholder       $overlay0 $base  $text    $overlay0  $overlay0
 # client.background        $base
 
-# Color Scheme
-set $background      #000000
-set $background_alt  #121212
-set $foreground      #c1c1c1
-set $primary         #5f8787
-set $primary_alt     #9b8d7f
-set $secondary       #888888
-set $alert           #5f8787
-set $border_inactive #121212
-# Colors for window borders, background, text, and indicators.
-#                       border              background          text                 indicator
-client.focused          $primary            $secondary          $foreground          $primary
-client.focused_inactive $secondary          $secondary          $foreground          $secondary
-client.unfocused        $background_alt     $background_alt     $foreground          $background_alt
-client.urgent           $alert              $alert              $foreground          $alert
+######################################
+    ## BLACK METAL GORGOROTH ##
+######################################
 
+# set $background      #000000
+# set $background_alt  #121212
+# set $foreground      #c1c1c1
+# set $primary         #5f8787
+# set $primary_alt     #9b8d7f
+# set $secondary       #888888
+# set $alert           #5f8787
+# set $border_inactive #121212
+# # Colors for window borders, background, text, and indicators.
+# #                       border              background          text                 indicator
+# client.focused          $primary            $secondary          $foreground          $primary
+# client.focused_inactive $secondary          $secondary          $foreground          $secondary
+# client.unfocused        $background_alt     $background_alt     $foreground          $background_alt
+# client.urgent           $alert              $alert              $foreground          $alert
+
+
+######################################
+    ## ROSE PINE ##
+######################################
+set $base           #191724
+set $surface        #1f1d2e
+set $overlay        #26233a
+set $muted          #6e6a86
+set $subtle         #908caa
+set $text           #e0def4
+set $love           #eb6f92
+set $gold           #f6c177
+set $rose           #ebbcba
+set $pine           #31748f
+set $foam           #9ccfd8
+set $iris           #c4a7e7
+set $highlightlow   #21202e
+set $highlightmed   #403d52
+set $highlighthigh  #524f67
+
+# Teming border and Windows --------------
+# target                 title     bg    text   indicator  border
+client.focused           $rose     $base $text  $rose      $rose
+client.focused_inactive  $text     $base $text  $subtle    $surface
+client.unfocused         $text     $base $text  $overlay   $overlay
+client.urgent            $text     $base $text  $love      $love
+client.placeholder       $base     $base $text  $overlay   $overlay
+client.background        $base

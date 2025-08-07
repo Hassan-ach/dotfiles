@@ -144,6 +144,24 @@ function M.vague_status_colors()
 	})
 end
 
+-- Reset lualine status colors
+function M.rose_pine_status_colors()
+	local custom_rose_pine = require("lualine-rose-pine")
+	-- Remove backgrounds to allow terminal transparency
+	custom_rose_pine.normal.c.bg = nil -- Normal mode inactive sections
+	custom_rose_pine.visual.c.bg = nil -- Visual mode inactive sections
+	custom_rose_pine.insert.c.bg = nil -- Insert mode inactive sections
+	custom_rose_pine.inactive.b.bg = nil -- Inactive window middle section
+	custom_rose_pine.inactive.a.bg = nil -- Inactive window left section
+	custom_rose_pine.inactive.c.bg = nil -- Inactive window right section
+
+	require("lualine").setup({
+		options = {
+			theme = custom_rose_pine,
+		},
+	})
+end
+
 -- =============================================================================
 -- MAIN SETUP FUNCTION
 -- =============================================================================
@@ -180,6 +198,8 @@ function M.setup_colorscheme_overrides()
 			-- Rose Pine theme - full transparency
 			elseif colorscheme == "rose-pine" then
 				M.apply_transparent_theme()
+				M.rose_pine_status_colors()
+				-- M.vague_status_colors()
 			end
 		end,
 	})

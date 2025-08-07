@@ -1,0 +1,114 @@
+
+* {
+    /*  Color Palette (Rose Pine - Main variant) */
+    bg: #191724; /* Mapped from base */
+	cur: #1f1d2e; /* Mapped from surface */
+	fgd: #e0def4; /* Mapped from text */
+	cmt: #6e6a86; /* Mapped from muted */
+	cya: #9ccfd8; /* Mapped from foam */
+	grn: #31748f; /* Mapped from pine (used for accent-color) */
+	ora: #ebbcba; /* Mapped from rose */
+	pur: #c4a7e7; /* Mapped from iris */
+	red: #eb6f92; /* Mapped from love (used for urgent-color) */
+	yel: #f6c177; /* Mapped from gold */
+
+       font: "Iosevka Term 12"; /* Changed to Iosevka Term */
+
+    background-color:   transparent;
+    text-color:         @fgd;
+
+    margin:     0;
+    padding:    0;
+    spacing:    0;
+}
+
+window {
+    location:   center;
+    width:      480;
+
+    background-color:   @bg;
+    border-radius:      10px; /* Added: Rounded corners for a softer, modern look */
+    padding:            10px; /* Increased padding for more internal breathing room */
+}
+
+inputbar {
+    spacing:    8px;
+    padding:    8px; /* Slightly increased padding for a more substantial feel */
+    background-color:   @cur;
+    border-radius:      8px; /* Added: Rounded corners for the input bar */
+    margin:             0 0 10px 0; /* Added: Margin below input bar to separate it from the list */
+}
+
+prompt, entry, element-icon, element-text {
+    vertical-align: 0.5;
+}
+
+prompt {
+    text-color: @grn;
+}
+
+textbox {
+    padding:            8px; /* Padding for the actual text input area */
+    background-color:   @cur;
+}
+
+listview {
+    padding:    8px 0; /* Adjusted padding for the list container */
+    lines:      8;
+    columns:    1;
+
+    fixed-height:   false;
+    spacing:        5px; /* Added: Spacing between list items for better visual separation */
+}
+
+element {
+    padding:    8px 8px; /* Adjusted padding for individual elements */
+    spacing:    8px;
+    border-radius: 6px; /* Added: Subtle rounded corners for elements, especially on selection */
+}
+
+element normal normal {
+    text-color: @fgd;
+}
+
+element normal urgent {
+    text-color: @red;
+}
+
+element normal active {
+    text-color: @grn;
+}
+
+element alternate active {
+    text-color: @grn;
+}
+
+element selected {
+    text-color: @bg;
+}
+
+element selected normal, element selected active {
+    background-color:   @grn;
+}
+
+element selected urgent {
+    background-color:   @red;
+}
+
+element-icon {
+    size:   0.8em;
+}
+
+element-text {
+    text-color: inherit;
+}
+
+scrollbar {
+    width:        2px; /* Very thin scrollbar */
+    border:       0;
+    handle-width: 8px;
+    padding:      0;
+    background-color: @cur; /* Background color for the scrollbar track */
+    handle-color: @grn; /* Accent color for the scrollbar handle */
+    border-radius: 1px; /* Slightly rounded handle */
+}

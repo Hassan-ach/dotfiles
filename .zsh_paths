@@ -23,7 +23,7 @@ export HISTSIZE=5000
 export SAVEHIST=5000
 
 # Bat Theme Setup
-export BAT_THEME="bagi"
+# export BAT_THEME="rose-pine"
 export BAT_PAGER="less -RF"
 
 # Go Path
@@ -33,20 +33,20 @@ export PATH=$PATH:/home/ssk/go/bin/
 export PATH=$PATH:/home/bagi/.cargo/bin/
 
 # FZF Theme Setup (base16-black-metal-gorgoroth)
-if command -v fzf &>/dev/null; then
-export FZF_DEFAULT_OPTS="
-  --color=fg:#c1c1c1,bg:#000000,hl:#5f8787 \
-  --color=fg+:#c1c1c1,bg+:#121212,hl+:#9b8d7f \
-  --color=info:#888888,prompt:#8c7f70,pointer:#aaaaaa \
-  --color=marker:#aaaaaa,spinner:#999999,header:#5f8787 \
-  --color=border:#333333 \
-  --color=gutter:#000000 \
-  --color=query:#c1c1c1 \
-  --color=disabled:#444444 \
-  --color=preview-fg:#c1c1c1 \
-  --color=preview-bg:#121212
-  "
-fi
+# if command -v fzf &>/dev/null; then
+# export FZF_DEFAULT_OPTS="
+#   --color=fg:#c1c1c1,bg:#000000,hl:#5f8787 \
+#   --color=fg+:#c1c1c1,bg+:#121212,hl+:#9b8d7f \
+#   --color=info:#888888,prompt:#8c7f70,pointer:#aaaaaa \
+#   --color=marker:#aaaaaa,spinner:#999999,header:#5f8787 \
+#   --color=border:#333333 \
+#   --color=gutter:#000000 \
+#   --color=query:#c1c1c1 \
+#   --color=disabled:#444444 \
+#   --color=preview-fg:#c1c1c1 \
+#   --color=preview-bg:#121212
+#   "
+# fi
 
 # External Environment Setups
 # [ -f "/home/bagi/.ghcup/env" ] && . "/home/bagi/.ghcup/env"

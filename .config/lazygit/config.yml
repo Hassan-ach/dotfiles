@@ -1,24 +1,22 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/jesseduffield/lazygit/master/schema/config.json
-# cyberdream theme for lazygit
 gui:
   border: rounded
   theme:
     activeBorderColor:
-      - "#5f8787"  # base08 (teal accent)
+      - "#9ccfd8"  # foam (cyan)
       - bold
     inactiveBorderColor:
-      - "#333333"  # base03 (dark gray)
+      - "#6e6a86"  # muted
     searchingActiveBorderColor:
-      - "#8c7f70"  # base0A (brownish accent)
+      - "#f6c177"  # gold
     optionsTextColor:
-      - "#c1c1c1"  # base05 (primary text)
+      - "#e0def4"  # text
     selectedLineBgColor:
-      - "#121212"  # base01 (darker background)
+      - "#26233a"  # overlay
     cherryPickedCommitBgColor:
-      - "#121212"  # base01
+      - "#26233a"  # overlay
     cherryPickedCommitFgColor:
-      - "#5f8787"  # base08
+      - "#eb6f92"  # love
     unstagedChangesColor:
-      - "#8c7f70"  # base0A
+      - "#f6c177"  # gold
     defaultFgColor:
-      - "#c1c1c1"  # base05
+      - "#e0def4"  # text
