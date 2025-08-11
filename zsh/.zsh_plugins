@@ -1,0 +1,89 @@
+# ==============================
+# ZSH Plugins Configuration (Manual Management)
+# ==============================
+
+# Define a custom directory for your Zsh plugins
+# You can change this to any path you prefer, e.g., ~/.zsh/plugins
+export ZSH_PLUGINS_DIR="$HOME/dotfiles/zsh/plugins"
+
+
+# ZSH Autosuggestions
+# Auto-install if not present, then source using zsource
+if [[ ! -d "$ZSH_PLUGINS_DIR/zsh-autosuggestions" ]]; then
+    echo "Installing zsh-autosuggestions plugin..."
+    git clone https://github.com/zsh-users/zsh-autosuggestions.git "$ZSH_PLUGINS_DIR/zsh-autosuggestions"
+fi
+zsource "$ZSH_PLUGINS_DIR/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh"
+
+# ZSH Syntax Highlighting
+# Auto-install if not present, then source using zsource
+if [[ ! -d "$ZSH_PLUGINS_DIR/zsh-syntax-highlighting" ]]; then
+    echo "Installing zsh-syntax-highlighting plugin..."
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$ZSH_PLUGINS_DIR/zsh-syntax-highlighting"
+fi
+zsource "$ZSH_PLUGINS_DIR/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh"
+
+if [[ ! -d "$ZSH_PLUGINS_DIR/fast-syntax-highlighting" ]]; then
+    echo "Installing ast-syntax-highlighting plugin..."
+    git clone https://github.com/zdharma-zmirror/fast-syntax-highlighting.git "$ZSH_PLUGINS_DIR/zsh-syntax-highlighting"
+fi
+# zsource "$ZSH_PLUGINS_DIR/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
+
+
+# FZF-Tab Plugin Setup
+# Auto-install if not present, then source using zsource
+if [[ ! -d "$ZSH_PLUGINS_DIR/fzf-tab" ]]; then
+    echo "Installing fzf-tab plugin..."
+    git clone https://github.com/Aloxaf/fzf-tab.git "$ZSH_PLUGINS_DIR/fzf-tab"
+fi
+zsource "$ZSH_PLUGINS_DIR/fzf-tab/fzf-tab.plugin.zsh"
+
+# vi-mode Plugin Setup
+# Auto-install if not present, then source using zsource
+if [[ ! -d "$ZSH_PLUGINS_DIR/zsh-vi-mode" ]]; then
+    echo "Installing zsh-vi-mode plugin..."
+    git clone https://github.com/jeffreytse/zsh-vi-mode.git "$ZSH_PLUGINS_DIR/zsh-vi-mode"
+fi
+zsource "$ZSH_PLUGINS_DIR/zsh-vi-mode/zsh-vi-mode.plugin.zsh"
+
+# ZSH-History-substring-search Plugin Setup
+# Auto-install if not present, then source using zsource
+if [[ ! -d "$ZSH_PLUGINS_DIR/zsh-history-substring-search" ]]; then
+    echo "Installing zsh-history-substring-search plugin..."
+    git clone https://github.com/zsh-users/zsh-history-substring-search.git "$ZSH_PLUGINS_DIR/zsh-history-substring-search"
+fi
+zsource "$ZSH_PLUGINS_DIR/zsh-history-substring-search/zsh-history-substring-search.plugin.zsh"
+
+# ==============================
+# Plugin-Specific Configurations
+# ==============================
+#
+
+# ZSH History Substring Search
+HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='%F{cyan}%U'  # cyan text + underline
+HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='%F{red}%U'  # red text + underline
+HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_TIMEOUT=5
+HISTORY_SUBSTRING_SEARCH_PREFIXED=1
+HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
+HISTORY_SUBSTRING_SEARCH_FUZZY=1
+
+# ZSH Autosuggestions
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#9ccfd8'
+
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+ZSH_AUTOSUGGEST_USE_ASYNC=1
+
+# ZSH Syntax Highlighting
+# Set highlighting styles
+typeset -A ZSH_HIGHLIGHT_STYLES
+ZSH_HIGHLIGHT_STYLES[command]='fg=#9ccfd8,bold' # Foam
+ZSH_HIGHLIGHT_STYLES[builtin]='fg=#9ccfd8'      # Foam
+ZSH_HIGHLIGHT_STYLES[function]='fg=#9ccfd8'     # Foam
+ZSH_HIGHLIGHT_STYLES[alias]='fg=#c4a7e7,bold'   # Iris
+ZSH_HIGHLIGHT_STYLES[path]='fg=#f6c177'         # Gold
+ZSH_HIGHLIGHT_STYLES[globbing]='fg=#eb6f92'     # Love
+ZSH_HIGHLIGHT_STYLES[default]='fg=#e0def4'      # Text
+ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=#eb6f92' # Love (for errors)
+ZSH_HIGHLIGHT_STYLES[command-separator]='fg=#6e6a86' # Muted
+ZSH_HIGHLIGHT_STYLES[redirection]='fg=#31748f'  # Pine
+ZSH_HIGHLIGHT_STYLES[comment]='fg=#6e6a86'      # Muted

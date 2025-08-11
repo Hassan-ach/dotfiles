@@ -1,5 +1,3 @@
-# Colors based on your Kitty configuration
-
 # Default colors
 [colors.primary]
 background = "#0d0f20"

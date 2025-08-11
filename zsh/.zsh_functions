@@ -1,0 +1,221 @@
+# ==============================
+# Custom ZSH Functions
+# ==============================
+
+# ==============================
+# FZF-Enhanced Functions
+# ==============================
+
+# Smart file/directory opener with fzf
+f() {
+    local selection
+    selection=$(fzf --preview 'bat --style=numbers --color=always {} || ls -al {}')
+
+    if [[ -d "$selection" ]]; then
+        cd "$selection" || return
+    elif [[ -f "$selection" ]]; then
+        nvim "$selection"
+    fi
+}
+
+# FZF directory navigation with zoxide
+fdir() {
+    local dir
+    dir=$(find . -type d | fzf --preview 'ls -l --color=always {}') && z "$dir"
+}
+
+# FZF process killer
+fkill() {
+    local pid
+    pid=$(ps -ef | sed 1d | fzf -m --header='[kill:process]' | awk '{print $2}')
+
+    if [ "x$pid" != "x" ]; then
+        echo $pid | xargs kill -${1:-9}
+    fi
+}
+
+# FZF git branch checkout
+fgb() {
+    git branch -a | grep -v HEAD | sed "s/.* //" | sed "s#remotes/[^/]*/##" | sort -u | fzf --header="[git:branch]" | xargs git checkout
+}
+
+# ==============================
+# System Management Functions
+# ==============================
+
+# Comprehensive system upgrade function
+sysup() {
+    echo "🔄 Starting system upgrade..."
+
+    echo "==> Updating system (pacman)..."
+    sudo pacman -Syu --noconfirm
+
+    echo "==> Cleaning pacman cache..."
+    sudo pacman -Sc --noconfirm
+
+    echo "==> Removing orphan packages (pacman)..."
+    local orphans=$(pacman -Qdtq 2>/dev/null)
+    if [[ -n "$orphans" ]]; then
+        echo "Found orphan packages: $orphans"
+        sudo pacman -Rns $orphans --noconfirm
+    else
+        echo "No orphan packages found."
+    fi
+
+    if command -v yay &>/dev/null; then
+        echo "==> Updating AUR packages (yay)..."
+        yay -Syu --noconfirm
+
+        echo "==> Cleaning yay cache..."
+        yay -Sc --noconfirm
+
+        echo "==> Removing AUR orphan packages..."
+        local aorphans=$(yay -Qdtq 2>/dev/null)
+        if [[ -n "$aorphans" ]]; then
+            echo "Found AUR orphan packages: $aorphans"
+            yay -Rns $aorphans --noconfirm
+        else
+            echo "No AUR orphan packages found."
+        fi
+    fi
+
+    echo "✅ System upgrade completed!"
+}
+
+# ==============================
+# Development Functions
+# ==============================
+
+# Quick project initializer
+init_project() {
+    local project_type="$1"
+    local project_name="$2"
+
+    if [[ -z "$project_name" ]]; then
+        echo "Usage: init_project <type> <name>"
+        echo "Types: node, python, rust, go"
+        return 1
+    fi
+
+    mkdir -p "$project_name" && cd "$project_name"
+
+    case "$project_type" in
+        node)
+            npm init -y
+            echo "node_modules/" > .gitignore
+            ;;
+        python)
+            python -m venv venv
+            echo "venv/" > .gitignore
+            echo "__pycache__/" >> .gitignore
+            echo "*.pyc" >> .gitignore
+            ;;
+        rust)
+            cargo init
+            ;;
+        go)
+            go mod init "$project_name"
+            echo "# $project_name" > README.md
+            ;;
+        *)
+            echo "Unknown project type: $project_type"
+            return 1
+            ;;
+    esac
+
+    git init
+    echo "✅ Initialized $project_type project: $project_name"
+}
+
+# ==============================
+# Window Manager Functions
+# ==============================
+
+# Dynamic WM detection and configuration
+detect_wm() {
+    if [[ "$XDG_SESSION_DESKTOP" == "sway" ]] || [[ "$WAYLAND_DISPLAY" ]]; then
+        echo "sway"
+    elif [[ "$XDG_SESSION_DESKTOP" == "i3" ]] || [[ "$DISPLAY" && -z "$WAYLAND_DISPLAY" ]]; then
+        echo "i3"
+    else
+        echo "unknown"
+    fi
+}
+
+# WM-aware screenshot function
+screenshot() {
+    local wm=$(detect_wm)
+    local filename="screenshot-$(date +%Y%m%d_%H%M%S).png"
+
+    case "$wm" in
+        sway)
+            grim -g "$(slurp)" "$HOME/Pictures/$filename"
+            ;;
+        i3)
+            scrot -s "$HOME/Pictures/$filename"
+            ;;
+        *)
+            echo "Unsupported window manager"
+            return 1
+            ;;
+    esac
+
+    echo "Screenshot saved to ~/Pictures/$filename"
+}
+
+# ==============================
+# Utility Functions
+# ==============================
+
+# Extract various archive formats
+extract() {
+    if [[ -f "$1" ]]; then
+        case "$1" in
+            *.tar.bz2)   tar xjf "$1"     ;;
+            *.tar.gz)    tar xzf "$1"     ;;
+            *.bz2)       bunzip2 "$1"     ;;
+            *.rar)       unrar x "$1"     ;;
+            *.gz)        gunzip "$1"      ;;
+            *.tar)       tar xf "$1"      ;;
+            *.tbz2)      tar xjf "$1"     ;;
+            *.tgz)       tar xzf "$1"     ;;
+            *.zip)       unzip "$1"       ;;
+            *.Z)         uncompress "$1"  ;;
+            *.7z)        7z x "$1"        ;;
+            *.xz)        unxz "$1"        ;;
+            *)           echo "'$1' cannot be extracted via extract()" ;;
+        esac
+    else
+        echo "'$1' is not a valid file"
+    fi
+}
+
+# Create directory and cd into it
+mkcd() {
+    mkdir -p "$1" && cd "$1"
+}
+
+# Help function for bat
+help() {
+    "$@" --help 2>&1 | bat --plain --language=help
+}
+
+# ==============================
+# Network Functions
+# ==============================
+
+# Quick network connection status
+netstat_quick() {
+    echo "==> WiFi Status:"
+    nmcli device status | grep wifi
+
+    echo -e "\n==> Active Connections:"
+    nmcli connection show --active
+
+    echo -e "\n==> IP Addresses:"
+    ip addr show | grep -E "inet |wlan|eth" | grep -v "127.0.0.1"
+}
+
+manbt() {
+   command man "$@" | col -bx | bat -l man
+}

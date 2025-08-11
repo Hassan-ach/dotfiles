@@ -1,129 +1,132 @@
 {
-  "modules-left": [
-    // "custom/launcher",
-    "sway/workspaces",
-    "temperature",
-    //"idle_inhibitor",
-    //  "mpd",
-    "custom/cava-internal"
-  ],
-  "modules-center": [
-    "clock"
-  ],
-  "modules-right": [
-    "battery",
-  "pulseaudio",
-  "backlight",
-  //"memory",
-  //"cpu",
-  "network",
-  "custom/powermenu",
-   "tray"
-  ],
-  "custom/launcher": {
-    "format": " ",
-    "on-click": "~/.config/rofi/launcher.sh",
-    "tooltip": false
-  },
-  "custom/cava-internal": {
-    "exec": "~/.config/waybar/Cava.sh",
-    "tooltip": false
-  },
-  "sway/workspaces": {
-    "disable-scroll": true
-  },
-  "idle_inhibitor": {
-    "format": "{icon}",
-    "format-icons": {
-      "activated": "",
-      "deactivated": ""
+    "layer": "top",
+    "position": "top",
+    "mod": "dock",
+    "height": 26,
+    "spacing": 1,
+
+    "modules-left": [
+        "sway/workspaces",
+        "sway/window"
+    ],
+    "modules-center": [
+        "clock"
+    ],
+    "modules-right": [
+        "battery",
+        "pulseaudio",
+        "backlight",
+        "network",
+        "custom/gpu_usage",
+        "cpu",
+        "memory",
+        "custom/bluetooth",
+//        "temperature",
+        "tray"
+    ],
+
+    "sway/workspaces": {
+        "all-outputs": true,
+        "format": "{name}",
+        "format-buttons": false,
+        "on-click": "activate"
     },
-    "tooltip": false
-  },
-  "backlight": {
-    "device": "intel_backlight",
-    "on-scroll-up": "light -A 5",
-    "on-scroll-down": "light -U 5",
-    "format": "{icon} {percent}%",
-    "format-icons": ["", "", "", ""]
-  },
-  "pulseaudio": {
-    "scroll-step": 1,
-    "format": "{icon} {volume}%",
-    "format-muted": "婢 Muted",
-    "format-icons": {
-      "default": ["", "", ""]
+
+    "sway/window": {
+        "max-length": 40,
+        "tooltip": false,
+        "separator": false
     },
-    "states": {
-      "warning": 85
+
+    "clock": {
+
+        "format": "⏱️ {:%a %d-%b %Y  %I:%M %p}",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt>{calendar}</tt>",
+        "interval": 1
     },
-    "scroll-step": 1,
-    "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
-    "tooltip": false
-  },
-  "battery": {
-    "interval": 10,
-    "states": {
-      "warning": 20,
-      "critical": 10
+
+    "battery": {
+        "format": "<span foreground='#ebbcba'></span>{icon} {capacity}%",
+        "format-charging": "<span foreground='#ebbcba'> </span>⚡ {capacity}%",
+        "format-plugged": "<span foreground='#ebbcba'> </span>🔌 {capacity}%",
+        "format-discharging": "<span foreground='#ebbcba'> </span>{icon} {capacity}%",
+        "format-full": "<span foreground='#ebbcba'> </span>✅ {capacity}%",
+        "format-no-battery": "  N/A",
+        "format-icons": [" ", " "],
+        "states": {
+            "critical": 25,
+            "low": 25
+        },
+        "path": "/sys/class/power_supply/BAT0/uevent",
+        "interval": 5,
+        "tooltip": true
     },
-    "format": "{icon} {capacity}%",
-    "format-icons": ["", "", "", "", "", "", "", "", ""],
-    "format-full": "{icon} {capacity}%",
-    "format-charging": " {capacity}%",
-    "tooltip": false
-  },
-  "clock": {
-    "on-click": "~/.config/waybar/switch_style1.sh &",
-    "on-click-right": "~/.config/waybar/wallpaper_random.sh &",
-    "on-click-middle": "~/.config/waybar/live_wallpaper.sh &",
-    "interval": 1,
-    "format": "{:%I:%M %p  %a %d %b %Y}",
-    "tooltip": true,
-    "tooltip-format": "上午：高数\n下午：Ps\n晚上：Golang\n<tt>{calendar}</tt>"
-  },
-  "memory": {
-    "interval": 1,
-    "format": "﬙ {percentage}%"
-  },
-  "cpu": {
-    "interval": 1,
-    "format": " {usage}%"
-  },
-  "mpd": {
-    "max-length": 25,
-    "format": "<span foreground='#bb9af7'></span> {title}",
-    "format-paused": " {title}",
-    "format-stopped": "<span foreground='#bb9af7'></span>",
-    "format-disconnected": "",
-    "on-click": "mpc --quiet toggle",
-    "on-click-right": "mpc ls | mpc add",
-    "on-click-middle": "kitty ncmpcpp",
-    "on-scroll-up": "mpc --quiet prev",
-    "on-scroll-down": "mpc --quiet next",
-    "smooth-scrolling-threshold": 5,
-    "tooltip-format": "{title} - {artist} ({elapsedTime:%M:%S}/{totalTime:%H:%M:%S})"
-  },
-  "network": {
-    "interval": 1,
-    "format-wifi": "說 {essid}",
-    "format-ethernet": "  {ifname} ({ipaddr})",
-    "format-linked": "說 {essid} (No IP)",
-    "format-disconnected": "說 Disconnected",
-    "tooltip": false
-  },
-  "temperature": {
-    "hwmon-path": "/sys/class/hwmon/hwmon6/temp2_input",
-    "tooltip": false,
-    "format": " {temperatureC}°C"
-  },
-  "custom/powermenu": {
-    "format": "",
-    "on-click": "~/.config/rofi/powermenu.sh",
-    "tooltip": false
-  },
-  "tray": {
-    "icon-size": 15,
-    "spacing": 5
-  }
+
+
+    "pulseaudio": {
+        "format": "<span foreground='#ebbcba'>  </span>{volume}%",
+        "format-muted": "<span foreground='#6e6a86'>Muted</span>",
+        "format-icons": {
+            "default": [""]
+        },
+        "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+        "on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +5%",
+        "on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -5%",
+        "tooltip": true
+    },
+
+    "backlight": {
+        "format": "<span foreground='#f6c177'>󰃠 </span>{percent}%",
+        "on-scroll-up": "brightnessctl set +5%",
+        "on-scroll-down": "brightnessctl set 5%-",
+        "tooltip": true
+    },
+
+    "network": {
+        "interval": 1,
+        "format-wifi": "<span foreground='#e0def4'>{essid}</span> ↓{bandwidthDownBits} ↑{bandwidthUpBits}",
+        "format-ethernet": "<span foreground='#e0def4'>🔗 {ifname}</span> ↓{bandwidthDownBits}",
+        "format-disconnected": "<span foreground='#f6c177'>no wifi</span>",
+        "tooltip": true,
+        "max-length": 30
+},
+
+    "custom/gpu_usage": {
+        "exec": "~/.config/polybar/gpu_usage.sh",
+        "interval": 2,
+        "format": "<span foreground='#ebbcba'>GPU </span>{}",
+        "return-type": "text"
+    },
+
+    "cpu": {
+        "format": "<span foreground='#ebbcba'>CPU </span>{usage}%",
+        "interval": 2,
+        "tooltip": true
+    },
+
+    "memory": {
+        "format": "<span foreground='#ebbcba'>RAM </span>{percentage}%",
+        "interval": 2,
+        "tooltip": true
+    },
+
+    "custom/bluetooth": {
+        "exec": "bluetoothctl show | grep -q 'Powered: yes' && (name=$(bluetoothctl info | grep 'Name' | cut -d ' ' -f 2-); battery=$(upower -i $(upower -e | grep 'battery_BAT') | grep percentage | awk '{print $2}'); [ -z \"$name\" ] && echo \"󰂲 On\" || echo \" $name($battery)\") || echo \"󰂲 Off\"",
+        "interval": 10,
+        "format": "{}",
+        "tooltip": true
+    },
+
+    "temperature": {
+        "hwmon-path": "/sys/class/hwmon/hwmon*/temp1_input",
+        "critical-threshold": 80,
+        "format": "<span foreground='#f6c177'>🌡️ {temperatureC}°C</span>",
+        "format-critical": "<span foreground='#eb6f92'>🔥 {temperatureC}°C</span>",
+        "tooltip": true,
+        "interval": 2
+    },
+
+    "tray": {
+        "spacing": 16
+    }
 }

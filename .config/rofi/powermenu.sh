@@ -72,14 +72,13 @@ case "${chosen}" in
         run_cmd --reboot
         ;;
     "${lock}")
-        if [[ -x "$HOME/.config/i3/lockscreen.sh" ]]; then
-            "$HOME/.config/i3/lockscreen.sh"
+        if pgrep -x "i3" > /dev/null; then
+            if [[ -x "$HOME/.config/i3/lockscreen.sh" ]]; then
+                "$HOME/.config/i3/lockscreen.sh"
+            fi
+        elif pgrep -x "sway" > /dev/null; then
+            swaylock -f -c 000000
         fi
-        # if [[ -x '/usr/bin/betterlockscreen' ]]; then
-        #     betterlockscreen -l
-        # elif [[ -x '/usr/bin/i3lock' ]]; then
-        #     i3lock
-        # fi
         ;;
     "${suspend}")
         run_cmd --suspend

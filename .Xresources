@@ -1,0 +1,89 @@
+! DPI & font rendering settings
+Xft.dpi: 96
+Xft.antialias: true
+Xft.hinting: true
+Xft.rgba: rgb
+Xft.autohint: true
+Xft.hintstyle: hintfull
+Xft.lcdfilter: lcdfilter
+
+! ────────────────────────────────────────────────
+!  XTerm font (uses Iosevka Term)
+XTerm*renderFont: true
+XTerm*faceName: xft:Iosevka Term:size=12
+XTerm*utf8: 2
+XTerm*locale: true
+XTerm.vt100.translations: #override \n\
+  Ctrl <Key> j: smaller-vt-font() \n\
+  Ctrl <Key> k: larger-vt-font()
+XTerm*loginshell: true
+XTerm*savelines: 16384
+XTerm*charClass: 33:48,36-47:48,58-59:48,61:48,63-64:48,95:48,126:48
+
+! ────────────────────────────────────────────────
+!  URxvt terminal settings (if you ever use it)
+URxvt*termName: rxvt-unicode-256color
+URxvt.font: xft:Iosevka Term:size=12
+URxvt.saveLines: 2000
+URxvt.scrollBar: false
+URxvt.cursorColor: white
+URxvt*depth: 32
+URxvt.intensityStyles: false
+
+!! ─── Perl extensions in URxvt ───
+!! url-select: select URLs with Alt+u
+URxvt.perl-ext-common: default,matcher,resize-font,url-select,keyboard-select,clipboard
+URxvt.keysym.M-u: perl:url-select:select_next
+URxvt.url-select.underline: true
+!! keyboard-select: activate with Alt+Escape
+URxvt.keysym.M-Escape: perl:keyboard-select:activate
+!! resize-font: Ctrl+k to increase, Ctrl+j to decrease
+URxvt.keysym.C-k:   font-size:increase
+URxvt.keysym.C-j:   font-size:decrease
+!! Clipboard bindings: Alt+c copy, Alt+v paste
+URxvt.keysym.M-c: perl:clipboard:copy
+URxvt.keysym.M-v: perl:clipboard:paste
+
+! ────────────────────────────────────────────────
+!  SXIV image viewer colors & font
+Sxiv.foreground:   #e0def4
+Sxiv.background:   #191724
+Sxiv.font: Iosevka Term:size=11
+
+! ────────────────────────────────────────────────
+ ! Rosé Pine Color Palette
+*.foreground:   #e0def4
+*.background:   #191724
+*.cursorColor:  #e0def4
+
+! Base
+*.color0:       #26233a
+*.color8:       #6e6a86
+
+! Red
+*.color1:       #eb6f92
+*.color9:       #eb6f92
+
+! Green
+*.color2:       #31748f
+*.color10:      #31748f
+
+! Yellow
+*.color3:       #f6c177
+*.color11:      #f6c177
+
+! Blue
+*.color4:       #9ccfd8
+*.color12:      #9ccfd8
+
+! Magenta
+*.color5:       #c4a7e7
+*.color13:      #c4a7e7
+
+! Cyan
+*.color6:       #ebbcba
+*.color14:      #ebbcba
+
+! White
+*.color7:       #e0def4
+*.color15:      #e0def4

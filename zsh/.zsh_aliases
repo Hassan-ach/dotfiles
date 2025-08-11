@@ -1,0 +1,204 @@
+# ==============================
+# ZSH Aliases - Organized & Optimized
+# ==============================
+
+# ==============================
+# Basic System Aliases
+# ==============================
+alias mkdir='mkdir -p'
+alias cl='clear'
+alias e='exit'
+alias off='shutdown -h now'
+
+# ==============================
+# Editor Aliases
+# ==============================
+alias vi='nvim'
+alias vim='nvim'
+
+# ==============================
+# Directory Navigation
+# ==============================
+alias ..='cd ..'
+alias ...='cd ../..'
+alias .3='cd ../../..'
+alias .4='cd ../../../..'
+alias .5='cd ../../../../..'
+
+# Zoxide integration (if available)
+if command -v zoxide &>/dev/null; then
+    alias cd='z'
+    alias cdi='zi'  # interactive mode
+fi
+
+# ==============================
+# Enhanced ls with eza
+# ==============================
+if command -v eza &>/dev/null; then
+    alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"
+    alias ll="eza --color=always --git --no-filesize --icons=always --no-time --no-user --no-permissions"
+    alias lsp="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user"
+    alias lsa="eza --color=always --long --git --icons=always -b -a --total-size"
+    alias l="eza -l --icons --git -a"
+    alias lt="eza --tree --level=3 --long --icons --git"
+    alias tree="eza --tree --icons --git"
+else
+    alias ls='ls --color=auto'
+    alias ll='ls -alF'
+    alias la='ls -A'
+    alias l='ls -CF'
+fi
+
+# ==============================
+# Git Aliases
+# ==============================
+alias gs="git status"
+alias gb="git branch"
+alias gsw="git switch"
+alias ga="git add ."
+alias gaa="git add --all"
+alias gr="git reset"
+alias gc="git commit"
+alias gco="git commit -m"
+alias gp="git push"
+alias gpl="git pull"
+alias gl="git log --oneline --graph --decorate"
+alias gla="git log --graph --all --oneline --decorate --parents"
+alias gm="git merge"
+alias grb="git rebase"
+alias gst="git stash"
+alias gsp="git stash pop"
+alias gcl="git clone"
+
+# ==============================
+# Development Tools
+# ==============================
+alias lg="lazygit"
+alias nrd='npm run dev'
+alias nrs='npm run start'
+alias nrb='npm run build'
+alias nrt='npm run test'
+
+# Python
+alias py='python3'
+alias pip='pip3'
+
+# ==============================
+# Clipboard (WM-aware)
+# ==============================
+if [[ "$WAYLAND_DISPLAY" ]] || [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
+    # Wayland (Sway)
+    alias c='wl-copy'
+    alias v='wl-paste'
+else
+    # X11 (i3)
+    alias c='xsel --input --clipboard'
+    alias v='xsel --output --clipboard'
+fi
+
+# ==============================
+# File Management
+# ==============================
+alias y='yazi'
+# alias r='ranger'
+
+# Safe file operations
+# alias rm='rm -i'
+# alias cp='cp -i'
+# alias mv='mv -i'
+
+# ==============================
+# System Information
+# ==============================
+alias nf='neofetch'
+alias ff='fastfetch'
+alias pf='pfetch'
+
+# ==============================
+# Terminal Tools & Entertainment
+# ==============================
+alias tt='ttyper'
+alias tc='tty-clock -t'
+alias sl='sl -F -a'
+alias cb='cbonsai -liv'
+alias aq='asciiquarium'
+alias cm='cmatrix'
+
+# ==============================
+# TMUX Session Management
+# ==============================
+alias t='tmux'
+alias tl='tmux ls'
+alias ta='tmux attach -t'
+alias tk='tmux kill-session -t'
+alias tn='tmux new -s'
+alias td='tmux detach'
+
+# ==============================
+# Network Management (NetworkManager)
+# ==============================
+alias status='nmcli device status'
+alias list='nmcli device wifi list'
+alias connect='nmcli device wifi connect'
+alias disconnect='nmcli device disconnect'
+
+# Quick network info
+alias myip='curl -s ifconfig.me'
+alias localip="ip route get 1.1.1.1 | awk '{print \$7; exit}'"
+
+# ==============================
+# Torrent/Download Aliases
+# ==============================
+alias torrent='aria2c --seed-time=0 --enable-dht=true --enable-peer-exchange=true \
+                --bt-enable-lpd=true --bt-max-peers=200 \
+                --bt-request-peer-speed-limit=1M --file-allocation=falloc \
+                --max-connection-per-server=16'
+
+alias magnet='aria2c --seed-time=0 --enable-dht=true --enable-peer-exchange=true \
+                --bt-enable-lpd=true --bt-max-peers=200 \
+                --bt-request-peer-speed-limit=1M --file-allocation=falloc \
+                --max-connection-per-server=16 --bt-metadata-only=false'
+
+# ==============================
+# Package Management (Arch/Yay)
+# ==============================
+if command -v yay &>/dev/null; then
+    alias update='yay -Sy'
+    alias upgrade='yay -Syu'
+    alias install='yay -S'
+    alias remove='yay -Rns'
+    alias search='yay -Ss'
+    alias info='yay -Si'
+elif command -v pacman &>/dev/null; then
+    alias update='sudo pacman -Sy'
+    alias upgrade='sudo pacman -Syu'
+    alias install='sudo pacman -S'
+    alias remove='sudo pacman -Rns'
+    alias search='pacman -Ss'
+    alias info='pacman -Si'
+fi
+
+# ==============================
+# Bat Integration
+# ==============================
+if command -v bat &>/dev/null; then
+    alias cat='bat'
+    alias bathelp='bat --plain --language=help'
+    # help function is defined in .zsh_functions
+fi
+
+# ==============================
+# Docker (Commented - Uncomment if needed)
+# ==============================
+# alias dco="docker compose"
+# alias dps="docker ps"
+# alias dpa="docker ps -a"
+# alias di="docker images"
+# alias dl="docker ps -l -q"
+# alias dx="docker exec -it"
+
+# ==============================
+# C++ Development (Commented - Uncomment if needed)
+# ==============================
+# alias cmp='g++ -std=c++20 -o'
+# alias grc='g++ -std=c++20 -lraylib -lGL -lm -lpthread -ldl -lrt -lX11'

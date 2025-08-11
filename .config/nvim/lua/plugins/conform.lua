@@ -9,7 +9,7 @@ return {
 			formatters_by_ft = {
 				lua = { "stylua" },
 				java = { "clang_format_java" },
-				python = { "ruff_format", "black" },
+				python = { "black" },
 				rust = { "rustfmt" },
 				javascript = { "prettier" },
 				javascriptreact = { "prettier" },

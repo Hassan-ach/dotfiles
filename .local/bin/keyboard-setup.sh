@@ -1,10 +1,13 @@
 #!/bin/sh
 
-# Set US keyboard layout without extra options
+# Set US keyboard layout
 setxkbmap -layout us -option ""
 
-# Remap Caps Lock to Ctrl
-setxkbmap -option "ctrl:nocaps"
+# Remap Caps Lock → Ctrl
+setxkbmap -option ctrl:nocaps
 
-# Remap keycode 108 (Right Alt) to Right Shift
-xmodmap -e "keycode 108 = Shift_R"
+# Remap Alt_L → Shift_L (replace 64 with your Alt_L keycode)
+xmodmap -e "keycode 64 = Shift_L"
+
+# Remap Alt_R → Shift_R (replace 108 with your Alt_R keycode)
+# xmodmap -e "keycode 108 = Shift_R"

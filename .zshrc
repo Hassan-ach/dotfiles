@@ -1,37 +1,104 @@
 # ==============================
-# Instant Prompt Configuration
+# Main ZSH Configuration
 # ==============================
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+
+# PROFILING MODE (Keep this if you want to re-profile after changes)
+# use this for profiling in case the shell becomes slow
+export PROFILING_MODE=0
+if [ $PROFILING_MODE -ne 0 ]; then
+    zmodload zsh/zprof
+    zsh_start_time=$(python3 -c 'import time; print(int(time.time() * 1000))')
 fi
 
+# Helper function to compile and source Zsh scripts for faster loading
+zsource() {
+  local file=$1
+  local zwc="${file}.zwc"
+  if [[ -f "$file" && (! -f "$zwc" || "$file" -nt "$file") ]]; then
+    zcompile "$file"
+  fi
+  source "$file"
+}
+
+# Instant Prompt Configuration (Powerlevel10k) - Keep this sourced directly
+# if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+#   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+# fi
+
 # ==============================
-# Oh My Zsh & Theme Configuration
+# Load Modular Configuration Files
 # ==============================
-export ZSH="$HOME/.oh-my-zsh"
+export ZSH="$HOME/dotfiles/zsh"
+# Load in specific order for dependencies, now using zsource for compilation
+[ -f "$ZSH/.zsh_paths" ] && zsource "$ZSH/.zsh_paths"
+[ -f "$ZSH/.zsh_secrets" ] && zsource "$ZSH/.zsh_secrets"
+[ -f "$ZSH/.zsh_plugins" ] && zsource "$ZSH/.zsh_plugins"
+[ -f "$ZSH/.zsh_functions" ] && zsource "$ZSH/.zsh_functions"
+[ -f "$ZSH/.zsh_aliases" ] && zsource "$ZSH/.zsh_aliases"
+[ -f "$ZSH/.zsh_vi_mode_config" ] && zsource "$ZSH/.zsh_vi_mode_config"
+
+
+# ==============================
+# Basic ZSH Settings
+# ==============================
 setopt prompt_subst
-autoload -U compinit && compinit -d "${XDG_CACHE_HOME:-$HOME/.cache}/zcompdump-${(%):-%n}"
+# Optimize compinit: -C bypasses compaudit (security check, use if you trust your fpath)
+autoload -U compinit && compinit -C -d "${XDG_CACHE_HOME:-$HOME/.cache}/zcompdump-${(%):-%n}"
 
-# Load Starship theme if available
-if command -v starship &>/dev/null; then
-  eval "$(starship init zsh)"
-  export STARSHIP_CONFIG=~/.config/starship/starship.toml
-fi
+# Vi mode
+# bindkey -v
+# export KEYTIMEOUT=1
 
+# Key Bindings
+bindkey '^w' autosuggest-execute
+# bindkey '^e' autosuggest-accept
+bindkey '^e' accept-line
+bindkey '^u' autosuggest-toggle
+bindkey '^l' vi-forward-word
+bindkey '^k' up-line-or-search
+bindkey '^j' down-line-or-search
+# bindkey "^[[A" history-search-backward
+# bindkey "^[[B" history-search-forward
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+
+
+# Load default LS_COLORS from dircolors
+# if command -v dircolors &>/dev/null; then
+#     eval "$(dircolors -b)"
+# fi
+#
+export LS_COLORS="\
+rs=0:\
+di=38;5;66:\
+ln=38;5;217:\
+mh=38;5;103:\
+pi=38;5;223:\
+so=38;5;183:\
+do=38;5;183:\
+bd=38;5;223:\
+cd=38;5;223:\
+or=38;5;211:\
+mi=38;5;211:\
+su=38;5;189:\
+sg=38;5;189:\
+ca=38;5;146:\
+tw=38;5;66:\
+ow=38;5;66:\
+st=38;5;66:\
+ex=38;5;223:\
+*.jpg=38;5;152:\
+*.png=38;5;152:\
+*.mp4=38;5;152:\
+*.mp3=38;5;152:\
+*.gz=38;5;183:\
+*.tar=38;5;183:\
+*.zip=38;5;183\
+"
 
 # ==============================
-# Plugins
+# Completion System
 # ==============================
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting fzf-tab)
-source $ZSH/oh-my-zsh.sh
-
-# Autosuggestion style
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#c99e84'
-
-# ==============================
-# Completion Styling
-# ==============================
-
 # Enable case-insensitive and partial-word matching
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 
@@ -41,48 +108,11 @@ zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 # Enable menu selection for completions
 zstyle ':completion:*' menu select
 
-# Disable sorting for specific commands (e.g., git checkout)
-zstyle ':completion:*:git-checkout:*' sort false
-
-# Format descriptions with group support
-zstyle ':completion:*:descriptions' format '[%d]'
-
-# Disable default completion menu (required for fzf-tab to work properly)
-zstyle ':completion:*' menu no
-
-# ==============================
-# FZF-Tab Configuration (Oh My Zsh Compatible)
-# ==============================
-
-# Load fzf-tab plugin (if not already loaded)
-if [[ ! -d ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab ]]; then
-  git clone https://github.com/Aloxaf/fzf-tab ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab
-fi
-
-# Enable fzf-tab
-source ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab/fzf-tab.plugin.zsh
-
-# Use eza for directory previews in fzf-tab
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always --icons=auto $realpath'
-
-# Custom fzf flags for fzf-tab
-zstyle ':fzf-tab:*' fzf-flags --color=fg:1,fg+:2 --bind=tab:accept
-
-# Make fzf-tab follow FZF_DEFAULT_OPTS (use with caution)
-zstyle ':fzf-tab:*' use-fzf-default-opts yes
-
-# Switch between fzf-tab groups using `<` and `>`
-zstyle ':fzf-tab:*' switch-group '<' '>'
-
-# ==============================
-# Additional Completion Tweaks
-# ==============================
-
-# Cache completions for faster performance
+# Cache completions for faster performance (already set, but good to confirm)
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path "$HOME/.cache/zsh/.zcompcache"
 
-# Group completions by type (e.g., files, directories, commands)
+# Group completions by type
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' format '%B%F{blue}%d%f%b'
 
@@ -93,10 +123,31 @@ zstyle ':completion:*' ignore-case true
 zstyle ':completion:*' file-patterns '*(D)'
 
 # ==============================
-# FZF-Tab Preview Enhancements
+# FZF-Tab Configuration
 # ==============================
+# Disable sorting for specific commands
+zstyle ':completion:*:git-checkout:*' sort false
 
-# Preview files with bat (if installed)
+# Format descriptions with group support
+zstyle ':completion:*:descriptions' format '[%d]'
+
+# Disable default completion menu (required for fzf-tab)
+zstyle ':completion:*' menu no
+
+# Use eza for directory previews in fzf-tab
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always --icons=auto $realpath'
+
+# Custom fzf flags for fzf-tab
+zstyle ':fzf-tab:*' fzf-flags --color=fg:189,fg+:2 --height=80% --reverse --bind=tab:accept
+
+# Make fzf-tab follow FZF_DEFAULT_OPTS
+zstyle ':fzf-tab:*' use-fzf-default-opts yes
+
+# Switch between fzf-tab groups using `<` and `>`
+zstyle ':fzf-tab:*' switch-group '<' '>'
+
+
+# Preview files with bat
 if command -v bat &>/dev/null; then
   zstyle ':fzf-tab:complete:*:*' fzf-preview 'bat --color=always --style=numbers --line-range=:500 $realpath 2>/dev/null || ls --color $realpath'
 else
@@ -107,111 +158,52 @@ fi
 zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*' fzf-preview 'echo ${(P)word}'
 
 # Preview processes for kill/pkill
-zstyle ':fzf-tab:complete:(kill|pkill):*' fzf-preview 'ps --pid=$word -o cmd --no-headers'
+zstyle ':fzf-tab:complete:(kill|pkill):*' \
+  fzf-preview '
+    if [[ "$word" =~ ^[0-9]+$ ]]; then
+        ps --pid="$word" -o pid,cmd --no-headers
+    else
+        pgrep -af "$word" | head -n 20
+    fi
+  '
 
 # Preview man pages
 zstyle ':fzf-tab:complete:man:*' fzf-preview 'man $word | bat --color=always --style=plain --language=man'
 
-# ==============================
-# Key Bindings
-# ==============================
-bindkey '^w' autosuggest-execute
-bindkey '^e' autosuggest-accept
-bindkey '^u' autosuggest-toggle
-bindkey '^l' vi-forward-word
-bindkey '^k' up-line-or-search
-bindkey '^j' down-line-or-search
 
 # ==============================
-# vim style Functionallity
+# External Tool Initializations
 # ==============================
-bindkey -v
-export KEYTIMEOUT=1
+# Initialize Zoxide
+command -v zoxide &>/dev/null && eval "$(zoxide init zsh)"
 
-# ==============================
-# Fzf Functions
-# ==============================
-f() {
-  local selection
-  selection=$(fzf --preview 'bat --style=numbers --color=always {} || ls -al {}')
+# Initialize FZF
+command -v fzf &>/dev/null && eval "$(fzf --zsh)"
 
-  if [[ -d "$selection" ]]; then
-    cd "$selection" || return
-  elif [[ -f "$selection" ]]; then
-    nvim "$selection"
-  fi
-}
+# Theme
+zsource "$ZSH/themes/rose-pine.zsh-theme" # Add this line
 
-fzd() {
-  local dir
-  dir=$(find . -type d | fzf --preview 'ls -l --color=always {}') && z "$dir"
-}
+# Load Starship theme if available
+if command -v starship &>/dev/null; then
+  eval "$(starship init zsh)"
+  export STARSHIP_CONFIG=~/.config/starship/starship.toml
+fi
 
-# ==============================
-# System upgrade and clean
-# ==============================
-sysup() {
-    echo "==> Updating system (pacman)..."
-    sudo pacman -Syu --noconfirm
-
-    echo "==> Cleaning pacman cache..."
-    sudo pacman -Sc --noconfirm
-
-    echo "==> Removing orphan packages (pacman)..."
-    orphans=$(pacman -Qdtq)
-    [ -n "$orphans" ] && sudo pacman -Rns $orphans --noconfirm
-
-    echo "==> Updating AUR packages (yay)..."
-    yay -Syu --noconfirm
-
-    echo "==> Cleaning yay cache..."
-    yay -Sc --noconfirm
-
-    echo "==> Removing orphan packages (yay)..."
-    aorphans=$(yay -Qdtq)
-    [ -n "$aorphans" ] && yay -Rns $aorphans --noconfirm
-
-    echo "✅ Done!"
-}
-
-
-# ==============================
-# Powerlevel10k Prompt (optional)
-# ==============================
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# Load Powerlevel10k config
+# [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # ==============================
 # External Environment Setups
 # ==============================
-[ -f "/home/bagi/.ghcup/env" ] && . "/home/bagi/.ghcup/env"
-export PHP_INI_SCAN_DIR="/home/bagi/.config/herd-lite/bin:$PHP_INI_SCAN_DIR"
+# GHCup - Consider lazy loading if it's a bottleneck (check zprof)
+[ -f "/home/bagi/.ghcup/env" ] && source "/home/bagi/.ghcup/env"
 
-# Initialize Zoxide
-eval "$(zoxide init zsh)"
+# SDKMAN is now lazy-loaded via the `sdk` function in .zsh_paths
 
-# Run FZF for shell completion
-eval "$(fzf --zsh)"
 
-# ==============================
-# Load Paths and Aliases
-# ==============================
-if [ -f "$HOME/.zsh_paths" ]; then
-    source "$HOME/.zsh_paths"
+# qutebrowser
+if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+    export QT_QPA_PLATFORM=wayland
+else
+    export QT_QPA_PLATFORM=xcb
 fi
-
-if [ -f "$HOME/.zsh_aliases" ]; then
-    source "$HOME/.zsh_aliases"
-fi
-
-
-export GOOGLE_API_KEY="AIzaSyCgFr8BzgC-CHz-PdCIpVvgaZGUncAvUJg"
-export GEMINI_API_KEY="AIzaSyCgFr8BzgC-CHz-PdCIpVvgaZGUncAvUJg"
-
-## Sway Stuff
-export XDG_CURRENT_DESKTOP=sway
-export XDG_SESSION_DESKTOP=sway
-export XDG_SESSION_TYPE=wayland
-
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"

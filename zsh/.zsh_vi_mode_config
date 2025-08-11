@@ -1,0 +1,473 @@
+# ==============================
+# ZSH Vi-mode Configuration (Fixed)
+# ==============================
+
+# Define a custom directory for your Zsh plugins
+export ZSH_PLUGINS_DIR="$HOME/dotfiles/zsh/plugins"
+
+# --- zsh-vi-mode specific configuration ---
+function zvm_config() {
+  # Cursor configurations
+  ZVM_INSERT_MODE_CURSOR=$ZVM_CURSOR_BEAM
+  ZVM_NORMAL_MODE_CURSOR=$ZVM_CURSOR_BLINKING_BLOCK
+  ZVM_VISUAL_MODE_CURSOR=$ZVM_CURSOR_BLINKING_BLOCK
+  ZVM_OPPEND_MODE_CURSOR=$ZVM_CURSOR_UNDERLINE
+
+  # Start in insert mode (more natural for shell)
+  ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
+
+  # Key timeout
+  ZVM_KEYTIMEOUT=0.4
+}
+
+# --- Custom Widgets ---
+
+# Widget to copy current line to system clipboard
+function copy_line_to_clipboard() {
+  # Get the current line content
+  local line_content="$BUFFER"
+
+  # Copy to system clipboard
+  if command -v xclip &>/dev/null; then
+    echo -n "$line_content" | xclip -selection clipboard
+    echo "Line copied to clipboard"
+  elif command -v pbcopy &>/dev/null; then
+    echo -n "$line_content" | pbcopy
+    echo "Line copied to clipboard"
+  elif command -v wl-copy &>/dev/null; then
+    echo -n "$line_content" | wl-copy
+    echo "Line copied to clipboard"
+  else
+    echo "No clipboard tool found (xclip, pbcopy, or wl-copy)"
+    return 1
+  fi
+
+  # Redraw prompt
+  zle -R
+}
+zvm_define_widget copy_line_to_clipboard
+
+# Widget to copy visual selection to system clipboard
+function copy_selection_to_clipboard() {
+  # This is tricky in zsh - we'll use a different approach
+  if [[ -n "$REGION_ACTIVE" ]]; then
+    # Get selected text using zsh's built-in region functionality
+    local selected_text="${BUFFER:$MARK:$((CURSOR-MARK))}"
+
+    if command -v xclip &>/dev/null; then
+      echo -n "$selected_text" | xclip -selection clipboard
+    elif command -v pbcopy &>/dev/null; then
+      echo -n "$selected_text" | pbcopy
+    elif command -v wl-copy &>/dev/null; then
+      echo -n "$selected_text" | wl-copy
+    else
+      echo "No clipboard tool found"
+      return 1
+    fi
+
+    echo "Selection copied to clipboard"
+  else
+    echo "No text selected"
+  fi
+
+  zle -R
+}
+zvm_define_widget copy_selection_to_clipboard
+
+# Harpoon functionality
+HARPOON_FILE="$HOME/.zsh_harpoon_dirs"
+
+function harpoon_toggle_quick_menu() {
+  if [[ ! -f "$HARPOON_FILE" ]]; then
+    echo "No harpooned directories found. Use <leader>a to add some."
+    zle -R
+    return 1
+  fi
+
+  # Clear current line and show fzf
+  BUFFER=""
+  zle -R
+
+  local selected_dir
+  selected_dir=$(cat "$HARPOON_FILE" | fzf \
+    --prompt="Harpoon Dirs: " \
+    --height=40% \
+    --layout=reverse \
+    --border \
+    --preview 'ls -la {}' \
+    --bind 'ctrl-d:execute(sed -i "\|{}|d" '"$HARPOON_FILE"')+reload(cat '"$HARPOON_FILE"')')
+
+  if [[ -n "$selected_dir" && -d "$selected_dir" ]]; then
+    BUFFER="cd '$selected_dir'"
+    zle accept-line
+  else
+    zle -R
+  fi
+}
+zvm_define_widget harpoon_toggle_quick_menu
+
+function harpoon_add_file() {
+  local current_dir="$PWD"
+
+  # Create harpoon file if it doesn't exist
+  touch "$HARPOON_FILE"
+
+  if ! grep -Fxq "$current_dir" "$HARPOON_FILE" 2>/dev/null; then
+    echo "$current_dir" >> "$HARPOON_FILE"
+    echo "Added '$current_dir' to harpoon"
+  else
+    echo "'$current_dir' already in harpoon"
+  fi
+
+  zle -R
+}
+zvm_define_widget harpoon_add_file
+
+# Telescope-like file finder
+function telescope_find_files() {
+  BUFFER=""
+  zle -R
+
+  local selected_file
+  local find_command
+
+  # Use fd if available, otherwise fall back to find
+  if command -v fd >/dev/null 2>&1; then
+    find_command="fd --type f --hidden --follow --exclude .git --exclude node_modules --exclude .DS_Store"
+  else
+    find_command="find . -type f -not -path '*/\.*' -not -path '*/node_modules/*' -not -path '*/.git/*' 2>/dev/null"
+  fi
+
+  selected_file=$(eval "$find_command" | fzf \
+    --prompt="📁 Find Files: " \
+    --header="Enter: Edit | Ctrl-O: Open | Ctrl-Y: Copy path | Ctrl-/: Toggle preview" \
+    --height=60% \
+    --layout=reverse \
+    --border=rounded \
+    --multi \
+    --preview="bat --color=always --style=header,grid,numbers --line-range=:100 {}" \
+    --preview-window='right:60%:wrap' \
+    --bind="ctrl-o:execute(${EDITOR:-vim} {})" \
+    --bind="ctrl-y:execute-silent(echo -n {} | pbcopy 2>/dev/null || echo -n {} | xclip -selection clipboard 2>/dev/null || echo -n {} | wl-copy 2>/dev/null)" \
+    --bind="ctrl-/:toggle-preview" \
+    --bind="alt-up:preview-up" \
+    --bind="alt-down:preview-down" \
+    --bind="ctrl-u:preview-page-up" \
+    --bind="ctrl-d:preview-page-down" \
+    --bind="tab:toggle+down")
+
+  if [[ -n "$selected_file" ]]; then
+    # Handle multiple file selections
+    local files=(${(f)selected_file})
+    if [[ ${#files[@]} -eq 1 ]]; then
+      BUFFER="${EDITOR:-vim} '${files[1]}'"
+    else
+      # Multiple files - open all in editor
+      BUFFER="${EDITOR:-vim}"
+      for file in "${files[@]}"; do
+        BUFFER="$BUFFER '$file'"
+      done
+    fi
+    zle accept-line
+  else
+    zle -R
+  fi
+}
+
+# Specialized version for different file types
+function telescope_find_config_files() {
+  BUFFER=""
+  zle -R
+
+  local config_patterns
+  if command -v fd >/dev/null 2>&1; then
+    config_patterns="fd --type f -e json -e yaml -e yml -e toml -e conf -e config -e ini -e env"
+  else
+    config_patterns="find . -type f \( -name '*.json' -o -name '*.yaml' -o -name '*.yml' -o -name '*.toml' -o -name '*.conf' -o -name '*.config' -o -name '*.ini' -o -name '.env*' \) 2>/dev/null"
+  fi
+
+  local selected_file
+  selected_file=$(eval "$config_patterns" | fzf \
+    --prompt="⚙️  Config Files: " \
+    --height=60% \
+    --layout=reverse \
+    --border=rounded \
+    --preview="bat --color=always --style=header,grid,numbers {}" \
+    --preview-window='right:50%:wrap')
+
+  if [[ -n "$selected_file" ]]; then
+    BUFFER="${EDITOR:-vim} '$selected_file'"
+    zle accept-line
+  else
+    zle -R
+  fi
+}
+
+function telescope_find_recent_files() {
+  BUFFER=""
+  zle -R
+
+  # Find recently modified files (last 7 days)
+  local recent_files
+  if command -v fd >/dev/null 2>&1; then
+    recent_files="fd --type f --changed-within 7d --exclude .git"
+  else
+    recent_files="find . -type f -mtime -7 -not -path '*/.git/*' 2>/dev/null"
+  fi
+
+  local selected_file
+  selected_file=$(eval "$recent_files" | fzf \
+    --prompt="🕐 Recent Files: " \
+    --header="Files modified in last 7 days" \
+    --height=60% \
+    --layout=reverse \
+    --border=rounded \
+    --preview='echo "📄 File: {}" && echo "📅 Modified: $(stat -c "%y" {} 2>/dev/null | cut -d" " -f1 || stat -f "%Sm" {} | cut -d" " -f1-3)" && echo "📏 Size: $(du -h {} | cut -f1)" && echo "" && bat --color=always --style=header,grid,numbers --line-range=:50 {}' \
+    --preview-window='right:60%:wrap')
+
+  if [[ -n "$selected_file" ]]; then
+    BUFFER="${EDITOR:-vim} '$selected_file'"
+    zle accept-line
+  else
+    zle -R
+  fi
+}
+
+# Enhanced version of your original with bat optimizations
+function telescope_find_files_enhanced() {
+  BUFFER=""
+  zle -R
+
+  local selected_file
+  local find_command
+
+  # Smarter file discovery
+  if command -v fd >/dev/null 2>&1; then
+    find_command="fd --type f --hidden --follow --strip-cwd-prefix \
+      --exclude .git \
+      --exclude node_modules \
+      --exclude .DS_Store \
+      --exclude '*.log' \
+      --exclude target \
+      --exclude dist \
+      --exclude build"
+  else
+    find_command="find . -type f \
+      -not -path '*/\.*' \
+      -not -path '*/node_modules/*' \
+      -not -path '*/.git/*' \
+      -not -path '*/target/*' \
+      -not -path '*/dist/*' \
+      -not -path '*/build/*' \
+      -not -name '*.log' \
+      2>/dev/null | sed 's|^\./||'"
+  fi
+
+  selected_file=$(eval "$find_command" | fzf \
+    --prompt="🔍 Find Files: " \
+    --header="Tab: Select | Enter: Open | Ctrl-V: Vertical split | Ctrl-X: Horizontal split" \
+    --height=70% \
+    --layout=reverse \
+    --border=rounded \
+    --multi \
+    --cycle \
+    --preview="bat --color=always --style=full --line-range=:200 {}" \
+    --preview-window='right:60%:wrap:+{2}+3/3,~3' \
+    --bind="tab:toggle+down" \
+    --bind="shift-tab:toggle+up" \
+    --bind="ctrl-o:execute(${EDITOR:-vim} {})" \
+    --bind="ctrl-v:execute(${EDITOR:-vim} {} -c 'vsplit')" \
+    --bind="ctrl-x:execute(${EDITOR:-vim} {} -c 'split')" \
+    --bind="ctrl-y:execute-silent(echo -n {} | pbcopy 2>/dev/null || echo -n {} | xclip -selection clipboard 2>/dev/null)" \
+    --bind="ctrl-/:toggle-preview" \
+    --bind="ctrl-r:reload($find_command)" \
+    --bind="alt-a:select-all" \
+    --bind="alt-d:deselect-all" \
+    --bind="ctrl-s:toggle-sort")
+
+  if [[ -n "$selected_file" ]]; then
+    local files=(${(f)selected_file})
+    if [[ ${#files[@]} -eq 1 ]]; then
+      BUFFER="${EDITOR:-vim} '${files[1]}'"
+    else
+      BUFFER="${EDITOR:-vim}"
+      for file in "${files[@]}"; do
+        BUFFER="$BUFFER '$file'"
+      done
+    fi
+    zle accept-line
+  else
+    zle -R
+  fi
+}
+
+# Register the widgets with zsh-vi-mode
+zvm_define_widget telescope_find_files
+zvm_define_widget telescope_find_config_files
+zvm_define_widget telescope_find_recent_files
+zvm_define_widget telescope_find_files_enhanced
+
+# Enhanced directory search
+function telescope_find_directories() {
+  BUFFER=""
+  zle -R
+
+  local selected_dir
+  selected_dir=$(find . -type d -not -path '*/\.*' 2>/dev/null | fzf \
+    --prompt="Find Dirs: " \
+    --height=40% \
+    --layout=reverse \
+    --border \
+    --preview 'ls -la {}')
+
+  if [[ -n "$selected_dir" ]]; then
+    BUFFER="cd '$selected_dir'"
+    zle accept-line
+  else
+    zle -R
+  fi
+}
+zvm_define_widget telescope_find_directories
+
+# Man page for word under cursor
+function man_last_word() {
+  local word
+
+  if [[ -n "$BUFFER" ]]; then
+    # Get the word at cursor position or last word
+    local words=("${(@s/ /)BUFFER}")
+    word="${words[-1]}"
+
+    # Remove any trailing punctuation
+    word="${word%[[:punct:]]}"
+
+    if [[ -n "$word" ]]; then
+      BUFFER="man '$word'"
+      zle accept-line
+    else
+      echo "No word found"
+      zle -R
+    fi
+  else
+    echo "No command in buffer"
+    zle -R
+  fi
+}
+zvm_define_widget man_last_word
+
+# Spell check functionality
+function spell_check_line() {
+  if [[ -z "$BUFFER" ]]; then
+    echo "No text to check"
+    zle -R
+    return 1
+  fi
+
+  echo "\nSpell checking: '$BUFFER'"
+
+  if command -v aspell >/dev/null 2>&1; then
+    echo "$BUFFER" | aspell list -l en_US | while read -r word; do
+      echo "Misspelled: $word"
+      echo "$BUFFER" | aspell -a -l en_US | grep -A5 "^& $word"
+    done
+  elif command -v hunspell >/dev/null 2>&1; then
+    echo "$BUFFER" | hunspell -d en_US -l
+  else
+    echo "Spell checker not found. Install aspell or hunspell."
+  fi
+
+  echo ""
+  zle -R
+}
+zvm_define_widget spell_check_line
+
+# Git integration
+function git_status_widget() {
+  echo "\n$(git status --porcelain 2>/dev/null | head -10)"
+  if git rev-parse --git-dir >/dev/null 2>&1; then
+    echo "Branch: $(git branch --show-current)"
+  fi
+  echo ""
+  zle -R
+}
+zvm_define_widget git_status_widget
+
+# Enhanced history search
+function history_search_widget() {
+  BUFFER=""
+  zle -R
+
+  local selected_cmd
+  selected_cmd=$(fc -l 1 | fzf \
+    --prompt="History: " \
+    --height=40% \
+    --layout=reverse \
+    --border \
+    --tac \
+    --bind 'ctrl-r:toggle-sort' \
+    | sed 's/^[[:space:]]*[0-9]*[[:space:]]*//')
+
+  if [[ -n "$selected_cmd" ]]; then
+    BUFFER="$selected_cmd"
+    zle end-of-line
+  else
+    zle -R
+  fi
+}
+zvm_define_widget history_search_widget
+
+# --- Key Bindings Setup ---
+function zvm_after_lazy_keybindings() {
+  # Preserve important Zsh bindings
+  bindkey '^w' autosuggest-execute
+  bindkey '^e' accept-line
+  bindkey '^u' autosuggest-toggle
+  bindkey '^k' up-line-or-search
+  bindkey '^j' down-line-or-search
+  bindkey '^r' history_search_widget
+
+  # Vi-mode specific bindings (Normal mode)
+  zvm_bindkey vicmd 'K' man_last_word
+  zvm_bindkey vicmd ' y' copy_selection_to_clipboard
+  zvm_bindkey vicmd ' Y' copy_line_to_clipboard
+  zvm_bindkey vicmd ' a' harpoon_add_file
+  zvm_bindkey vicmd '^e' harpoon_toggle_quick_menu
+  zvm_bindkey vicmd ' f' telescope_find_files
+  zvm_bindkey vicmd ' F' telescope_find_files_enhanced
+  zvm_bindkey vicmd ' c' telescope_find_config_files
+  zvm_bindkey vicmd ' r' telescope_find_recent_files
+  zvm_bindkey vicmd ' d' telescope_find_directories
+  zvm_bindkey vicmd ' g' git_status_widget
+  zvm_bindkey vicmd ' s' spell_check_line
+
+  # Visual mode bindings
+  zvm_bindkey visual ' y' copy_selection_to_clipboard
+
+  # Insert mode bindings
+  zvm_bindkey viins '^f' telescope_find_files
+  zvm_bindkey viins '^t' harpoon_toggle_quick_menu
+}
+
+# --- Plugin Initialization ---
+function zvm_after_init() {
+  # FZF integration
+  if command -v fzf >/dev/null 2>&1; then
+    eval "$(fzf --zsh)"
+
+    # Use fd if available for better performance
+    if command -v fd >/dev/null 2>&1; then
+      export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+    fi
+  fi
+
+
+
+  # Environment setups
+  [[ -f "${HOME}/.ghcup/env" ]] && source "${HOME}/.ghcup/env"
+
+  # Additional useful aliases for vi-mode
+  alias v='${EDITOR:-vim}'
+  alias vf='telescope_find_files'
+  alias vh='harpoon_toggle_quick_menu'
+
+}

@@ -1,19 +1,17 @@
 #!/bin/sh
 
-alpha='dd'
-
-# Unified Dark Color Palette
-BG='#121212'        # Background (Very Dark Gray)
-FG='#c1c1c1'        # Foreground (Soft Light Gray)
-ACCENT='#f0f8f0'    # Accent Color (Muted Gray-Blue)
-HIGHLIGHT='#f9f0f9' # Slightly Brighter Accent
-ERROR='#5f8787'     # Cool Muted Cyan for Errors
-SUCCESS='#5f5f5f'   # Muted Warm Beige for Success
-WARNING='#f0a0a0'   # Soft Brownish Accent
+BG='#191724'        # Base background (Dark purple/blue)
+FG='#e0def4'        # Text foreground (Soft off-white)
+ACCENT='#31748f'    # Muted cyan/blue accent
+HIGHLIGHT='#f6e0cc' # Soft peach highlight
+ERROR='#eb6f92'     # Soft pink/red error color
+SUCCESS='#9ccfd8'   # Muted blue success color
+WARNING='#96c177'   # Warm amber warning color
 
 # Transparency & Effects
-BLANK='#00000000' # Fully Transparent
-CLEAR='#12121288' # Semi-transparent Dark Gray
+BLANK='#00000000'   # Fully transparent
+CLEAR='#19172488'   # Semi-transparent base background
+
 
 i3lock \
     --insidever-color=$CLEAR \
@@ -35,11 +33,11 @@ i3lock \
     --keyhl-color=$WARNING \
     --bshl-color=$ERROR \
     \
-    --time-size=32 \
-    --date-size=22 \
-    --layout-size=24 \
-    --radius=140 \
-    --ring-width=10 \
+    --time-size=22 \
+    --date-size=12 \
+    --layout-size=14 \
+    --radius=100 \
+    --ring-width=3 \
     \
     --screen 1 \
     --blur 7 \
@@ -57,3 +55,12 @@ i3lock \
     --layout-font="Iosevka Term" \
     --verif-font="Iosevka Term" \
     --wrong-font="Iosevka Term"
+
+
+
+# ICON=$HOME/Downloads/ai-generated-7883443_640.jpg
+# TMPBG=/tmp/screen.png
+# maim $TMPBG
+# magick $TMPBG -blur 0x5 $TMPBG
+# magick $TMPBG $ICON -gravity center -composite -matte $TMPBG
+# i3lock -u -i $TMPBG

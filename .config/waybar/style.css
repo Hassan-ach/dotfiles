@@ -1,149 +1,192 @@
+@define-color base #191724;
+@define-color background-alt #21202e;
+@define-color foreground #e0def4;
+@define-color primary #ebbcba;
+@define-color secondary #f6c177;
+@define-color alert #eb6f92;
+@define-color disabled #6e6a86;
+@define-color transparent rgba(0,0,0,0); /* Fully transparent */
+
 * {
-  font-family: "JetBrainsMono Nerd Font";
-  font-size: 12pt;
-  font-weight: bold;
-  border-radius: 0px;
-  transition-property: background-color;
-  transition-duration: 0.5s;
+    border: none;
+    border-radius: 0;
+    /* Font from Polybar: JetBrainsMono Nerd Font. Add fallbacks. */
+    font-family: "JetBrainsMono Nerd Font", "Font Awesome 6 Free",
+        "Symbols Nerd Font Mono", sans-serif;
+    font-size: 10px; /* Matching Polybar font size */
+    min-height: 0; /* Important to remove default Waybar padding */
 }
 
 window#waybar {
-  background-color: transparent;
+    background-color: rgba(
+        25,
+        23,
+        36,
+        0.6
+    ); /* Polybar's #99191724 (60% opacity) */
+    color: @foreground; /* Default foreground for the bar */
+    transition-property: background-color;
+    transition-duration: 0.5s;
+    /* height and width from config.json will take precedence */
 }
 
-window > box {
-  margin-left: 5px;
-  margin-right: 5px;
-  margin-top: 5px;
-  background-color: rgb(30, 30, 46);
+/* --- Module General Styling --- */
+/* This makes all modules look like they have a background color of `background-alt` */
+#temperature,
+#cpu,
+#memory,
+#disk,
+#network,
+#battery,
+#pulseaudio,
+#backlight,
+#clock,
+#sway-mode,
+#sway-window,
+#custom-gpu_usage, /* Custom module IDs are lowercase with hyphens */
+#custom-bluetooth,
+#tray {
+    background-color: @background-alt;
+    padding: 0 4px; /* Adjust padding for modules, Polybar module-margin was 1 */
+    margin: 0 1px; /* To get the separator effect, each module has a margin */
 }
 
+/* --- Separator Styling --- */
+/* Waybar doesn't have a direct "separator" module. We create one with margins and borders. */
+/* The default separator color is foreground, but Polybar had disabled. */
+/* You can achieve separators by giving modules a right border. */
+#modules-left,
+#modules-center,
+#modules-right {
+    padding: 0; /* Remove internal padding to control spacing via module margins */
+    margin: 0;
+}
+
+/* Add a right border to all modules except the last one in a group, or specific ones */
+#temperature,
+#cpu,
+#memory,
+#disk,
+#network,
+#battery,
+#pulseaudio,
+#backlight,
+/* #clock, */
+#mode,
+/* #window, */
+#custom-gpu_usage,
+#custom-bluetooth {
+    border-right: 2px solid @disabled; /* Polybar separator-foreground */
+    margin-right: 0px; /* Adjust if you want extra space before separator */
+}
+
+/* Remove border from the last module in each group (right-most) */
+#modules-left > widget:last-child,
+#modules-center > widget:last-child,
+#modules-right > widget:last-child {
+    border-right: none;
+}
+
+/* --- Specific Module Styling --- */
+
+/* Sway Workspaces (Polybar xworkspaces) */
 #workspaces {
-  padding-left: 0px;
-  padding-right: 4px;
+    background-color: @background-alt;
+    padding: 0; /* No padding on the container */
+    margin-left: 0;
 }
 
 #workspaces button {
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-left: 6px;
-  padding-right: 6px;
-}
-
-#workspaces button.focused {
-  background-color: rgb(181, 232, 224);
-  color: rgb(26, 24, 38);
-}
-
-#workspaces button.urgent {
-  color: rgb(26, 24, 38);
+    padding: 0 6px; /* Polybar label-padding was 1, adjust to visually match */
+    background-color: transparent;
+    color: @disabled; /* label-empty-foreground */
+    /* No border-radius or margin here, handled by the button itself */
 }
 
 #workspaces button:hover {
-  background-color: rgb(248, 189, 150);
-  color: rgb(26, 24, 38);
+    background-color: @background-alt; /* Hover background, could be highlightlow */
+    color: @foreground;
 }
 
-tooltip {
-  background: rgb(48, 45, 65);
+#workspaces button.focused {
+    background-color: @primary; /* label-active-background */
+    color: @base; /* label-active-foreground */
+    /* Polybar underline effect - Waybar uses border-bottom */
+    border-bottom: 2px solid @primary; /* label-active-underline */
+    padding-bottom: 0px; /* Adjust padding if needed with border-bottom */
 }
 
-tooltip label {
-  color: rgb(217, 224, 238);
+#workspaces button.occupied {
+    color: @foreground; /* Occupied workspaces (default text color) */
 }
 
-#custom-launcher {
-  padding-left: 8px;
-  padding-right: 6px;
-  color: rgb(201, 203, 255);
+#workspaces button.urgent {
+    background-color: @alert; /* label-urgent-background */
+    color: @foreground;
 }
 
-#mode,
-#clock,
-#memory,
-#temperature,
-#cpu,
-#mpd,
-#idle_inhibitor,
-#temperature,
-#backlight,
-#pulseaudio,
-#network,
-#battery,
-#custom-powermenu,
-#custom-cava-internal {
-  padding-left: 10px;
-  padding-right: 10px;
+/* Battery module specific colors (matching Polybar ramp-capacity foregrounds) */
+#battery {
+    /* Base color, overridden by states */
+    color: @primary; /* Assuming primary as a default active color */
+}
+#battery.charging {
+    color: @secondary; /* Polybar animation-charging-foreground */
+}
+#battery.low {
+    color: @alert; /* Polybar ramp-capacity-0-foreground */
+}
+#battery.critical {
+    color: @alert; /* Same as low for now */
+}
+#battery.full {
+    color: @primary; /* Matching Polybar's ramp-capacity-3/4-foreground */
 }
 
-#memory {
-  color: rgb(181, 232, 224);
+/* Pulseaudio module */
+#pulseaudio.muted {
+    color: @disabled; /* label-muted-foreground */
 }
 
-#cpu {
-  color: rgb(245, 194, 231);
-}
-
-#clock {
-  color: rgb(217, 224, 238);
-}
-
-#idle_inhibitor {
-  color: rgb(221, 182, 242);
-}
-
-#temperature {
-  color: rgb(150, 205, 251);
-}
-
-#backlight {
-  color: rgb(248, 189, 150);
-}
-
-#pulseaudio {
-  color: rgb(245, 224, 220);
-}
-
-#network {
-  color: #abe9b3;
-}
-
+/* Network module (wlan) */
 #network.disconnected {
-  color: rgb(255, 255, 255);
+    color: @secondary; /* format-disconnected-foreground */
+}
+#network.wifi {
+    color: @primary; /* Or @foreground if you want the signal to be bright */
 }
 
-#battery.charging,
-#battery.full,
-#battery.discharging {
-  color: rgb(250, 227, 176);
+/* CPU and Memory (if you want color thresholds) */
+#cpu.warning {
+    color: @secondary;
+} /* Yellow for warning */
+#cpu.critical {
+    color: @alert;
+} /* Red for critical */
+#memory.warning {
+    color: @secondary;
+}
+#memory.critical {
+    color: @alert;
 }
 
-#battery.critical:not(.charging) {
-  color: rgb(242, 143, 173);
+/* Temperature module */
+#temperature.critical {
+    color: @alert; /* Matching Polybar's format-foreground for critical */
 }
 
-#custom-powermenu {
-  color: rgb(242, 143, 173);
-}
-
+/* Tray Module (Systray) */
 #tray {
-  padding-right: 8px;
-  padding-left: 10px;
+    /* Tray icons usually manage their own colors, but background can be set */
+    background-color: @background-alt;
+    padding-right: 8px; /* Polybar format-margin */
 }
 
-#mpd.paused {
-  color: #414868;
-  font-style: italic;
-}
-
-#mpd.stopped {
-  background: transparent;
-}
-
-#mpd {
-  color: #c0caf5;
-}
-
-#custom-cava-internal {
-  font-family: "Hack Nerd Font";
+/* Window Title */
+#window {
+    background-color: transparent; /* No specific background for window title */
+    color: @foreground;
+    font-weight: normal; /* Default weight */
+    margin: 0px; /* Adjust margin if needed */
+    padding: 0 4px;
 }
