@@ -41,7 +41,7 @@ if command -v eza &>/dev/null; then
     alias lsa="eza --color=always --long --git --icons=always -b -a --total-size"
     alias l="eza -l --icons --git -a"
     alias lt="eza --tree --level=3 --long --icons --git"
-    alias tree="eza --tree --icons --git"
+    # alias tree="eza --tree --icons --git"
 else
     alias ls='ls --color=auto'
     alias ll='ls -alF'
