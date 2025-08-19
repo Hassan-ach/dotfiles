@@ -19,7 +19,7 @@ exec --no-startup-id picom --config ~/.config/picom/picom.conf
 # exec --no-startup-id variety
 # exec_always --no-startup-id autotiling
 # exec_always --no-startup-id xborders
-exec --no-startup-id pulseaudio --start
+# exec --no-startup-id pulseaudio --start
 
 # kill any hanging polybar processes
 exec_always killall polybar
@@ -30,7 +30,8 @@ exec_always feh --bg-scale ~/bgs/cool-bg.jpg
 exec_always --no-startup-id xinput set-prop 15 "libinput Tapping Enabled" 1
 exec_always --no-startup-id xinput set-prop 15 "libinput Natural Scrolling Enabled" 1
 exec --no-startup-id xrandr --output HDMI-1 --mode 1600x900 --right-of eDP-1 --auto
-exec_always --no-startup-id ~/.local/bin/keyboard-setup.sh
+# exec_always --no-startup-id ~/.local/bin/keyboard-setup.sh
+exec_always --no-startup-id setxkbmap -layout us -option "mykeys:my_modkeys"
 
 
 

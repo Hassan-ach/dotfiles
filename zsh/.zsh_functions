@@ -9,7 +9,7 @@
 # Smart file/directory opener with fzf
 f() {
     local selection
-    selection=$(fzf --preview 'bat --style=numbers --color=always {} || ls -al {}')
+    selection=$(find . | fzf --preview 'bat --style=numbers --color=always {} || ls -al {}')
 
     if [[ -d "$selection" ]]; then
         cd "$selection" || return

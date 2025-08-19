@@ -28,7 +28,6 @@
     "sway/workspaces": {
         "all-outputs": true,
         "format": "{name}",
-        "format-buttons": false,
         "on-click": "activate"
     },
 

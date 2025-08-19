@@ -74,12 +74,12 @@ function copy_selection_to_clipboard() {
 }
 zvm_define_widget copy_selection_to_clipboard
 
-# Harpoon functionality
-HARPOON_FILE="$HOME/.zsh_harpoon_dirs"
+# Quick directory bookmarks functionality
+BOOKMARKS_FILE="$HOME/.zsh_bookmarks_dirs"
 
-function harpoon_toggle_quick_menu() {
-  if [[ ! -f "$HARPOON_FILE" ]]; then
-    echo "No harpooned directories found. Use <leader>a to add some."
+function show_bookmarks_menu() {
+  if [[ ! -f "$BOOKMARKS_FILE" ]]; then
+    echo "No bookmarked directories found. Use <leader>a to add some."
     zle -R
     return 1
   fi
@@ -89,13 +89,13 @@ function harpoon_toggle_quick_menu() {
   zle -R
 
   local selected_dir
-  selected_dir=$(cat "$HARPOON_FILE" | fzf \
-    --prompt="Harpoon Dirs: " \
+  selected_dir=$(cat "$BOOKMARKS_FILE" | fzf \
+    --prompt="Bookmarks: " \
     --height=40% \
     --layout=reverse \
     --border \
     --preview 'ls -la {}' \
-    --bind 'ctrl-d:execute(sed -i "\|{}|d" '"$HARPOON_FILE"')+reload(cat '"$HARPOON_FILE"')')
+    --bind 'ctrl-d:execute(sed -i "\|{}|d" '"$BOOKMARKS_FILE"')+reload(cat '"$BOOKMARKS_FILE"')')
 
   if [[ -n "$selected_dir" && -d "$selected_dir" ]]; then
     BUFFER="cd '$selected_dir'"
@@ -104,27 +104,27 @@ function harpoon_toggle_quick_menu() {
     zle -R
   fi
 }
-zvm_define_widget harpoon_toggle_quick_menu
+zvm_define_widget show_bookmarks_menu
 
-function harpoon_add_file() {
+function add_bookmark() {
   local current_dir="$PWD"
 
-  # Create harpoon file if it doesn't exist
-  touch "$HARPOON_FILE"
+  # Create bookmarks file if it doesn't exist
+  touch "$BOOKMARKS_FILE"
 
-  if ! grep -Fxq "$current_dir" "$HARPOON_FILE" 2>/dev/null; then
-    echo "$current_dir" >> "$HARPOON_FILE"
-    echo "Added '$current_dir' to harpoon"
+  if ! grep -Fxq "$current_dir" "$BOOKMARKS_FILE" 2>/dev/null; then
+    echo "$current_dir" >> "$BOOKMARKS_FILE"
+    echo "Added '$current_dir' to bookmarks"
   else
-    echo "'$current_dir' already in harpoon"
+    echo "'$current_dir' already bookmarked"
   fi
 
   zle -R
 }
-zvm_define_widget harpoon_add_file
+zvm_define_widget add_bookmark
 
-# Telescope-like file finder
-function telescope_find_files() {
+# File finder
+function find_files() {
   BUFFER=""
   zle -R
 
@@ -175,7 +175,7 @@ function telescope_find_files() {
 }
 
 # Specialized version for different file types
-function telescope_find_config_files() {
+function find_config_files() {
   BUFFER=""
   zle -R
 
@@ -203,7 +203,7 @@ function telescope_find_config_files() {
   fi
 }
 
-function telescope_find_recent_files() {
+function find_recent_files() {
   BUFFER=""
   zle -R
 
@@ -234,7 +234,7 @@ function telescope_find_recent_files() {
 }
 
 # Enhanced version of your original with bat optimizations
-function telescope_find_files_enhanced() {
+function find_files_enhanced() {
   BUFFER=""
   zle -R
 
@@ -302,13 +302,13 @@ function telescope_find_files_enhanced() {
 }
 
 # Register the widgets with zsh-vi-mode
-zvm_define_widget telescope_find_files
-zvm_define_widget telescope_find_config_files
-zvm_define_widget telescope_find_recent_files
-zvm_define_widget telescope_find_files_enhanced
+zvm_define_widget find_files
+zvm_define_widget find_config_files
+zvm_define_widget find_recent_files
+zvm_define_widget find_files_enhanced
 
 # Enhanced directory search
-function telescope_find_directories() {
+function find_directories() {
   BUFFER=""
   zle -R
 
@@ -327,7 +327,7 @@ function telescope_find_directories() {
     zle -R
   fi
 }
-zvm_define_widget telescope_find_directories
+zvm_define_widget find_directories
 
 # Man page for word under cursor
 function man_last_word() {
@@ -430,13 +430,13 @@ function zvm_after_lazy_keybindings() {
   zvm_bindkey vicmd 'K' man_last_word
   zvm_bindkey vicmd ' y' copy_selection_to_clipboard
   zvm_bindkey vicmd ' Y' copy_line_to_clipboard
-  zvm_bindkey vicmd ' a' harpoon_add_file
-  zvm_bindkey vicmd '^e' harpoon_toggle_quick_menu
-  zvm_bindkey vicmd ' f' telescope_find_files
-  zvm_bindkey vicmd ' F' telescope_find_files_enhanced
-  zvm_bindkey vicmd ' c' telescope_find_config_files
-  zvm_bindkey vicmd ' r' telescope_find_recent_files
-  zvm_bindkey vicmd ' d' telescope_find_directories
+  zvm_bindkey vicmd ' a' add_bookmark
+  zvm_bindkey vicmd '^e' show_bookmarks_menu
+  zvm_bindkey vicmd ' f' find_files
+  zvm_bindkey vicmd ' F' find_files_enhanced
+  zvm_bindkey vicmd ' c' find_config_files
+  zvm_bindkey vicmd ' r' find_recent_files
+  zvm_bindkey vicmd ' d' find_directories
   zvm_bindkey vicmd ' g' git_status_widget
   zvm_bindkey vicmd ' s' spell_check_line
 
@@ -444,8 +444,8 @@ function zvm_after_lazy_keybindings() {
   zvm_bindkey visual ' y' copy_selection_to_clipboard
 
   # Insert mode bindings
-  zvm_bindkey viins '^f' telescope_find_files
-  zvm_bindkey viins '^t' harpoon_toggle_quick_menu
+  zvm_bindkey viins '^f' find_files
+  zvm_bindkey viins '^t' show_bookmarks_menu
 }
 
 # --- Plugin Initialization ---
@@ -467,7 +467,7 @@ function zvm_after_init() {
 
   # Additional useful aliases for vi-mode
   alias v='${EDITOR:-vim}'
-  alias vf='telescope_find_files'
-  alias vh='harpoon_toggle_quick_menu'
+  alias vf='find_files'
+  alias vh='show_bookmarks_menu'
 
 }

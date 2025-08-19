@@ -15,7 +15,7 @@ c = c  # noqa: F821 pylint: disable=E0602,C0103
 config = config  # noqa: F821 pylint: disable=E0602,C0103
 
 # Source external theme selection script 
-# config.source('themes/select_theme.py')
+config.source('themes/select_theme.py')
 
 # =============================================================================
 # GENERAL SETTINGS
@@ -39,6 +39,9 @@ c.confirm_quit = ['downloads']
 
 # Set default download directory to ~/Downloads
 c.downloads.location.directory = '~/Downloads'
+
+# Set duration to remove finished Downloads
+c.downloads.remove_finished = 20*1000
 
 # Disable download location prompt for automatic downloads
 c.downloads.location.prompt = False
@@ -119,17 +122,18 @@ c.completion.open_categories = [
 # Define custom search engines with prefixes
 c.url.searchengines = {
     'DEFAULT': 'https://duckduckgo.com/?q={}',
-    'g': 'https://www.google.com/search?q={}',
-    'gh': 'https://github.com/search?q={}',
-    'so': 'https://stackoverflow.com/search?q={}',
-    'aw': 'https://wiki.archlinux.org/?search={}',
-    're': 'https://www.reddit.com/r/{}',
-    'yt': 'https://www.youtube.com/results?search_query={}',
-    'wiki': 'https://en.wikipedia.org/wiki/{}',
-    'mdn': 'https://developer.mozilla.org/en-US/search?q={}',
-    'py': 'https://docs.python.org/3/search.html?q={}',
-    'npm': 'https://www.npmjs.com/search?q={}',
-    'am': 'https://www.amazon.com/s?k={}'
+    '!g': 'https://www.google.com/search?q={}',
+    '!gh': 'https://github.com/search?q={}',
+    '!so': 'https://stackoverflow.com/search?q={}',
+    '!aw': 'https://wiki.archlinux.org/?search={}',
+    '!re': 'https://www.reddit.com/r/{}',
+    '!yt': 'https://www.youtube.com/results?search_query={}',
+    '!wiki': 'https://en.wikipedia.org/wiki/{}',
+    '!mdn': 'https://developer.mozilla.org/en-US/search?q={}',
+    '!py': 'https://docs.python.org/3/search.html?q={}',
+    '!npm': 'https://www.npmjs.com/search?q={}',
+    '!am': 'https://www.amazon.com/s?k={}',
+    '!tr': 'https://translate.google.com/?sl=en&tl=ar&text={}&op=translate'
 }
 
 # Set default start page to DuckDuckGo
@@ -140,7 +144,7 @@ c.url.default_page = 'https://duckduckgo.com/'
 # =============================================================================
 
 # Use Neovim as the external editor for text fields
-c.editor.command = ['nvim', '{file}', '+{line}']
+# c.editor.command = ["kitty", "-e", "nvim", "{}"]
 
 # =============================================================================
 # PERFORMANCE TWEAKS
@@ -234,7 +238,7 @@ config.set('content.headers.user_agent', chrome_ua, 'https://*.slack.com/*')
 # =============================================================================
 
 # Apply Rosé Pine theme using the imported color palette
-color_palette.setup(c, 'rose-pine', True)
+color_palette.setup(c, 'rp', True)
 
 # =============================================================================
 # KEY BINDINGS
@@ -256,15 +260,18 @@ config.bind(',t', 'cmd-set-text -s :select-theme')  # Select theme
 config.bind(',,dr', 'config-cycle colors.webpage.darkmode.enabled True false')  # Toggle dark mode
 
 # CSS stylesheet cycling (Solarized Everything CSS)
-config.bind(',ap', 'config-cycle content.user_stylesheets ~/.config/qutebrowser/solarized-everything-css/css/apprentice/apprentice-all-sites.css ""')
-config.bind(',dr', 'config-cycle content.user_stylesheets ~/.config/qutebrowser/solarized-everything-css/css/darculized/darculized-all-sites.css ""')
-config.bind(',gr', 'config-cycle content.user_stylesheets ~/.config/qutebrowser/solarized-everything-css/css/gruvbox/gruvbox-all-sites.css ""')
-config.bind(',sd', 'config-cycle content.user_stylesheets ~/.config/qutebrowser/solarized-everything-css/css/solarized-dark/solarized-dark-all-sites.css ""')
-config.bind(',sl', 'config-cycle content.user_stylesheets ~/.config/qutebrowser/solarized-everything-css/css/solarized-light/solarized-light-all-sites.css ""')
-config.bind(',rp', 'config-cycle content.user_stylesheets ~/.config/qutebrowser/solarized-everything-css/css/rosepine/rosepine-all-sites.css ""')
+c.content.user_stylesheets = ["~/.config/qutebrowser/themes/custom-font.css"] 
+config.bind(',fc', 'config-cycle content.user_stylesheets ~/.config/qutebrowser/themes/custom-font.css ""')
+config.bind(',ap', 'config-cycle content.user_stylesheets ~/.config/qutebrowser/solarized-everything-css/css/apprentice/apprentice-all-sites.css ~/.config/qutebrowser/themes/custom-font.css')
+config.bind(',dr', 'config-cycle content.user_stylesheets ~/.config/qutebrowser/solarized-everything-css/css/darculized/darculized-all-sites.css ~/.config/qutebrowser/themes/custom-font.css')
+config.bind(',gr', 'config-cycle content.user_stylesheets ~/.config/qutebrowser/solarized-everything-css/css/gruvbox/gruvbox-all-sites.css ~/.config/qutebrowser/themes/custom-font.css')
+config.bind(',sd', 'config-cycle content.user_stylesheets ~/.config/qutebrowser/solarized-everything-css/css/solarized-dark/solarized-dark-all-sites.css ~/.config/qutebrowser/themes/custom-font.css')
+config.bind(',sl', 'config-cycle content.user_stylesheets ~/.config/qutebrowser/solarized-everything-css/css/solarized-light/solarized-light-all-sites.css ~/.config/qutebrowser/themes/custom-font.css')
+config.bind(',rp', 'config-cycle content.user_stylesheets ~/.config/qutebrowser/solarized-everything-css/css/rosepine/rosepine-all-sites.css ~/.config/qutebrowser/themes/custom-font.css')
 
 # Media and external tools
-config.bind('M', 'hint links spawn mpv {hint-url}')  # Open links in mpv
+config.bind('M', 'hint links spawn mpv {hint-url}')  
+config.bind('A', 'hint links spawn mpv --no-video {hint-url}')  
 
 # Security and cleanup
 config.bind('<Ctrl-Shift-Delete>', 'clear-cookies;; clear-keychain')  # Clear cookies and keychain
@@ -278,6 +285,8 @@ config.bind('<z><u><l>', 'spawn --userscript qute-pass --username-only')
 config.bind('<z><p><l>', 'spawn --userscript qute-pass --password-only')
 config.bind('<z><o><l>', 'spawn --userscript qute-pass --otp-only')
 
+# Youtube watch in mpv
+
 # Youtube Video and PlayList Downloads
 config.bind('<z><v>', 'spawn --userscript ytdlp-single {url}')
-config.bind('<z><p>', 'spawn --userscript ytdlp-playlist {url}')
+config.bind('<z><p><d>', 'spawn --userscript ytdlp-playlist {url}')

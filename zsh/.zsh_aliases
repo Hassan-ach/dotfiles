@@ -188,7 +188,7 @@ if command -v bat &>/dev/null; then
 fi
 
 # ==============================
-# Docker (Commented - Uncomment if needed)
+# Docker
 # ==============================
 # alias dco="docker compose"
 # alias dps="docker ps"
@@ -198,7 +198,6 @@ fi
 # alias dx="docker exec -it"
 
 # ==============================
-# C++ Development (Commented - Uncomment if needed)
+# C++ Development
 # ==============================
-# alias cmp='g++ -std=c++20 -o'
-# alias grc='g++ -std=c++20 -lraylib -lGL -lm -lpthread -ldl -lrt -lX11'
+alias cmp='g++ -std=c++20 -o'

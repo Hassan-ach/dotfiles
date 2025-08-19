@@ -1,4 +1,4 @@
-# Default config for sway
+
 #
 # Copy this to ~/.config/sway/config and edit it to your liking.
 #
@@ -24,6 +24,8 @@ set $menu rofi -show drun
 # Monitor variables from your i3 config.
 # Note: In Sway, monitor names often look like 'eDP-1', 'HDMI-A-1'.
 # You can verify yours by running: swaymsg -t get_outputs
+output eDP-1 mode 1920x1080@60Hz position 0 0
+output HDMI-A-1 mode 1600x900@60Hz position 1920 0
 set $fm eDP-1
 set $sm HDMI-A-1
 
@@ -33,12 +35,6 @@ set $sm HDMI-A-1
 # If the path is relative, it will be relative to your home directory.
 # `fill` scales the image to fit the output while preserving aspect ratio.
 output * bg ~/bgs/cool-bg.jpg fill
-
-# Example configuration for your second monitor from i3.
-# This replaces the xrandr command from your i3 config.
-# Adjust the position (e.g., 1920,0) and resolution (1600x900) as needed for your setup.
-# Run `swaymsg -t get_outputs` to find exact names and current settings.
-output $sm resolution 1600x900 position 1920,0
 
 ### Idle configuration
 #
@@ -65,12 +61,12 @@ input type:touchpad {
 input type:keyboard {
     # Sets keyboard layout. Uncomment and adjust if needed.
     # xkb_layout "us"
-
-    # Sets keyboard options, like "ctrl:nocaps" from your i3 config.
-    xkb_options "ctrl:nocaps"
-    xkb_options "alt_l:shift"
-    # xkb_options "lv3:ralt_switch" # If you need this option
+    # xkb_options "ctrl:nocaps,alt_l:shift"
+    xkb_options "mykeys:my_modkeys"
 }
+
+font pango: Iosevka Term 12
+
 
 # The `~/.local/bin/keyboard-setup.sh` script is commented out.
 # If it contains only `xkb_layout` or `xkb_options` settings,
@@ -145,19 +141,6 @@ bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
-# Workspaces:
-# Define names for default workspaces and assign them to monitors, similar to your i3 config.
-# Make sure $fm and $sm are correctly set to your monitor names.
-workspace number 1 output $fm
-workspace number 2 output $fm
-workspace number 3 output $fm
-workspace number 4 output $fm
-workspace number 5 output $fm
-workspace number 6 output $fm
-workspace number 7 output $fm
-workspace number 8 output $sm
-workspace number 9 output $sm
-workspace number 10 output $sm
 
 # Switch to workspace
 bindsym $mod+1 workspace number 1
@@ -360,5 +343,18 @@ gaps inner 00
 #     }
 # }
 
+# Workspaces:
+# Define names for default workspaces and assign them to monitors, similar to your i3 config.
+# Make sure $fm and $sm are correctly set to your monitor names.
+workspace number 1 output $fm
+workspace number 2 output $fm
+workspace number 3 output $fm
+workspace number 4 output $fm
+workspace number 5 output $fm
+workspace number 6 output $fm
+workspace number 7 output $fm
+workspace number 8 output $sm
+workspace number 9 output $sm
+workspace number 10 output $sm
 
-include /etc/sway/config.d/*
+# include /etc/sway/config.d/*

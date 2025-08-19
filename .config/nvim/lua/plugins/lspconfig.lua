@@ -44,6 +44,12 @@ return {
 				},
 			}
 
+			local function on_attach_inlay_hints(client, bufnr)
+				if client.server_capabilities.inlayHintProvider then
+					vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+				end
+			end
+
 			local lspconfig = require("lspconfig")
 
 			-- lspconfig.jdtls.setup({
@@ -51,18 +57,23 @@ return {
 			-- })
 			lspconfig.rust_analyzer.setup({
 				capabilities = capabilities,
+				on_attach = on_attach_inlay_hints,
 			})
 			lspconfig.intelephense.setup({
 				capabilities = capabilities,
+				on_attach = on_attach_inlay_hints,
 			})
 			lspconfig.texlab.setup({
 				capabilities = capabilities,
+				on_attach = on_attach_inlay_hints,
 			})
 			lspconfig.bashls.setup({
 				capabilities = capabilities,
+				on_attach = on_attach_inlay_hints,
 			})
 			lspconfig.lua_ls.setup({
 				capabilities = capabilities,
+				on_attach = on_attach_inlay_hints,
 				settings = {
 					Lua = {
 						diagnostics = {
@@ -79,15 +90,33 @@ return {
 			})
 			lspconfig.jsonls.setup({
 				capabilities = capabilities,
+				on_attach = on_attach_inlay_hints,
 			})
 			lspconfig.gopls.setup({
 				capabilities = capabilities,
+				on_attach = on_attach_inlay_hints,
+				settings = {
+					gopls = {
+						hints = {
+							assignVariableTypes = true,
+							compositeLiteralFields = true,
+							compositeLiteralTypes = true,
+							constantValues = true,
+							functionTypeParameters = true,
+							parameterNames = true,
+							rangeVariableTypes = true,
+						},
+					},
+				},
 			})
+
 			lspconfig.cssls.setup({
 				capabilities = capabilities,
+				on_attach = on_attach_inlay_hints,
 			})
 			lspconfig.yamlls.setup({
 				capabilities = capabilities,
+				on_attach = on_attach_inlay_hints,
 				settings = {
 					yaml = {
 						schemas = {
@@ -104,6 +133,7 @@ return {
 			})
 			lspconfig.html.setup({
 				capabilities = capabilities,
+				on_attach = on_attach_inlay_hints,
 				filetypes = {
 					"templ",
 					"html",
@@ -119,6 +149,7 @@ return {
 			})
 			lspconfig.tailwindcss.setup({
 				capabilities = capabilities,
+				on_attach = on_attach_inlay_hints,
 				filetypes = {
 					"templ",
 					"html",
@@ -135,6 +166,9 @@ return {
 				on_attach = function(client, bufnr)
 					-- Optional: disable formatting so you can use a separate formatter like Prettier
 					client.server_capabilities.documentFormattingProvider = false
+					if client.server_capabilities.inlayHintProvider then
+						vim.lsp.inlay_hint(bufnr, true)
+					end
 				end,
 				capabilities = capabilities,
 				init_options = {
@@ -152,6 +186,7 @@ return {
 			})
 
 			lspconfig.clangd.setup({
+				on_attach = on_attach_inlay_hints,
 				cmd = {
 					"clangd",
 					"--background-index",
@@ -177,10 +212,12 @@ return {
 			})
 
 			lspconfig.pylsp.setup({
+				on_attach = on_attach_inlay_hints,
 				capabilities = capabilities,
 			})
 
 			lspconfig.marksman.setup({
+				on_attach = on_attach_inlay_hints,
 				capabilities = capabilities,
 			})
 		end,

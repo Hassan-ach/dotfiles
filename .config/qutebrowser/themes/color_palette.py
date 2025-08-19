@@ -7,7 +7,7 @@
 def setup(c, variant, samecolorrows=False):
     # Palette {{{
     palette = {}
-    if variant == "rose-pine":
+    if variant == "rp":
         palette = {
             "Base": "#191724",         # Dark background
             "Surface": "#1f1d2e",      # Secondary dark background
@@ -25,7 +25,7 @@ def setup(c, variant, samecolorrows=False):
             "HighlightMed": "#403d52",  # Medium highlight
             "HighlightHigh": "#524f67"  # High highlight
         }
-    elif variant == "rose-pine-moon":
+    elif variant == "rpm":
         palette = {
             "Base": "#232136",
             "Surface": "#2a273f",
@@ -43,7 +43,7 @@ def setup(c, variant, samecolorrows=False):
             "HighlightMed": "#44415a",
             "HighlightHigh": "#56526e"
         }
-    elif variant == "rose-pine-dawn":
+    elif variant == "rpd":
         palette = {
             "Base": "#faf4ed",
             "Surface": "#fffaf3",
@@ -204,3 +204,4 @@ def setup(c, variant, samecolorrows=False):
     c.colors.messages.warning.border = palette["Surface"]
     c.colors.messages.warning.fg = palette["Gold"]
     # }}}
+

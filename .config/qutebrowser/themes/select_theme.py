@@ -5,7 +5,7 @@ from color_palette import setup  # Import the setup function from color_palette.
 from qutebrowser.api import cmdutils
 
 # List of available themes
-THEMES = ['rose-pine', 'rose-pine-moon', 'rose-pine-dawn', 'default']
+THEMES = ['rp', 'rpm', 'rpd', 'df']
 
 # Check if the command is already registered before registering it
 try:
@@ -18,7 +18,7 @@ except AttributeError:
 # Register the :select-theme command
 @cmdutils.register(name='select-theme')
 def select_theme(theme: str) -> None:
-    """Select and apply a theme (rose-pine, rose-pine-moon, rose-pine-dawn, default)."""
+    """Select and apply a theme (rp, rpm, rpd, df)."""
     if theme in THEMES:
         setup(c, theme)  # Apply the selected theme using color_palette.py
     else:

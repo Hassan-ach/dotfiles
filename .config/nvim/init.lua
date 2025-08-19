@@ -50,6 +50,12 @@ config.setup({
 		"json",
 		"xml",
 		"dockerfile",
+		-- "latex",
+		"norg",
+		"scss",
+		"svelte",
+		"vue",
+		"regex",
 	},
 	-- sql being slow on large files :(
 	highlight = {
@@ -65,7 +71,6 @@ config.setup({
 		"latex",
 	},
 })
-
 -- language specific mappings go here
 require("mappings")
 

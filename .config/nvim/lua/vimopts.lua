@@ -229,6 +229,9 @@ vim.diagnostic.config({
 -- LuaSnip configuration
 -- vim.g.use_precompiled_parsers = true
 
+-- Python env
+vim.g.python3_host_prog = os.getenv("HOME") .. "/.venv/nvim-python/bin/python"
+
 -- ================
 -- CUSTOM FUNCTIONS
 -- ================
@@ -390,3 +393,20 @@ vim.api.nvim_create_autocmd("FileType", {
 -- 		vim.lsp.buf.format({ async = true })
 -- 	end,
 -- })
+--
+
+-- Make quickfix interactive
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "qf",
+	callback = function()
+		-- Only preview in quickfix window
+		vim.api.nvim_buf_set_option(0, "cursorline", true) -- highlight current line
+	end,
+})
+
+-- Inlay hints
+vim.keymap.set("n", "<leader>ih", function()
+	local bufnr = vim.api.nvim_get_current_buf()
+	local enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr })
+	vim.lsp.inlay_hint.enable(not enabled, { bufnr = bufnr })
+end, { desc = "Toggle Inlay Hints" })
