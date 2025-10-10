@@ -24,7 +24,8 @@ exec --no-startup-id picom --config ~/.config/picom/picom.conf
 # kill any hanging polybar processes
 exec_always killall polybar
 exec_always --no-startup-id ~/.config/polybar/launch_polybar.sh
-exec_always feh --bg-scale ~/bgs/cool-bg.jpg
+exec_always --no-startup-id ~/.local/bin/random-bg.sh
+
 
 #set touchpad to default
 exec_always --no-startup-id xinput set-prop 15 "libinput Tapping Enabled" 1
@@ -87,6 +88,10 @@ bindsym $mod+Shift+q kill
 bindsym $mod+d exec --no-startup-id rofi -show drun
 bindsym $mod+Tab exec --no-startup-id rofi -show window
 bindsym $mod+p exec --no-startup-id ~/.config/rofi/powermenu.sh
+
+# Random wallpaper
+bindsym $mod+m exec --no-startup-id ~/.local/bin/random-bg.sh
+bindsym $mod+Shift+d exec rm $(ls -l /tmp/random_bg | grep --only-matching "/home/.*") && ./.local/bin/random-bg.sh
 
 # change focus
 bindsym $mod+h focus left
@@ -160,8 +165,8 @@ workspace 2 output $fm
 workspace 3 output $fm
 workspace 4 output $fm
 workspace 5 output $fm
-workspace 6 output $fm
-workspace 7 output $fm
+workspace 6 output $sm
+workspace 7 output $sm
 workspace 8 output $sm
 workspace 9 output $sm
 workspace 10 output $sm

@@ -28,6 +28,7 @@ return {
 					"marksman",
 					"texlab",
 					"intelephense",
+					"tinymist",
 				},
 				automatic_enable = false,
 			})
@@ -55,6 +56,10 @@ return {
 			-- lspconfig.jdtls.setup({
 			-- 	capabilities = capabilities,
 			-- })
+			lspconfig.tinymist.setup({
+				capabilities = capabilities,
+				on_attach = on_attach_inlay_hints,
+			})
 			lspconfig.rust_analyzer.setup({
 				capabilities = capabilities,
 				on_attach = on_attach_inlay_hints,

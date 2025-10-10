@@ -6,8 +6,8 @@
     "spacing": 1,
 
     "modules-left": [
-        "sway/workspaces",
-        "sway/window"
+        "hyprland/workspaces",
+        "hyprland/window"
     ],
     "modules-center": [
         "clock"
@@ -20,14 +20,26 @@
         "custom/gpu_usage",
         "cpu",
         "memory",
-        "custom/bluetooth",
+        "custom/bluetooth"
 //        "temperature",
-        "tray"
+       // "tray"
     ],
 
-    "sway/workspaces": {
-        "all-outputs": true,
-        "format": "{name}",
+    "hyprland/workspaces": {
+         "disable-scroll": true,
+         "all-outputs": true,
+         "warp-on-scroll": false,
+         "format": "{name} {icon}",
+         "format-icons": {
+         //    "1": "",
+         //    "2": "",
+         //    "3": "",
+         //    "4": "",
+         //    "5": "",
+             "urgent": "",
+             "active": "",
+             "default": ""
+         },
         "on-click": "activate"
     },
 
@@ -93,7 +105,7 @@
     "custom/gpu_usage": {
         "exec": "~/.config/polybar/gpu_usage.sh",
         "interval": 2,
-        "format": "<span foreground='#ebbcba'>GPU </span>{}",
+        "format": "<span foreground='#ebbcba'>GPU </span>{}%",
         "return-type": "text"
     },
 

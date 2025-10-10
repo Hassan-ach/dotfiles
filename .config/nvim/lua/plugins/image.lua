@@ -17,6 +17,10 @@ return {
 						only_render_image_at_cursor = true,
 						filetypes = { "markdown" },
 					},
+					typst = {
+						enabled = false,
+						filetypes = { "typst" },
+					},
 				},
 				max_width_window_percentage = nil,
 				max_height_window_percentage = 50,

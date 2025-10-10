@@ -26,8 +26,10 @@ return {
 				gleam = { "gleam" },
 				asm = { "asmfmt" },
 				css = { "prettier" },
+				makefile = { "makefmt", "checkmake" },
 				php = { "pint", "php_cs_fixer" }, -- Corrected PHP formatters
 				bash = { "shfmt" },
+				typst = { "typstyle", "prettypst" },
 				-- For filetypes without a formatter:
 				["_"] = { "trim_whitespace", "trim_newlines" },
 			},

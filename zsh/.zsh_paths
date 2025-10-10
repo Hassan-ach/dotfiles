@@ -47,6 +47,11 @@ export PHP_INI_SCAN_DIR="/home/bagi/.config/herd-lite/bin:$PHP_INI_SCAN_DIR"
 #   export WAYLAND_DISPLAY=wayland-1
 # fi
 
+# hyprland session initialitation
+if [[ "$XDG_CURRENT_DESKTOP" == Hyprland ]]; then
+    # exec dbus-run-session -- Hyprland
+fi
+
 
 
 # FZF Theme Configuration (Uncomment to enable)

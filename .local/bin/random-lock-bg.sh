@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# Pick a random wallpaper
+random_wallpaper=$(find ~/wallpapers -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.gif" \) | shuf -n 1)
+
+ln -sf "$random_wallpaper" /tmp/random_lock_bg

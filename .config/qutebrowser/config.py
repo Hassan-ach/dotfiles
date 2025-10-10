@@ -75,18 +75,18 @@ c.tabs.last_close = 'close'
 
 # Default font settings
 c.fonts.default_size = '12pt'
-c.fonts.default_family = ['Iosevka Term', 'monospace']
+c.fonts.default_family = ['Iosevka Term Nerd Font', 'monospace']
 
 # Web fonts
-c.fonts.web.family.standard = 'Iosevka Term'
-c.fonts.web.family.sans_serif = 'Iosevka Term'
-c.fonts.web.family.serif = 'Iosevka Term'
+c.fonts.web.family.standard = 'Iosevka Term Nerd Font'
+c.fonts.web.family.sans_serif = 'Iosevka Term Nerd Font'
+c.fonts.web.family.serif = 'Iosevka Term Nerd Font'
 
 # Interface fonts
-c.fonts.completion.entry = '12pt Iosevka Term'
-c.fonts.statusbar = '12pt Iosevka Term'
-c.fonts.tabs.selected = '12pt Iosevka Term'
-c.fonts.tabs.unselected = '12pt Iosevka Term'
+c.fonts.completion.entry = '12pt Iosevka Term Nerd Font'
+c.fonts.statusbar = '12pt Iosevka Term Nerd Font'
+c.fonts.tabs.selected = '12pt Iosevka Term Nerd Font'
+c.fonts.tabs.unselected = '12pt Iosevka Term Nerd Font'
 
 # =============================================================================
 # APPEARANCE & DARK MODE
@@ -260,7 +260,7 @@ config.bind(',t', 'cmd-set-text -s :select-theme')  # Select theme
 config.bind(',,dr', 'config-cycle colors.webpage.darkmode.enabled True false')  # Toggle dark mode
 
 # CSS stylesheet cycling (Solarized Everything CSS)
-c.content.user_stylesheets = ["~/.config/qutebrowser/themes/custom-font.css"] 
+# c.content.user_stylesheets = ["~/.config/qutebrowser/themes/custom-font.css"] 
 config.bind(',fc', 'config-cycle content.user_stylesheets ~/.config/qutebrowser/themes/custom-font.css ""')
 config.bind(',ap', 'config-cycle content.user_stylesheets ~/.config/qutebrowser/solarized-everything-css/css/apprentice/apprentice-all-sites.css ~/.config/qutebrowser/themes/custom-font.css')
 config.bind(',dr', 'config-cycle content.user_stylesheets ~/.config/qutebrowser/solarized-everything-css/css/darculized/darculized-all-sites.css ~/.config/qutebrowser/themes/custom-font.css')

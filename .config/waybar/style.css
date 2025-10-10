@@ -1,5 +1,5 @@
 @define-color base #191724;
-@define-color background-alt #21202e;
+@define-color background-alt rgba(33,32,46,0);
 @define-color foreground #e0def4;
 @define-color primary #ebbcba;
 @define-color secondary #f6c177;
@@ -11,9 +11,9 @@
     border: none;
     border-radius: 0;
     /* Font from Polybar: JetBrainsMono Nerd Font. Add fallbacks. */
-    font-family: "JetBrainsMono Nerd Font", "Font Awesome 6 Free",
+    font-family: "Iosevka Nerd Font", "Font Awesome 6 Free",
         "Symbols Nerd Font Mono", sans-serif;
-    font-size: 10px; /* Matching Polybar font size */
+    font-size: 12px; /* Matching Polybar font size */
     min-height: 0; /* Important to remove default Waybar padding */
 }
 
@@ -22,7 +22,7 @@ window#waybar {
         25,
         23,
         36,
-        0.6
+        1
     ); /* Polybar's #99191724 (60% opacity) */
     color: @foreground; /* Default foreground for the bar */
     transition-property: background-color;
@@ -91,15 +91,15 @@ window#waybar {
 
 /* Sway Workspaces (Polybar xworkspaces) */
 #workspaces {
-    background-color: @background-alt;
+    background-color: rgba(25, 23, 36, 0);
     padding: 0; /* No padding on the container */
     margin-left: 0;
 }
 
 #workspaces button {
-    padding: 0 6px; /* Polybar label-padding was 1, adjust to visually match */
+    padding: 0 10 0 6px; /* Polybar label-padding was 1, adjust to visually match */
     background-color: transparent;
-    color: @disabled; /* label-empty-foreground */
+    color: @foreground; /* label-empty-foreground */
     /* No border-radius or margin here, handled by the button itself */
 }
 
@@ -110,7 +110,7 @@ window#waybar {
 
 #workspaces button.focused {
     background-color: @primary; /* label-active-background */
-    color: @base; /* label-active-foreground */
+    color: @foreground; /* label-active-foreground */
     /* Polybar underline effect - Waybar uses border-bottom */
     border-bottom: 2px solid @primary; /* label-active-underline */
     padding-bottom: 0px; /* Adjust padding if needed with border-bottom */

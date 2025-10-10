@@ -207,3 +207,7 @@ if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
 else
     export QT_QPA_PLATFORM=xcb
 fi
+
+ (){
+    echo "9wditiha"
+}
