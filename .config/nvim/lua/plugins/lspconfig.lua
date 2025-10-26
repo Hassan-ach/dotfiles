@@ -20,15 +20,16 @@ return {
 					"cssls",
 					"tailwindcss",
 					"ts_ls",
-					"pylsp",
+					"pyright",
 					"clangd",
 					"yamlls",
 					"jsonls",
-					"jdtls",
 					"marksman",
 					"texlab",
 					"intelephense",
 					"tinymist",
+					"lemminx",
+					"postgres_lsp",
 				},
 				automatic_enable = false,
 			})
@@ -37,12 +38,9 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 		config = function()
-			-- local capabilities = require("cmp_nvim_lsp").default_capabilities()
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
 			capabilities.textDocument.completion = {
-				completionItem = {
-					snippetSupport = true,
-				},
+				completionItem = { snippetSupport = true },
 			}
 
 			local function on_attach_inlay_hints(client, bufnr)
@@ -51,180 +49,119 @@ return {
 				end
 			end
 
-			local lspconfig = require("lspconfig")
+			local lsp = vim.lsp
 
-			-- lspconfig.jdtls.setup({
-			-- 	capabilities = capabilities,
-			-- })
-			lspconfig.tinymist.setup({
-				capabilities = capabilities,
-				on_attach = on_attach_inlay_hints,
-			})
-			lspconfig.rust_analyzer.setup({
-				capabilities = capabilities,
-				on_attach = on_attach_inlay_hints,
-			})
-			lspconfig.intelephense.setup({
-				capabilities = capabilities,
-				on_attach = on_attach_inlay_hints,
-			})
-			lspconfig.texlab.setup({
-				capabilities = capabilities,
-				on_attach = on_attach_inlay_hints,
-			})
-			lspconfig.bashls.setup({
-				capabilities = capabilities,
-				on_attach = on_attach_inlay_hints,
-			})
-			lspconfig.lua_ls.setup({
-				capabilities = capabilities,
-				on_attach = on_attach_inlay_hints,
-				settings = {
-					Lua = {
-						diagnostics = {
-							globals = { "vim" }, -- Recognize 'vim' as a global variable
-						},
-						workspace = {
-							library = vim.api.nvim_get_runtime_file("", true), -- Include Neovim runtime files
-						},
-						telemetry = {
-							enable = false,
-						},
-					},
-				},
-			})
-			lspconfig.jsonls.setup({
-				capabilities = capabilities,
-				on_attach = on_attach_inlay_hints,
-			})
-			lspconfig.gopls.setup({
-				capabilities = capabilities,
-				on_attach = on_attach_inlay_hints,
-				settings = {
-					gopls = {
-						hints = {
-							assignVariableTypes = true,
-							compositeLiteralFields = true,
-							compositeLiteralTypes = true,
-							constantValues = true,
-							functionTypeParameters = true,
-							parameterNames = true,
-							rangeVariableTypes = true,
-						},
-					},
-				},
-			})
+			-- Core language servers
+			local servers = {
+				"postgres_lsp",
+				"tinymist",
+				"lemminx",
+				"rust_analyzer",
+				"intelephense",
+				"texlab",
+				"bashls",
+				"lua_ls",
+				"jsonls",
+				"gopls",
+				"cssls",
+				"yamlls",
+				"html",
+				"tailwindcss",
+				"ts_ls",
+				"clangd",
+				"jdtls",
+				"pyright",
+				"marksman",
+			}
 
-			lspconfig.cssls.setup({
-				capabilities = capabilities,
-				on_attach = on_attach_inlay_hints,
-			})
-			lspconfig.yamlls.setup({
-				capabilities = capabilities,
-				on_attach = on_attach_inlay_hints,
-				settings = {
-					yaml = {
-						schemas = {
-							["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*",
-							["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] = "docker-compose*.yml",
-							-- Spring Boot application.yml schema
-							["https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/application.json"] = "application*.yml",
+			for _, server in ipairs(servers) do
+				local opts = { capabilities = capabilities, on_attach = on_attach_inlay_hints }
+
+				if server == "sqls" then
+					opts.settings = {
+						sqls = {
+							connections = {
+								{
+									driver = "postgresql",
+									dataSourceName = "host=localhost port=5432 user=admin password=admin123 dbname=mydb sslmode=disable",
+								},
+							},
 						},
-						validate = true,
-						completion = true,
-						hover = true,
-					},
-				},
-			})
-			lspconfig.html.setup({
-				capabilities = capabilities,
-				on_attach = on_attach_inlay_hints,
-				filetypes = {
-					"templ",
-					"html",
-					"php",
-					"css",
-					"javascriptreact",
-					"typescriptreact",
-					"javascript",
-					"typescript",
-					"jsx",
-					"tsx",
-				},
-			})
-			lspconfig.tailwindcss.setup({
-				capabilities = capabilities,
-				on_attach = on_attach_inlay_hints,
-				filetypes = {
-					"templ",
-					"html",
-					"css",
-					"javascriptreact",
-					"typescriptreact",
-					"javascript",
-					"typescript",
-					"jsx",
-					"tsx",
-				},
-			})
-			lspconfig.ts_ls.setup({
-				on_attach = function(client, bufnr)
-					-- Optional: disable formatting so you can use a separate formatter like Prettier
-					client.server_capabilities.documentFormattingProvider = false
-					if client.server_capabilities.inlayHintProvider then
-						vim.lsp.inlay_hint(bufnr, true)
+					}
+				elseif server == "lua_ls" then
+					opts.settings = {
+						Lua = {
+							diagnostics = { globals = { "vim" } },
+							workspace = { library = vim.api.nvim_get_runtime_file("", true) },
+							telemetry = { enable = false },
+						},
+					}
+				elseif server == "gopls" then
+					opts.settings = {
+						gopls = {
+							hints = {
+								assignVariableTypes = true,
+								compositeLiteralFields = true,
+								compositeLiteralTypes = true,
+								constantValues = true,
+								functionTypeParameters = true,
+								parameterNames = true,
+								rangeVariableTypes = true,
+							},
+						},
+					}
+				elseif server == "yamlls" then
+					opts.settings = {
+						yaml = {
+							schemas = {
+								["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*",
+								["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] = "docker-compose*.yml",
+								["https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/application.json"] = "application*.yml",
+							},
+							validate = true,
+							completion = true,
+							hover = true,
+						},
+					}
+				elseif server == "ts_ls" then
+					opts.on_attach = function(client, bufnr)
+						client.server_capabilities.documentFormattingProvider = false
+						if client.server_capabilities.inlayHintProvider then
+							vim.lsp.inlay_hint(bufnr, true)
+						end
 					end
-				end,
-				capabilities = capabilities,
-				init_options = {
-					preferences = {
-						disableSuggestions = true,
-					},
-				},
-				settings = {
-					typescript = {
-						preferences = {
-							importModuleSpecifierPreference = "non-relative",
-						},
-					},
-				},
-			})
+					opts.init_options = { preferences = { disableSuggestions = true } }
+					opts.settings =
+						{ typescript = { preferences = { importModuleSpecifierPreference = "non-relative" } } }
+				elseif server == "clangd" then
+					opts.cmd = {
+						"clangd",
+						"--background-index",
+						"--pch-storage=memory",
+						"--all-scopes-completion",
+						"--pretty",
+						"--header-insertion=never",
+						"-j=4",
+						"--inlay-hints",
+						"--header-insertion-decorators",
+						"--function-arg-placeholders",
+						"--completion-style=detailed",
+					}
+					opts.filetypes = { "c", "cpp", "objc", "objcpp" }
+					-- opts.root_dir = lspconfig.util.root_pattern("src")
+					opts.init_options = {
+						clangdFileStatus = true,
+						fallbackFlags = { "-std=c++2a", "-I/home/bagi/git-clone-projects/raylib/src" },
+					}
+					opts.single_file_support = true
+				end
 
-			lspconfig.clangd.setup({
-				on_attach = on_attach_inlay_hints,
-				cmd = {
-					"clangd",
-					"--background-index",
-					"--pch-storage=memory",
-					"--all-scopes-completion",
-					"--pretty",
-					"--header-insertion=never",
-					"-j=4",
-					"--inlay-hints",
-					"--header-insertion-decorators",
-					"--function-arg-placeholders",
-					"--completion-style=detailed",
-					-- "--std=c++20",
-				},
-				filetypes = { "c", "cpp", "objc", "objcpp" },
-				root_dir = require("lspconfig").util.root_pattern("src"),
-				init_option = {
-					clangdFileStatus = true,
-					fallbackFlags = { "-std=c++2a", "-I/home/bagi/git-clone-projects/raylib/src" },
-				},
-				capabilities = vim.lsp.protocol.make_client_capabilities(),
-				single_file_support = true,
-			})
+				lsp.config(server, opts)
+				lsp.enable(server)
+			end
 
-			lspconfig.pylsp.setup({
-				on_attach = on_attach_inlay_hints,
-				capabilities = capabilities,
-			})
-
-			lspconfig.marksman.setup({
-				on_attach = on_attach_inlay_hints,
-				capabilities = capabilities,
-			})
+			-- Theme / highlight (example)
+			vim.cmd("highlight LspInlayHint guifg=#5c6370 gui=italic")
 		end,
 	},
 }

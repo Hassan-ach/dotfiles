@@ -69,6 +69,9 @@ c.tabs.title.format = "{audio}{current_title}"
 # Close browser when the last tab is closed
 c.tabs.last_close = 'close'
 
+# Adjust percentage (default is '15%')
+c.tabs.width = '3%'    
+
 # =============================================================================
 # FONTS
 # =============================================================================
@@ -290,3 +293,6 @@ config.bind('<z><o><l>', 'spawn --userscript qute-pass --otp-only')
 # Youtube Video and PlayList Downloads
 config.bind('<z><v>', 'spawn --userscript ytdlp-single {url}')
 config.bind('<z><p><d>', 'spawn --userscript ytdlp-playlist {url}')
+
+# Notification 
+c.content.notifications.presenter = 'libnotify'

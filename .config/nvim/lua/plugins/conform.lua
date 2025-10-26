@@ -8,7 +8,7 @@ return {
 			log_level = vim.log.levels.DEBUG,
 			formatters_by_ft = {
 				lua = { "stylua" },
-				java = { "clang_format_java" },
+				java = { "lsp" },
 				python = { "black" },
 				rust = { "rustfmt" },
 				javascript = { "prettier" },
@@ -22,7 +22,7 @@ return {
 				yaml = { "yamlfmt" },
 				html = { "prettier" },
 				json = { "prettier" },
-				markdown = { "prettier" },
+				markdown = { "mdformat" },
 				gleam = { "gleam" },
 				asm = { "asmfmt" },
 				css = { "prettier" },
@@ -30,6 +30,8 @@ return {
 				php = { "pint", "php_cs_fixer" }, -- Corrected PHP formatters
 				bash = { "shfmt" },
 				typst = { "typstyle", "prettypst" },
+				sql = { "pgformatter", "sleek" },
+				xml = { "lemminx", "prettier" },
 				-- For filetypes without a formatter:
 				["_"] = { "trim_whitespace", "trim_newlines" },
 			},

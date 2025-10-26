@@ -132,3 +132,14 @@ sdk() {
   [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
   sdk "$@" # Call the real sdk command with the original arguments
 }
+
+# Auto-set JAVA_HOME based on Arch's default
+if [[ -L /usr/lib/jvm/default ]]; then
+    DEFAULT_JAVA=$(readlink -f /usr/lib/jvm/default)
+    export JAVA_HOME=$DEFAULT_JAVA
+    export PATH="$JAVA_HOME/bin:$PATH"
+fi
+
+# Tomcat env
+export CATALINA_HOME=/opt/tomcat
+export PATH=$PATH:$CATALINA_HOME/bin

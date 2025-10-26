@@ -69,7 +69,11 @@ vim.o.signcolumn = "no"
 -- SPELL CHECKING
 -- ================
 vim.opt.spell = true
-vim.opt.spelllang = { "en_us" } -- or {"en_us", "fr"} for multiple languages
+vim.opt.spelllang = { --[[ "en_us", ]]
+	"en_gb",
+	"fr",
+} -- or {"en_us", "fr"} for multiple languages
+vim.opt.spellsuggest = "best,9" -- Show 9 best suggestions
 
 -- ================
 -- LEADER KEYS
@@ -123,7 +127,10 @@ vim.keymap.set("n", "<leader>Y", '"+Y', { desc = "yank to systeme clipboard" })
 -- ================
 -- SPELL CHECK MAPPINGS
 -- ================
-vim.keymap.set("n", "<leader>ll", ":setlocal spell spelllang=en_us<CR>", { desc = "spell checker for EN" })
+vim.keymap.set("n", "<leader>ll", ":setlocal spell!<CR>", { desc = "toggle spell checker" })
+vim.keymap.set("n", "<leader>su", ":setlocal spell spelllang=en_us<CR>", { desc = "Spell checker for EN_US" })
+vim.keymap.set("n", "<leader>sk", ":setlocal spell spelllang=en_gb<CR>", { desc = "Spell checker for EN_GB" })
+vim.keymap.set("n", "<leader>sf", ":setlocal spell spelllang=fr<CR>", { desc = "Spell checker for FR" })
 
 -- ================
 -- LSP KEYMAPPINGS
@@ -410,3 +417,9 @@ vim.keymap.set("n", "<leader>ih", function()
 	local enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr })
 	vim.lsp.inlay_hint.enable(not enabled, { bufnr = bufnr })
 end, { desc = "Toggle Inlay Hints" })
+
+-- Lint SQL files automatically
+-- vim.api.nvim_create_autocmd("BufWritePost", {
+-- 	pattern = "*.sql",
+-- 	command = "!sqlfluff lint %",
+-- })
