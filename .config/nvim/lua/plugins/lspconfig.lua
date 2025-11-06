@@ -154,6 +154,15 @@ return {
 						fallbackFlags = { "-std=c++2a", "-I/home/bagi/git-clone-projects/raylib/src" },
 					}
 					opts.single_file_support = true
+				elseif server == "html" then
+					opts.filetypes = { "html", "jsp" }
+					opts.init_options = {
+						configurationSection = { "html", "css", "jsp" },
+						embeddedLanguages = {
+							css = true,
+							javascript = true,
+						},
+					}
 				end
 
 				lsp.config(server, opts)
