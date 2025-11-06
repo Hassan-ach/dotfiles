@@ -11,8 +11,9 @@
     border: none;
     border-radius: 0;
     /* Font from Polybar: JetBrainsMono Nerd Font. Add fallbacks. */
-    font-family: "Iosevka Nerd Font", "Font Awesome 6 Free",
-        "Symbols Nerd Font Mono", sans-serif;
+    font-family:
+        "Iosevka Nerd Font", "Font Awesome 6 Free", "Symbols Nerd Font Mono",
+        sans-serif;
     font-size: 12px; /* Matching Polybar font size */
     min-height: 0; /* Important to remove default Waybar padding */
 }
