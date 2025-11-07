@@ -1,0 +1,31 @@
+# Prompt symbols
+[character]
+success_symbol = "[❯](bold {{colors.primary.default.hex}})"  # Foam color
+error_symbol = "[❯](bold {{colors.tertiary.default.hex}})"  # Love color
+
+# Directory Path
+[directory]
+style = "bold {{colors.on_surface_variant.default.hex}}"  # Text color
+read_only = " "
+read_only_style = "bold {{colors.primary_fixed_dim.default.hex}}"  # Gold color
+
+# Git Branch
+[git_branch]
+symbol = " "
+style = "bold {{colors.primary.default.hex}}"  # Iris color
+
+# Git Status
+[git_status]
+style = "bold {{colors.primary_fixed_dim.default.hex}}"  # Gold
+conflicted = "⚔ "
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕"
+modified = "*"
+staged = "+"
+deleted = "✘"
+untracked = "?"
+
+# Disable unused modules for minimalism
+[package]
+disabled = true
