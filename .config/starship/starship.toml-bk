@@ -1,0 +1,31 @@
+
+[character]
+success_symbol = "[❯](bold #9ccfd8)"  # foam
+error_symbol = "[❯](bold #eb6f92)"    # love
+
+# Directory Path
+[directory]
+style = "bold #e0def4"               # text
+read_only = " "
+read_only_style = "bold #f6c177"     # gold
+
+# Git Branch
+[git_branch]
+symbol = " "
+style = "bold #c4a7e7"               # iris
+
+# Git Status
+[git_status]
+style = "bold #f6c177"              # gold
+conflicted = "⚔ "
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕"
+modified = "*"
+staged = "+"
+deleted = "✘"
+untracked = "?"
+
+# Disable unused modules for minimalism
+[package]
+disabled = true

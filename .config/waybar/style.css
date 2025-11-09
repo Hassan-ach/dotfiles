@@ -1,12 +1,4 @@
-@define-color base #191724;
-@define-color background-alt rgba(33,32,46,0);
-@define-color foreground #e0def4;
-@define-color primary #ebbcba;
-@define-color secondary #f6c177;
-@define-color alert #eb6f92;
-@define-color disabled #6e6a86;
-@define-color transparent rgba(0,0,0,0); /* Fully transparent */
-
+@import "./colors.css";
 * {
     border: none;
     border-radius: 0;
@@ -19,12 +11,7 @@
 }
 
 window#waybar {
-    background-color: rgba(
-        25,
-        23,
-        36,
-        1
-    ); /* Polybar's #99191724 (60% opacity) */
+    background-color: @base; /* Polybar's #99191724 (60% opacity) */
     color: @foreground; /* Default foreground for the bar */
     transition-property: background-color;
     transition-duration: 0.5s;
@@ -47,7 +34,6 @@ window#waybar {
 #custom-gpu_usage, /* Custom module IDs are lowercase with hyphens */
 #custom-bluetooth,
 #tray {
-    background-color: @background-alt;
     padding: 0 4px; /* Adjust padding for modules, Polybar module-margin was 1 */
     margin: 0 1px; /* To get the separator effect, each module has a margin */
 }
@@ -77,7 +63,7 @@ window#waybar {
 /* #window, */
 #custom-gpu_usage,
 #custom-bluetooth {
-    border-right: 2px solid @disabled; /* Polybar separator-foreground */
+    border-right: 1px solid @disabled; /* Polybar separator-foreground */
     margin-right: 0px; /* Adjust if you want extra space before separator */
 }
 

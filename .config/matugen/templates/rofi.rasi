@@ -1,5 +1,5 @@
 * {
-    background: {{colors.surface_dim.default.rgba | set_alpha: 0.8}};
+    background: {{colors.surface_dim.default.rgba | set_alpha: 0.5 }};
     primary: {{colors.primary.default.hex}};
     primary-fixed: {{colors.primary_fixed.default.hex}};
     primary-fixed-dim: {{colors.primary_fixed_dim.default.hex}};

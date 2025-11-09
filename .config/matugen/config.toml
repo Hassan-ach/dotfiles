@@ -60,9 +60,9 @@
   input_path  = './templates/rofi.rasi'
   output_path = '~/.config/rofi/colors.rasi'
 
-# [templates.qtct]
-#   input_path  = './templates/qtct.conf'
-#   output_path = '~/.local/share/color-schemes/Matugen.colors'
+[templates.qtct]
+  input_path  = './templates/qtct.conf'
+  output_path = '~/.local/share/color-schemes/Matugen.colors'
 
 # [templates.fzfh]
 #   input_path  = './templates/terminal/fzf_syntax_high.zsh'

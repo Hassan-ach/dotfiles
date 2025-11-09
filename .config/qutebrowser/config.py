@@ -77,19 +77,32 @@ c.tabs.width = '3%'
 # =============================================================================
 
 # Default font settings
+# c.fonts.default_size = '12pt'
+# c.fonts.default_family = ['Iosevka Term Nerd Font', 'monospace']
+#
+# # Web fonts
+# c.fonts.web.family.standard = 'Iosevka Term Nerd Font'
+# c.fonts.web.family.sans_serif = 'Iosevka Term Nerd Font'
+# c.fonts.web.family.serif = 'Iosevka Term Nerd Font'
+#
+# # Interface fonts
+# c.fonts.completion.entry = '12pt Iosevka Term Nerd Font'
+# c.fonts.statusbar = '12pt Iosevka Term Nerd Font'
+# c.fonts.tabs.selected = '12pt Iosevka Term Nerd Font'
+# c.fonts.tabs.unselected = '12pt Iosevka Term Nerd Font'
+
 c.fonts.default_size = '12pt'
-c.fonts.default_family = ['Iosevka Term Nerd Font', 'monospace']
+c.fonts.default_family = ['IosevkaTerm Nerd Font', 'Iosevka Term', 'monospace']
 
-# Web fonts
-c.fonts.web.family.standard = 'Iosevka Term Nerd Font'
-c.fonts.web.family.sans_serif = 'Iosevka Term Nerd Font'
-c.fonts.web.family.serif = 'Iosevka Term Nerd Font'
+c.fonts.web.family.standard = 'IosevkaTerm Nerd Font'
+c.fonts.web.family.sans_serif = 'IosevkaTerm Nerd Font'
+c.fonts.web.family.serif = 'IosevkaTerm Nerd Font'
+c.fonts.web.family.fixed = 'IosevkaTerm Nerd Font'
 
-# Interface fonts
-c.fonts.completion.entry = '12pt Iosevka Term Nerd Font'
-c.fonts.statusbar = '12pt Iosevka Term Nerd Font'
-c.fonts.tabs.selected = '12pt Iosevka Term Nerd Font'
-c.fonts.tabs.unselected = '12pt Iosevka Term Nerd Font'
+c.fonts.completion.entry = '12pt IosevkaTerm Nerd Font'
+c.fonts.statusbar = '12pt IosevkaTerm Nerd Font'
+c.fonts.tabs.selected = '12pt IosevkaTerm Nerd Font'
+c.fonts.tabs.unselected = '12pt IosevkaTerm Nerd Font'
 
 # =============================================================================
 # APPEARANCE & DARK MODE

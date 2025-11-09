@@ -1,4 +1,4 @@
-@define-color base {{colors.background.default.rgb | set_alpha: 0.6}};
+@define-color base {{colors.background.default.rgba | set_alpha: 0.6 }};
 @define-color background-alt {{colors.surface_container_low.default.hex}};
 @define-color foreground {{colors.on_background.default.hex}};
 @define-color primary {{colors.primary.default.hex}};

@@ -68,34 +68,35 @@ bindkey '^[[B' history-substring-search-down
 #     eval "$(dircolors -b)"
 # fi
 #
-export LS_COLORS="\
-rs=0:\
-di=38;5;66:\
-ln=38;5;217:\
-mh=38;5;103:\
-pi=38;5;223:\
-so=38;5;183:\
-do=38;5;183:\
-bd=38;5;223:\
-cd=38;5;223:\
-or=38;5;211:\
-mi=38;5;211:\
-su=38;5;189:\
-sg=38;5;189:\
-ca=38;5;146:\
-tw=38;5;66:\
-ow=38;5;66:\
-st=38;5;66:\
-ex=38;5;223:\
-*.jpg=38;5;152:\
-*.png=38;5;152:\
-*.mp4=38;5;152:\
-*.mp3=38;5;152:\
-*.gz=38;5;183:\
-*.tar=38;5;183:\
-*.zip=38;5;183\
-"
+# export LS_COLORS="\
+# rs=0:\
+# di=38;5;66:\
+# ln=38;5;217:\
+# mh=38;5;103:\
+# pi=38;5;223:\
+# so=38;5;183:\
+# do=38;5;183:\
+# bd=38;5;223:\
+# cd=38;5;223:\
+# or=38;5;211:\
+# mi=38;5;211:\
+# su=38;5;189:\
+# sg=38;5;189:\
+# ca=38;5;146:\
+# tw=38;5;66:\
+# ow=38;5;66:\
+# st=38;5;66:\
+# ex=38;5;223:\
+# *.jpg=38;5;152:\
+# *.png=38;5;152:\
+# *.mp4=38;5;152:\
+# *.mp3=38;5;152:\
+# *.gz=38;5;183:\
+# *.tar=38;5;183:\
+# *.zip=38;5;183\
+# "
 
+[ -f "$ZSH/themes/ls_color.zsh" ] && zsource "$ZSH/themes/ls_color.zsh"
 # ==============================
 # Completion System
 # ==============================
@@ -181,7 +182,8 @@ command -v zoxide &>/dev/null && eval "$(zoxide init zsh)"
 command -v fzf &>/dev/null && eval "$(fzf --zsh)"
 
 # Theme
-zsource "$ZSH/themes/rose-pine.zsh-theme" # Add this line
+# zsource "$ZSH/themes/rose-pine.zsh-theme" # Add this line
+zsource "$ZSH/themes/color-palette.zsh-theme" # Add this line
 
 # Load Starship theme if available
 if command -v starship &>/dev/null; then

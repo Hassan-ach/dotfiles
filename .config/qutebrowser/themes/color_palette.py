@@ -3,83 +3,17 @@
 # Rosé Pine theme for qutebrowser
 # Adapted from rose-pine/rose-pine-theme (GitHub)
 # Supports rose-pine, rose-pine-moon, rose-pine-dawn, and default themes
+import sys
+from pathlib import Path
+
+# Ensure local palette is importable
+sys.path.insert(0, str(Path(__file__).parent))
+
+from palette import get_palette
 
 def setup(c, variant, samecolorrows=False):
     # Palette {{{
-    palette = {}
-    if variant == "rp":
-        palette = {
-            "Base": "#191724",         # Dark background
-            "Surface": "#1f1d2e",      # Secondary dark background
-            "Overlay": "#26233a",      # Tertiary dark background
-            "Muted": "#6e6a86",        # Low contrast foreground
-            "Subtle": "#908caa",       # Medium contrast foreground
-            "Text": "#e0def4",         # High contrast text
-            "Love": "#eb6f92",         # Red accent (errors)
-            "Gold": "#f6c177",         # Yellow accent (warnings)
-            "Rose": "#ebbcba",         # Cyan accent (links)
-            "Pine": "#31748f",         # Green accent
-            "Foam": "#9ccfd8",         # Blue accent
-            "Iris": "#c4a7e7",         # Magenta accent
-            "HighlightLow": "#21202e",  # Low highlight
-            "HighlightMed": "#403d52",  # Medium highlight
-            "HighlightHigh": "#524f67"  # High highlight
-        }
-    elif variant == "rpm":
-        palette = {
-            "Base": "#232136",
-            "Surface": "#2a273f",
-            "Overlay": "#393552",
-            "Muted": "#6e6a86",
-            "Subtle": "#908caa",
-            "Text": "#e0def4",
-            "Love": "#eb6f92",
-            "Gold": "#f6c177",
-            "Rose": "#ea9a97",
-            "Pine": "#3e8fb0",
-            "Foam": "#9ccfd8",
-            "Iris": "#c4a7e7",
-            "HighlightLow": "#2a283e",
-            "HighlightMed": "#44415a",
-            "HighlightHigh": "#56526e"
-        }
-    elif variant == "rpd":
-        palette = {
-            "Base": "#faf4ed",
-            "Surface": "#fffaf3",
-            "Overlay": "#f2e9e1",
-            "Muted": "#9893a5",
-            "Subtle": "#797593",
-            "Text": "#575279",
-            "Love": "#b4637a",
-            "Gold": "#ea9d34",
-            "Rose": "#d7827e",
-            "Pine": "#286983",
-            "Foam": "#56949f",
-            "Iris": "#907aa9",
-            "HighlightLow": "#f4ede8",
-            "HighlightMed": "#dfdad9",
-            "HighlightHigh": "#cecacd"
-        }
-    else:  # default theme
-        palette = {
-            "Base": "#ffffff",         # White background
-            "Surface": "#f5f5f5",      # Light gray secondary background
-            "Overlay": "#e0e0e0",      # Medium gray for UI elements
-            "Muted": "#666666",        # Muted gray for low contrast
-            "Subtle": "#333333",       # Darker gray for medium contrast
-            "Text": "#000000",         # Black text for high contrast
-            "Love": "#d70000",         # Red for errors
-            "Gold": "#ff9900",         # Orange for warnings
-            "Rose": "#0055ff",         # Blue for links
-            "Pine": "#008000",         # Green for indicators
-            "Foam": "#00aaff",         # Light blue for highlights
-            "Iris": "#9900cc",         # Purple for accents
-            "HighlightLow": "#f0f0f0",  # Light gray highlight
-            "HighlightMed": "#d0d0d0",  # Medium gray highlight
-            "HighlightHigh": "#b0b0b0"  # Darker gray highlight
-        }
-    # }}}
+    palette = get_palette()
 
     # Completion {{{
     c.colors.completion.category.bg = palette["Base"]

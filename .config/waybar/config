@@ -6,22 +6,23 @@
     "spacing": 1,
 
     "modules-left": [
-        "hyprland/workspaces",
+        "hyprland/workspaces#roman",
         "hyprland/window"
     ],
     "modules-center": [
         "clock"
     ],
     "modules-right": [
+        "swaync",
         "battery",
         "pulseaudio",
         "backlight",
         "network",
-        "custom/gpu_usage",
+       // "custom/gpu_usage",
         "cpu",
         "memory",
-        "custom/bluetooth"
-//        "temperature",
+        "custom/bluetooth",
+        "temperature"
        // "tray"
     ],
 
@@ -43,35 +44,86 @@
         "on-click": "activate"
     },
 
+"hyprland/workspaces#roman": {
+	"active-only": false,
+	"all-outputs": true,
+	"format": "{icon}",
+	"show-special": false,
+	"on-click": "activate",
+	"on-scroll-up": "hyprctl dispatch workspace e+1",
+	"on-scroll-down": "hyprctl dispatch workspace e-1",
+//    "persistent-workspaces": {
+   //   "*": 5
+//	},
+	"format-icons": {
+		"1": "I",
+		"2": "II",
+		"3": "III",
+		"4": "IV",
+		"5": "V",
+		"6": "VI",
+		"7": "VII",
+		"8": "VIII",
+		"9": "IX",
+		"10": "X",
+        "urgent": "",
+        "active": "",
+        "default": ""
+	},
+},
     "sway/window": {
         "max-length": 40,
         "tooltip": false,
         "separator": false
     },
 
-    "clock": {
+"clock": {
+	"interval": 1,
+    "format": "  {:%I:%M %p}", // AM PM format
+   // "format": "  {:%H:%M:%S}", // 24H
+	"format-alt": "  {:%H:%M   %Y, %d %B, %A}",
+	"tooltip-format": "<tt><small>{calendar}</small></tt>",
+	"calendar": {
+		"mode": "month",
+		"mode-mon-col": 3,
+		"weeks-pos": "right",
+		"on-scroll": 1,
+		"format": {
+			"months": "<span color='#ffead3'><b>{}</b></span>",
+			"days": "<span color='#ecc6d9'><b>{}</b></span>",
+			"weeks": "<span color='#99ffdd'><b>W{:%V}</b></span>",
+			"weekdays": "<span color='#ffcc66'><b>{}</b></span>",
+			"today": "<span color='#ff6699'><b><u>{}</u></b></span>"
+		}
+	}
+},
 
-        "format": "⏱️ {:%a %d-%b %Y  %I:%M %p}",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt>{calendar}</tt>",
-        "interval": 1
-    },
-
-    "battery": {
-        "format": "<span foreground='#ebbcba'></span>{icon} {capacity}%",
-        "format-charging": "<span foreground='#ebbcba'> </span>⚡ {capacity}%",
-        "format-plugged": "<span foreground='#ebbcba'> </span>🔌 {capacity}%",
-        "format-discharging": "<span foreground='#ebbcba'> </span>{icon} {capacity}%",
-        "format-full": "<span foreground='#ebbcba'> </span>✅ {capacity}%",
-        "format-no-battery": "  N/A",
-        "format-icons": [" ", " "],
-        "states": {
-            "critical": 25,
-            "low": 25
-        },
-        "path": "/sys/class/power_supply/BAT0/uevent",
-        "interval": 5,
-        "tooltip": true
-    },
+"battery": {
+	//"interval": 5,
+	"align": 0,
+	"rotate": 0,
+	//"bat": "BAT1",
+	//"adapter": "ACAD",
+	"full-at": 100,
+	"design-capacity": false,
+	"states": {
+		"good": 95,
+		"warning": 30,
+		"critical": 15
+	},
+	"format": "{icon} {capacity}%",
+	"format-charging": " {capacity}%",
+	"format-plugged": "󱘖 {capacity}%",
+	"format-alt-click": "click",
+	"format-full": "{icon} Full",
+	"format-alt": "{icon} {time}",
+	"format-icons": [
+		"󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"
+	],
+	"format-time": "{H}h {M}min",
+	"tooltip": true,
+	"tooltip-format": "{timeTo} {power}w",
+},
 
 
     "pulseaudio": {
@@ -86,12 +138,30 @@
         "tooltip": true
     },
 
-    "backlight": {
-        "format": "<span foreground='#f6c177'>󰃠 </span>{percent}%",
-        "on-scroll-up": "brightnessctl set +5%",
-        "on-scroll-down": "brightnessctl set 5%-",
-        "tooltip": true
-    },
+"backlight": {
+	"interval": 2,
+	"align": 0,
+	"rotate": 0,
+	//"format": "{icon} {percent}%",
+	"format-icons": [
+		" ",
+		" ",
+		" ",
+		"󰃝 ",
+		"󰃞 ",
+		"󰃟 ",
+		"󰃠 "
+	],
+	"format": "{icon} {percent}%",
+	//"format-icons": ["","","","","","","","","","","","","","",""],
+	"tooltip-format": "backlight {percent}%",
+	"icon-size": 10,
+	"on-click": "",
+	"on-click-middle": "",
+	"on-click-right": "",
+	"on-update": "",
+	"smooth-scrolling-threshold": 1,
+},
 
     "network": {
         "interval": 1,
@@ -129,15 +199,45 @@
     },
 
     "temperature": {
-        "hwmon-path": "/sys/class/hwmon/hwmon*/temp1_input",
-        "critical-threshold": 80,
-        "format": "<span foreground='#f6c177'>🌡️ {temperatureC}°C</span>",
-        "format-critical": "<span foreground='#eb6f92'>🔥 {temperatureC}°C</span>",
-        "tooltip": true,
-        "interval": 2
+	"interval": 10,
+	"tooltip": true,
+	"hwmon-path": [
+		"/sys/class/hwmon/hwmon1/temp1_input",
+		"/sys/class/thermal/thermal_zone0/temp"
+	],
+	//"thermal-zone": 0,
+	"critical-threshold": 82,
+	"format-critical": "{temperatureC}°C {icon}",
+	"format": "{temperatureC}°C {icon}",
+	"format-icons": [
+		"󰈸"
+	]
     },
 
     "tray": {
         "spacing": 16
-    }
+    },
+
+"swaync": {
+	"tooltip": true,
+	"format": "{} {icon} ",
+	"format-icons": {
+		"notification": "<span foreground='red'><sup></sup></span>",
+		"none": "",
+		"dnd-notification": "<span foreground='red'><sup></sup></span>",
+		"dnd-none": "",
+		"inhibited-notification": "<span foreground='red'><sup></sup></span>",
+		"inhibited-none": "",
+		"dnd-inhibited-notification": "<span foreground='red'><sup></sup></span>",
+		"dnd-inhibited-none": ""
+	},
+	"return-type": "json",
+	"exec-if": "which swaync-client",
+	"exec": "swaync-client -swb",
+	"on-click": "sleep 0.1 && swaync-client -t -sw",
+	"on-click-right": "swaync-client -d -sw",
+	"escape": true,
+},
+
+
 }

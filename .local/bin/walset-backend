@@ -1,0 +1,18 @@
+#!/bin/bash
+
+[ "$#" -ne 1 ] && { echo "Usage: $0 <image>"; exit 1; }
+[ ! -f "$1" ] && { echo "Error: File not found."; exit 2; }
+
+IMAGE="$1"
+
+swww img "$IMAGE" --transition-type none --transition-duration 1
+wal -i "$IMAGE" -nste --backend haishoku
+matugen image "$IMAGE"
+python3 /home/bagi/.config/nvim/pywal/chadwal.py & disown
+
+pkill waybar; waybar &>/dev/null &
+swaync &>/dev/null &
+
+tmux source-file ~/.tmux.conf
+
+notify-send "Wallpaper applied" "Theme updated."

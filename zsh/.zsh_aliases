@@ -166,16 +166,16 @@ alias magnet='aria2c --seed-time=0 --enable-dht=true --enable-peer-exchange=true
 if command -v yay &>/dev/null; then
     alias update='yay -Sy'
     alias upgrade='yay -Syu'
-    alias install='yay -S'
+    alias i='yay -S'
     alias remove='yay -Rns'
-    alias search='yay -Ss'
+    alias s='yay -Ss'
     alias info='yay -Si'
 elif command -v pacman &>/dev/null; then
     alias update='sudo pacman -Sy'
     alias upgrade='sudo pacman -Syu'
-    alias install='sudo pacman -S'
+    alias i='sudo pacman -S'
     alias remove='sudo pacman -Rns'
-    alias search='pacman -Ss'
+    alias s='pacman -Ss'
     alias info='pacman -Si'
 fi
 

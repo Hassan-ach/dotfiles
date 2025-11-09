@@ -11,8 +11,7 @@ return {
 	config = function()
 		local cmp = require("cmp")
 		local luasnip = require("luasnip")
-
-		cmp.setup({
+		local opts = {
 			snippet = {
 				expand = function(args)
 					luasnip.lsp_expand(args.body)
@@ -80,6 +79,8 @@ return {
 					return vim_item
 				end,
 			},
-		})
+		}
+		opts = vim.tbl_deep_extend("force", opts, require("nvchad.cmp"))
+		cmp.setup(opts)
 	end,
 }
