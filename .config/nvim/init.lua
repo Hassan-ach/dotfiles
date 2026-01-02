@@ -97,3 +97,5 @@ autocmd("Signal", {
 		require("nvchad.utils").reload()
 	end,
 })
+
+-- vim.g.mkdp_markdown_css = vim.fn.expand("~/Documents/md.css")

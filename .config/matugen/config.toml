@@ -100,9 +100,13 @@
   input_path  = './templates/terminal/nvchad.lua'
   output_path = '~/.local/share/nvim/lazy/base46/lua/base46/themes/matugen.lua'
 
-# [templates.vesktop]
-#   input_path  = "./templates/discord.css"
-#   output_path = "~/.config/vesktop/themes/Matugen.css"
+[templates.vesktop]
+  input_path  = "./templates/discord.css"
+  output_path = "~/.config/vesktop/themes/Matugen.css"
+
+[templates.vesktop2]
+  input_path  = "./templates/discord2.css"
+  output_path = "~/.config/vesktop/themes/Matugen2.css"
 
 [templates.cava]
   input_path  = "./templates/terminal/cava.config"

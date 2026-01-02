@@ -50,13 +50,13 @@ autoload -U compinit && compinit -C -d "${XDG_CACHE_HOME:-$HOME/.cache}/zcompdum
 # export KEYTIMEOUT=1
 
 # Key Bindings
-bindkey '^w' autosuggest-execute
+# bindkey '^w' autosuggest-execute
 # bindkey '^e' autosuggest-accept
-bindkey '^e' accept-line
-bindkey '^u' autosuggest-toggle
-bindkey '^l' vi-forward-word
-bindkey '^k' up-line-or-search
-bindkey '^j' down-line-or-search
+# bindkey '^e' accept-line
+# bindkey '^u' autosuggest-toggle
+# bindkey '^l' vi-forward-word
+# bindkey '^k' up-line-or-search
+# bindkey '^j' down-line-or-search
 # bindkey "^[[A" history-search-backward
 # bindkey "^[[B" history-search-forward
 bindkey '^[[A' history-substring-search-up
@@ -209,6 +209,8 @@ if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
 else
     export QT_QPA_PLATFORM=xcb
 fi
+
+export EDITOR="nvim"
 
  (){
     echo "9wditiha"

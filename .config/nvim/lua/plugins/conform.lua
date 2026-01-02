@@ -8,7 +8,7 @@ return {
 			log_level = vim.log.levels.DEBUG,
 			formatters_by_ft = {
 				lua = { "stylua" },
-				java = { "lsp" },
+				java = { "clang_format_java" },
 				python = { "black" },
 				rust = { "rustfmt" },
 				javascript = { "prettier" },
@@ -23,7 +23,7 @@ return {
 				html = { "prettier" },
 				jsp = { "prettier" },
 				json = { "prettier" },
-				markdown = { "mdformat" },
+				-- markdown = { "mdformat" },
 				gleam = { "gleam" },
 				asm = { "asmfmt" },
 				css = { "prettier" },

@@ -9,9 +9,23 @@ return {
 					keymap = {
 						jump_prev = "[[",
 						jump_next = "]]",
-						-- accept = "<CR>",
+						accept = false,
 						refresh = "gr",
 						open = "<M-CR>",
+					},
+				},
+				filetypes = {
+					["*"] = true,
+				},
+				suggestion = {
+
+					keymap = {
+						accept = false,
+						accept_word = false,
+						accept_line = false,
+						next = "<M-]>",
+						prev = "<M-[>",
+						dismiss = "<C-]>",
 					},
 				},
 			})
@@ -21,7 +35,11 @@ return {
 		"zbirenbaum/copilot-cmp",
 		event = "InsertEnter",
 		config = function()
-			require("copilot_cmp").setup()
+			require("copilot_cmp").setup({
+				filetypes = {
+					["*"] = true,
+				},
+			})
 		end,
 		dependencies = { "zbirenbaum/copilot.lua" },
 	},

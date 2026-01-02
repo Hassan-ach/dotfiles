@@ -423,3 +423,21 @@ end, { desc = "Toggle Inlay Hints" })
 -- 	pattern = "*.sql",
 -- 	command = "!sqlfluff lint %",
 -- })
+
+-- Obsidian markdown settings
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "markdown",
+	callback = function()
+		vim.opt_local.conceallevel = 2
+	end,
+})
+
+vim.keymap.set({ "n", "t" }, "<leader>tt", function()
+	require("float_term").float_term("tmux")
+end, { desc = "Toggle terminal" })
+
+-- User command
+vim.api.nvim_create_user_command("FloatTerm", function(args)
+	require("float_term").float_term(args.args ~= "" and args.args or nil)
+end, { nargs = "?" })
+
