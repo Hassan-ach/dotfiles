@@ -2,12 +2,14 @@
 -- BASIC SETTINGS & GENERAL CONFIG
 -- ================================
 vim.cmd("set number")
+vim.cmd("set mouse=")
 vim.cmd("set relativenumber")
 vim.cmd("set ts=2")
 vim.cmd("set cmdheight=0")
 vim.cmd("set termguicolors")
 vim.cmd("set scrolloff=5")
 vim.cmd("set signcolumn=no")
+vim.cmd("set syntax=off")
 vim.o.scrolloff = 8
 vim.opt.ignorecase = true
 
@@ -216,7 +218,7 @@ vim.keymap.set("n", "<leader><space>", ":Telescope colorscheme<CR>")
 -- ================
 -- LSP CONFIGURATION
 -- ================
-vim.lsp.set_log_level("warn")
+vim.lsp.log.set_level("warn")
 
 -- Diagnostic configuration
 vim.diagnostic.config({
@@ -440,4 +442,3 @@ end, { desc = "Toggle terminal" })
 vim.api.nvim_create_user_command("FloatTerm", function(args)
 	require("float_term").float_term(args.args ~= "" and args.args or nil)
 end, { nargs = "?" })
-

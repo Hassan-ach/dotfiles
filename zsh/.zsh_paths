@@ -30,7 +30,7 @@ export HISTORY_IGNORE="(ls|cd|pwd|exit|sudo reboot|history|cd -|cd ..)"
 
 # Bat Configuration
 export BAT_PAGER="less -RF"
-export BAT_THEME="rose-pine"  # Uncomment to set theme
+export BAT_THEME="Catppuccin Frappe"  # Uncomment to set theme
 
 # Man Page Styling with Bat
 export MANPAGER="nvim +Man!"
@@ -146,3 +146,6 @@ fi
 # Tomcat env
 export CATALINA_HOME=/opt/tomcat
 export PATH=$PATH:$CATALINA_HOME/bin
+export PATH=/home/bagi/.opencode/bin:$PATH
+
+export PATH=$HOME/.npm-global/bin:$PATH

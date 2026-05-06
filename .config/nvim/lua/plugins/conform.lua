@@ -21,6 +21,7 @@ return {
 				haskell = { "ormolu" },
 				yaml = { "yamlfmt" },
 				html = { "prettier" },
+				templ = { "prettier", "golines", "gofumpt" },
 				jsp = { "prettier" },
 				json = { "prettier" },
 				-- markdown = { "mdformat" },

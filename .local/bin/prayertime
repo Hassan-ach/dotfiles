@@ -500,6 +500,10 @@ const printPrayers = async () => {
     const defTime = getTimeDef(reqDay, Timings, nextIdx);
     draw.line("-", 20);
     draw.center("✨ PRAYER TIMES ✨", 19);
+    draw.center(
+        `📍 ${getConfigValue("city")}, ${getConfigValue("country")}`,
+        19,
+    );
     draw.line("-", 20);
 
     for (let i = 0; i < 5; ++i) {
@@ -507,13 +511,13 @@ const printPrayers = async () => {
             //
             draw.str(
                 `${prayes[i]}: ${Timings[prayes[i]]} ( ${defTime} )`,
-                configFile.secondaryColor,
+                getConfigValue("secondaryColor"),
                 false,
             );
         } else {
             draw.str(
                 `${prayes[i]}: ${Timings[prayes[i]]}`,
-                configFile.primaryColor,
+                getConfigValue("primaryColor"),
                 false,
             );
         }

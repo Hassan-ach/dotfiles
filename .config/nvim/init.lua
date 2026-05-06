@@ -22,6 +22,7 @@ vim.opt.rtp:prepend(lazypath)
 
 -- vim opts
 require("vimopts")
+
 -- lazy.nvim setup
 require("lazy").setup("plugins", {
 	defaults = {
@@ -30,8 +31,8 @@ require("lazy").setup("plugins", {
 })
 
 -- treesitter config
-local config = require("nvim-treesitter.configs")
-config.setup({
+local ts = require("nvim-treesitter")
+ts.setup({
 	ensure_installed = {
 		"vimdoc",
 		"go",
@@ -99,3 +100,5 @@ autocmd("Signal", {
 })
 
 -- vim.g.mkdp_markdown_css = vim.fn.expand("~/Documents/md.css")
+--
+vim.lsp.log.set_level("debug") -- Use "trace" for extreme detail

@@ -14,6 +14,7 @@ local workspace_dir = home .. "/.local/share/nvim/jdtls-workspace/" .. project_n
 
 -- Set the path to the jdtls installation managed by Mason.
 local jdtls_path = vim.fn.stdpath("data") .. "/mason/packages/jdtls"
+-- local jdtls_path = "/usr/bin/jdtls"
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 -- Add this to your jdtls_config table
@@ -34,7 +35,7 @@ vim.list_extend(
 -- The main configuration table for jdtls.
 local config = {
 	cmd = {
-		"/usr/lib/jvm/java-25-openjdk/bin/java", -- explicit JDK25
+		"java", -- explicit JDK25
 		"-Declipse.application=org.eclipse.jdt.ls.core.id1",
 		"-Dosgi.bundles.defaultStartLevel=4",
 		"-Declipse.product=org.eclipse.jdt.ls.core.product",
@@ -112,13 +113,19 @@ local config = {
 			-- And search for `interface RuntimeOption`
 			-- The `name` is NOT arbitrary, but must match one of the elements from `enum ExecutionEnvironment` in the link above
 			configuration = {
+				-- updateBuildConfiguration = "automatic",
 				runtimes = {
+					{
+						name = "JavaSE-21",
+						path = "/usr/lib/jvm/java-21-openjdk", -- <-- UPDATE THIS PATH
+					},
 					{
 						name = "JavaSE-25",
 						path = "/usr/lib/jvm/java-25-openjdk", -- <-- UPDATE THIS PATH
 					},
 				},
 			},
+			eclipse = { downloadSources = true },
 		},
 	},
 

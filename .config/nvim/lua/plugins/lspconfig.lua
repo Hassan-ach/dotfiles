@@ -30,6 +30,10 @@ return {
 					"tinymist",
 					"lemminx",
 					"postgres_lsp",
+					"templ",
+					"htmx",
+					"angularls",
+					"pbls",
 				},
 				automatic_enable = false,
 			})
@@ -38,14 +42,16 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 		config = function()
+			local cmp_nvim_lsp_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
-			capabilities.textDocument.completion = {
-				completionItem = { snippetSupport = true },
-			}
+
+			if cmp_nvim_lsp_ok then
+				capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
+			end
 
 			local function on_attach_inlay_hints(client, bufnr)
 				if client.server_capabilities.inlayHintProvider then
-					vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+					--vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
 				end
 			end
 
@@ -72,6 +78,11 @@ return {
 				"jdtls",
 				"pyright",
 				"marksman",
+				"templ",
+				"htmx",
+				"angularls",
+				"dockerls",
+				"pbls",
 			}
 
 			for _, server in ipairs(servers) do
@@ -86,6 +97,39 @@ return {
 									dataSourceName = "host=localhost port=5432 user=admin password=admin123 dbname=mydb sslmode=disable",
 								},
 							},
+						},
+					}
+				elseif server == "htmx" then
+					opts.filetypes = { "html", "templ" }
+				elseif server == "templ" then
+					opts.filetypes = { "go", "templ" }
+				elseif server == "tailwindcss" then
+					opts.cmd = { "tailwindcss-language-server", "--stdio" }
+					opts.filetypes = {
+						"html",
+						"javascript",
+						"typescript",
+						"javascriptreact",
+						"typescriptreact",
+						"vue",
+						"svelte",
+						"templ",
+					}
+					opts.filetypes.root_pattern = require("lspconfig.util").root_pattern("package.json", ".git")
+
+					opts.settings = {
+						tailwindCSS = {
+							validate = true,
+							lint = {
+								cssConflict = "warning",
+								invalidApply = "error",
+								invalidConfigPath = "error",
+								invalidScreen = "error",
+								invalidTailwindDirective = "error",
+								invalidVariant = "error",
+								recommendedVariantOrder = "warning",
+							},
+							classAttributes = { "class", "className", "classList", "ngClass" },
 						},
 					}
 				elseif server == "lua_ls" then
@@ -127,12 +171,14 @@ return {
 					opts.on_attach = function(client, bufnr)
 						client.server_capabilities.documentFormattingProvider = false
 						if client.server_capabilities.inlayHintProvider then
-							vim.lsp.inlay_hint(bufnr, true)
+							vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
 						end
 					end
 					opts.init_options = { preferences = { disableSuggestions = true } }
 					opts.settings =
 						{ typescript = { preferences = { importModuleSpecifierPreference = "non-relative" } } }
+					opts.filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact" }
+					opts.root_dir = vim.fs.root(0, { "package.json", ".git", "deno.json", "deno.jsonc" })
 				elseif server == "clangd" then
 					opts.cmd = {
 						"clangd",
@@ -155,9 +201,19 @@ return {
 					}
 					opts.single_file_support = true
 				elseif server == "html" then
-					opts.filetypes = { "html", "jsp" }
+					opts.filetypes = {
+						"html",
+						-- "javascript",
+						-- "typescript",
+						"javascriptreact",
+						"typescriptreact",
+						"vue",
+						"svelte",
+						"templ",
+						"jsp",
+					}
 					opts.init_options = {
-						configurationSection = { "html", "css", "jsp" },
+						configurationSection = { "html", "css", "jsp", "templ" },
 						embeddedLanguages = {
 							css = true,
 							javascript = true,
