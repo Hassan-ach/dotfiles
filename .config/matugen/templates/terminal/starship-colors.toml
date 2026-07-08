@@ -29,3 +29,5 @@ untracked = "?"
 # Disable unused modules for minimalism
 [package]
 disabled = true
+
+scan_timeout = 0

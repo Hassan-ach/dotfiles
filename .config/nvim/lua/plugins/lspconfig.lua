@@ -1,3 +1,4 @@
+local plugins = require("plugins")
 return {
 	{
 		"williamboman/mason.nvim",
@@ -34,6 +35,7 @@ return {
 					"htmx",
 					"angularls",
 					"pbls",
+					"vue_ls",
 				},
 				automatic_enable = false,
 			})
@@ -83,6 +85,8 @@ return {
 				"angularls",
 				"dockerls",
 				"pbls",
+				"kotlin_language_server",
+				-- "vue_ls",
 			}
 
 			for _, server in ipairs(servers) do
@@ -99,6 +103,30 @@ return {
 							},
 						},
 					}
+				elseif server == "angularls" then
+					local util = require("lspconfig.util")
+
+					opts.root_dir = function(fname)
+						local root = util.root_pattern("angular.json")(fname)
+
+						if not root then
+							return nil
+						end
+
+						local package_json = util.path.join(root, "package.json")
+
+						if vim.fn.filereadable(package_json) == 1 then
+							local ok, data = pcall(vim.fn.json_decode, vim.fn.readfile(package_json))
+
+							if ok and data.dependencies then
+								if data.dependencies.react or data.dependencies.next then
+									return nil
+								end
+							end
+						end
+
+						return root
+					end
 				elseif server == "htmx" then
 					opts.filetypes = { "html", "templ" }
 				elseif server == "templ" then
@@ -174,10 +202,19 @@ return {
 							vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
 						end
 					end
-					opts.init_options = { preferences = { disableSuggestions = true } }
+					opts.init_options = {
+						preferences = { disableSuggestions = true },
+						plugins = {
+							{
+								name = "@vue/typescript-plugin",
+								location = "/home/bagi/.npm-global/lib/node_modules/@vue/language-server",
+								languages = { "vue" },
+							},
+						},
+					}
 					opts.settings =
 						{ typescript = { preferences = { importModuleSpecifierPreference = "non-relative" } } }
-					opts.filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact" }
+					opts.filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact", "vue" }
 					opts.root_dir = vim.fs.root(0, { "package.json", ".git", "deno.json", "deno.jsonc" })
 				elseif server == "clangd" then
 					opts.cmd = {
@@ -207,7 +244,7 @@ return {
 						-- "typescript",
 						"javascriptreact",
 						"typescriptreact",
-						"vue",
+						-- "vue",
 						"svelte",
 						"templ",
 						"jsp",

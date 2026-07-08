@@ -1,18 +1,18 @@
 def get_palette():
     return {
-        "Base": "#111418",
-        "Surface": "#43474e",
-        "Overlay": "#36393e",
-        "Muted": "#c3c6cf",
-        "Subtle": "#8d9199",
-        "Text": "#e1e2e8",
+        "Base": "#131318",
+        "Surface": "#47464f",
+        "Overlay": "#3a383f",
+        "Muted": "#c8c5d0",
+        "Subtle": "#928f99",
+        "Text": "#e5e1e9",
         "Love": "#ffb4ab",
-        "Gold": "#d7bde4",
-        "Rose": "#bbc7db",
-        "Pine": "#a1c9fd",
-        "Foam": "#1b4975",
-        "Iris": "#3c4858",
-        "HighlightLow": "#111418",
-        "HighlightMed": "#1d2024",
-        "HighlightHigh": "#272a2f"
+        "Gold": "#ebb8cf",
+        "Rose": "#c8c3dc",
+        "Pine": "#c6c0ff",
+        "Foam": "#444078",
+        "Iris": "#474459",
+        "HighlightLow": "#131318",
+        "HighlightMed": "#201f25",
+        "HighlightHigh": "#2a292f"
     }

@@ -33,11 +33,16 @@ return {
 				bash = { "shfmt" },
 				typst = { "typstyle", "prettypst" },
 				sql = { "pgformatter", "sleek" },
-				xml = { "lemminx", "prettier" },
+				xml = { "xmlformat", "lemminx", "prettier" },
 				-- For filetypes without a formatter:
 				["_"] = { "trim_whitespace", "trim_newlines" },
 			},
 			formatters = {
+				xmlformat = {
+					command = "xmlformat",
+					args = { "--indent", "4", "--selfclose", "-" },
+					stdin = true,
+				},
 				clang_format_java = {
 					command = "clang-format",
 					args = {

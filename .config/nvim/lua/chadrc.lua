@@ -1,7 +1,6 @@
 local M = {}
 
-M.base46 = {
-	theme = "matugen",
+M.base46 = { theme = "matugen",
 	transparency = true,
 }
 

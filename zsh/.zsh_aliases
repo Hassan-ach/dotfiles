@@ -76,6 +76,7 @@ alias gcl="git clone"
 # ==============================
 alias lg='lazygit'
 alias lzd='lazydocker'
+alias n='pnpm'
 alias nrd='npm run dev'
 alias nrs='npm run start'
 alias nrb='npm run build'

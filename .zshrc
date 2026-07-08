@@ -215,3 +215,6 @@ export EDITOR="nvim"
  (){
     echo "9wditiha"
 }
+
+# opencode
+[ -f /opt/miniconda3/etc/profile.d/conda.sh ] && source /opt/miniconda3/etc/profile.d/conda.sh

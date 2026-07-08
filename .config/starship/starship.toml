@@ -1,22 +1,22 @@
 # Prompt symbols
 [character]
-success_symbol = "[❯](bold #a3d398)"  # Foam color
-error_symbol = "[❯](bold #a0cfd3)"  # Love color
+success_symbol = "[❯](bold #c6c0ff)"  # Foam color
+error_symbol = "[❯](bold #ebb8cf)"  # Love color
 
 # Directory Path
 [directory]
-style = "bold #c2c8bc"  # Text color
+style = "bold #c8c5d0"  # Text color
 read_only = " "
-read_only_style = "bold #a3d398"  # Gold color
+read_only_style = "bold #c6c0ff"  # Gold color
 
 # Git Branch
 [git_branch]
 symbol = " "
-style = "bold #a3d398"  # Iris color
+style = "bold #c6c0ff"  # Iris color
 
 # Git Status
 [git_status]
-style = "bold #a3d398"  # Gold
+style = "bold #c6c0ff"  # Gold
 conflicted = "⚔ "
 ahead = "⇡${count}"
 behind = "⇣${count}"
@@ -29,3 +29,5 @@ untracked = "?"
 # Disable unused modules for minimalism
 [package]
 disabled = true
+
+scan_timeout = 0

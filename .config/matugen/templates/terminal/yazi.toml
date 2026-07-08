@@ -157,16 +157,16 @@
     { mime = "application/x-rar", fg = "{{colors.error.default.hex}}" },
 
     # Fallback
-    { name = "*", fg = "{{colors.primary.default.hex}}", bold = true },
-    { name = "*/", fg = "{{colors.secondary.default.hex}}", bold = true },
+    { mine = "*", fg = "{{colors.primary.default.hex}}", bold = true },
+    { mine = "*/", fg = "{{colors.secondary.default.hex}}", bold = true },
   ]
-[[plugin.prepend_fetchers]]
-  id   = "git"
-  name = "*"
-  run  = "git"
-
-[[plugin.prepend_fetchers]]
-  id   = "git"
-  name = "*/"
-  run  = "git"
+# [[plugin.prepend_fetchers]]
+#   id   = "git"
+#   name = "*"
+#   run  = "git"
+#
+# [[plugin.prepend_fetchers]]
+#   id   = "git"
+#   name = "*/"
+#   run  = "git"
   # : ]]]

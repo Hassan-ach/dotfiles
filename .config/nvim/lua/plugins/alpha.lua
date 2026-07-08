@@ -3,11 +3,9 @@ return {
 	dependencies = {
 		"echasnovski/mini.icons",
 	},
-
 	config = function()
 		local alpha = require("alpha")
 		local dashboard = require("alpha.themes.dashboard")
-
 		dashboard.section.header.opts.hl = {
 			{
 				{ "I2A0", 0, 3 },
