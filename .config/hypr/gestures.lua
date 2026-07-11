@@ -1,0 +1,5 @@
+hl.gesture({ fingers = 3, direction = "horizontal", action = "workspace" })
+hl.gesture({ fingers = 4, direction = "down",     action = function() hl.exec_cmd(scripts .. "/minimize") end })
+hl.gesture({ fingers = 3, direction = "pinch",     action = function() hl.exec_cmd(scripts .. "/toggle_float") end, mods = "CTRL" })
+hl.gesture({ fingers = 3, direction = "swipe",     action = "resize",  mods = "ALT" })
+hl.gesture({ fingers = 3, direction = "swipe",     action = "move",    mods = "CTRL" })

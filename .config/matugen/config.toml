@@ -14,7 +14,7 @@
 
 [templates.hyprland]
   input_path  = './templates/hypr/hyprland.conf'
-  output_path = '~/.config/hypr/hyprland/colors.conf'
+  output_path = '~/.config/hypr/colors.lua'
 
 [templates.waybar]
   input_path  = './templates/waybar-colors.css'
