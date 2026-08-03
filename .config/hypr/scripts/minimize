@@ -1,43 +1,31 @@
 #!/usr/bin/env bash
 
-TMP_FILE="$XDG_RUNTIME_DIR/hyprland-show-desktop"
+set -euo pipefail
 
-CURRENT_WORKSPACE=$(hyprctl monitors -j | jq '.[] | .activeWorkspace | .name' | sed 's/"//g')
+TMP_FILE="${XDG_RUNTIME_DIR:-/tmp}/hyprland-show-desktop"
 
-# initialize accumulators to avoid accidental "unbound" behavior
-CMDS=""
-TMP_ADDRESS=""
+CURRENT_WORKSPACE=$(
+    hyprctl monitors -j |
+    jq -r '.[] | select(.focused == true) | .activeWorkspace.name'
+)
 
-if [ -s "$TMP_FILE-$CURRENT_WORKSPACE" ]; then
-  # read each line from the file into ADDRESS_ARRAY
-  readarray -t ADDRESS_ARRAY <"$TMP_FILE-$CURRENT_WORKSPACE"
+STATE_FILE="${TMP_FILE}-${CURRENT_WORKSPACE}"
 
-  for address in "${ADDRESS_ARRAY[@]}"; do
-    CMDS+="dispatch movetoworkspacesilent name:$CURRENT_WORKSPACE,address:$address;"
-  done
+if [[ -f "$STATE_FILE" && -s "$STATE_FILE" ]]; then
+    while IFS= read -r address; do
+        [[ -z "$address" ]] && continue
+        hyprctl eval "hl.dispatch(hl.dsp.movetoworkspacesilent({ workspace = \"name:${CURRENT_WORKSPACE}\", address = \"${address}\" }))"
+    done < "$STATE_FILE"
 
-  hyprctl --batch "$CMDS"
-
-  rm "$TMP_FILE-$CURRENT_WORKSPACE"
+    rm -f "$STATE_FILE"
 else
-  HIDDEN_WINDOWS=$(hyprctl clients -j | jq --arg CW "$CURRENT_WORKSPACE" '.[] | select (.workspace .name == $CW) | .address')
-
-  # split the jq output into lines
-  readarray -t ADDRESS_ARRAY <<<"$HIDDEN_WINDOWS"
-
-  for address in "${ADDRESS_ARRAY[@]}"; do
-    # remove double quotes using parameter expansion
-    address=${address//\"/}
-
-    # test the variable's value (quoted!)
-    if [[ -n "$address" ]]; then
-      TMP_ADDRESS+="${address}\n"
-    fi
-
-    CMDS+="dispatch movetoworkspacesilent special:desktop,address:${address};"
-  done
-
-  hyprctl --batch "$CMDS"
-
-  echo -e "$TMP_ADDRESS" | sed -e '/^$/d' >"$TMP_FILE-$CURRENT_WORKSPACE"
+    hyprctl clients -j |
+    jq -r --arg ws "$CURRENT_WORKSPACE" '
+        .[]
+        | select(.workspace.name == $ws)
+        | .address
+    ' | tee "$STATE_FILE" | while IFS= read -r address; do
+        [[ -z "$address" ]] && continue
+        hyprctl eval "hl.dispatch(hl.dsp.movetoworkspacesilent({ workspace = \"special:desktop\", address = \"${address}\" }))"
+    done
 fi

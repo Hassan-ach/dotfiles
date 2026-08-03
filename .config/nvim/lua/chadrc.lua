@@ -1,8 +1,6 @@
 local M = {}
 
-M.base46 = { theme = "matugen",
-	transparency = true,
-}
+M.base46 = { theme = "matugen", transparency = true }
 
 M.ui = {
 	-- statusline = {

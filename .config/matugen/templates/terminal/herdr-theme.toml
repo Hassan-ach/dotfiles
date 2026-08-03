@@ -1,0 +1,5 @@
+[theme.custom]
+panel_bg = "{{colors.surface.default.hex}}"
+accent = "{{colors.primary.default.hex}}"
+red = "{{colors.error.default.hex}}"
+green = "{{colors.success.default.hex}}"

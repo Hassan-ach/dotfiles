@@ -1,4 +1,5 @@
 hl.env("__GLX_VENDOR_LIBRARY_NAME", "nvidia")
 hl.env("GBM_BACKEND", "nvidia-drm")
 hl.env("LIBVA_DRIVER_NAME", "nvidia")
-hl.env("AQ_DRM_DEVICES", "/dev/dri/card1:/dev/dri/card0")
+hl.env("AQ_FORCE_LINEAR_BLIT", "0")
+hl.env("AQ_DRM_DEVICES", "/dev/dri/igpu:/dev/dri/dgpu")

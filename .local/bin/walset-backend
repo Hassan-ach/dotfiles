@@ -14,5 +14,6 @@ pkill waybar; waybar &>/dev/null &
 swaync &>/dev/null &
 
 tmux source-file ~/.tmux.conf
+herdr-merge-theme
 
 notify-send "Wallpaper applied" "Theme updated."

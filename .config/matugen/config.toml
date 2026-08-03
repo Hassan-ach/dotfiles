@@ -112,6 +112,10 @@
   input_path  = "./templates/terminal/cava.config"
   output_path = "~/.config/cava/config"
 
+[templates.herdr]
+  input_path  = "./templates/terminal/herdr-theme.toml"
+  output_path = "~/.config/herdr/theme-colors.toml"
+
 [templates.dgop]
   input_path  = "./templates/dgop.json"
   output_path = "~/.config/dgop/colors.json"

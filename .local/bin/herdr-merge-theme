@@ -1,0 +1,43 @@
+#!/bin/bash
+# Merges matugen-generated theme colors into herdr's config.toml.
+# Replaces the [theme] and [theme.custom] sections with the generated content.
+
+CONFIG="$HOME/.config/herdr/config.toml"
+COLORS="$HOME/.config/herdr/theme-colors.toml"
+
+if [ ! -f "$CONFIG" ]; then
+    echo "herdr config not found: $CONFIG" >&2
+    exit 1
+fi
+
+if [ ! -f "$COLORS" ]; then
+    echo "herdr theme colors not found: $COLORS" >&2
+    exit 1
+fi
+
+# Remove existing [theme] and [theme.custom] sections from config,
+# then append the generated theme colors.
+python3 -c "
+import re, sys
+
+config_path = sys.argv[1]
+colors_path = sys.argv[2]
+
+with open(config_path) as f:
+    config = f.read()
+
+with open(colors_path) as f:
+    colors = f.read().strip()
+
+# Remove [theme] ... section (stops at next [section] or end of file)
+config = re.sub(r'\n?\[theme\].*?(?=\n\[|\Z)', '', config, flags=re.DOTALL)
+
+# Ensure trailing newlines before appending
+config = config.rstrip('\n') + '\n\n'
+
+with open(config_path, 'w') as f:
+    f.write(config + colors + '\n')
+" "$CONFIG" "$COLORS"
+
+# Reload if herdr server is running
+herdr server reload-config 2>/dev/null && echo "herdr config reloaded" || echo "herdr not running (colors applied on next launch)"

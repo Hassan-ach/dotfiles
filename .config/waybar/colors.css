@@ -1,10 +1,10 @@
-@define-color base rgba(19, 19, 24, 0.7);
-@define-color background-alt #1c1b20;
-@define-color foreground #e5e1e9;
-@define-color primary #c6c0ff;
-@define-color secondary #c8c3dc;
+@define-color base rgba(14, 20, 21, 0.7);
+@define-color background-alt #161d1d;
+@define-color foreground #dde4e3;
+@define-color primary #80d4d8;
+@define-color secondary #b1cccd;
 @define-color alert #ffb4ab;
-@define-color disabled #c8c5d0;
+@define-color disabled #bec8c9;
 @define-color transparent rgba(0,0,0,0);
 
 
@@ -13,77 +13,77 @@
  * Template for matugen material color generation
  */
 /* Material Design 3 Color Tokens */
-@define-color background #131318;
-@define-color on-background #e5e1e9;
-@define-color foreground #e5e1e9;
+@define-color background #0e1415;
+@define-color on-background #dde4e3;
+@define-color foreground #dde4e3;
 /* Surface colors */
-@define-color surface #131318;
-@define-color surface-dim #131318;
-@define-color surface-bright #3a383f;
-@define-color surface-container-lowest #0e0e13;
-@define-color surface-container-low #1c1b20;
-@define-color surface-container #201f25;
-@define-color surface-container-high #2a292f;
-@define-color surface-container-highest #35343a;
-@define-color on-surface #e5e1e9;
-@define-color surface-variant #c8c5d0;
-@define-color on-surface-variant #c8c5d0;
+@define-color surface #0e1415;
+@define-color surface-dim #0e1415;
+@define-color surface-bright #343a3b;
+@define-color surface-container-lowest #090f10;
+@define-color surface-container-low #161d1d;
+@define-color surface-container #1a2121;
+@define-color surface-container-high #252b2b;
+@define-color surface-container-highest #303636;
+@define-color on-surface #dde4e3;
+@define-color surface-variant #bec8c9;
+@define-color on-surface-variant #bec8c9;
 /* Primary colors */
-@define-color primary #c6c0ff;
-@define-color primary-fixed #e4dfff;
-@define-color primary-fixed-dim #c6c0ff;
-@define-color on-primary #2e2960;
-@define-color on-primary-fixed #18124a;
-@define-color on-primary-fixed-variant #444078;
-@define-color primary-container #444078;
-@define-color on-primary-container #e4dfff;
+@define-color primary #80d4d8;
+@define-color primary-fixed #9cf1f5;
+@define-color primary-fixed-dim #80d4d8;
+@define-color on-primary #003739;
+@define-color on-primary-fixed #002021;
+@define-color on-primary-fixed-variant #004f52;
+@define-color primary-container #004f52;
+@define-color on-primary-container #9cf1f5;
 /* Secondary colors */
-@define-color secondary #c8c3dc;
-@define-color secondary-fixed #e4dff9;
-@define-color secondary-fixed-dim #c8c3dc;
-@define-color on-secondary #302e41;
-@define-color on-secondary-fixed #1b192c;
-@define-color on-secondary-fixed-variant #474459;
-@define-color secondary-container #474459;
-@define-color on-secondary-container #e4dff9;
+@define-color secondary #b1cccd;
+@define-color secondary-fixed #cce8e9;
+@define-color secondary-fixed-dim #b1cccd;
+@define-color on-secondary #1b3436;
+@define-color on-secondary-fixed #041f20;
+@define-color on-secondary-fixed-variant #324b4c;
+@define-color secondary-container #324b4c;
+@define-color on-secondary-container #cce8e9;
 /* Tertiary colors */
-@define-color tertiary #ebb8cf;
-@define-color tertiary-fixed #ffd8e8;
-@define-color tertiary-fixed-dim #ebb8cf;
-@define-color on-tertiary #482537;
-@define-color on-tertiary-fixed #2f1122;
-@define-color on-tertiary-fixed-variant #613b4e;
-@define-color tertiary-container #613b4e;
-@define-color on-tertiary-container #ffd8e8;
+@define-color tertiary #b5c7e9;
+@define-color tertiary-fixed #d5e3ff;
+@define-color tertiary-fixed-dim #b5c7e9;
+@define-color on-tertiary #1f314c;
+@define-color on-tertiary-fixed #071c36;
+@define-color on-tertiary-fixed-variant #364764;
+@define-color tertiary-container #364764;
+@define-color on-tertiary-container #d5e3ff;
 /* Error colors */
 @define-color error #ffb4ab;
 @define-color on-error #690005;
 @define-color error-container #93000a;
 @define-color on-error-container #ffdad6;
 /* Outline colors */
-@define-color outline #928f99;
-@define-color outline-variant #47464f;
+@define-color outline #899393;
+@define-color outline-variant #3f4949;
 /* Inverse colors */
-@define-color inverse-surface #e5e1e9;
-@define-color inverse-on-surface #313036;
-@define-color inverse-primary #5c5891;
+@define-color inverse-surface #dde4e3;
+@define-color inverse-on-surface #2b3232;
+@define-color inverse-primary #00696d;
 /* Scrim & Shadow */
 @define-color scrim #000000;
 @define-color shadow #000000;
 /* Legacy 16-color palette */
-@define-color color0 #131318;
+@define-color color0 #0e1415;
 @define-color color1 #ffb4ab;
-@define-color color2 #c8c3dc;
-@define-color color3 #ebb8cf;
-@define-color color4 #c6c0ff;
-@define-color color5 #c8c3dc;
-@define-color color6 #ebb8cf;
-@define-color color7 #e5e1e9;
-@define-color color8 #2a292f;
+@define-color color2 #b1cccd;
+@define-color color3 #b5c7e9;
+@define-color color4 #80d4d8;
+@define-color color5 #b1cccd;
+@define-color color6 #b5c7e9;
+@define-color color7 #dde4e3;
+@define-color color8 #252b2b;
 @define-color color9 #93000a;
-@define-color color10 #474459;
-@define-color color11 #613b4e;
-@define-color color12 #444078;
-@define-color color13 #928f99;
-@define-color color14 #47464f;
-@define-color color15 #c8c5d0;
+@define-color color10 #324b4c;
+@define-color color11 #364764;
+@define-color color12 #004f52;
+@define-color color13 #899393;
+@define-color color14 #3f4949;
+@define-color color15 #bec8c9;
