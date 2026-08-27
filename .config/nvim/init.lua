@@ -101,4 +101,4 @@ autocmd("Signal", {
 
 -- vim.g.mkdp_markdown_css = vim.fn.expand("~/Documents/md.css")
 --
-vim.lsp.log.set_level("debug") -- Use "trace" for extreme detail
+vim.lsp.log.set_level(vim.log.levels.WARN)

@@ -316,6 +316,14 @@ vim.cmd([[
   autocmd BufNewFile,BufRead *.blade.php set filetype=blade
 ]])
 
+vim.filetype.add({
+	extension = {
+		gotmpl = "gotmpl",
+		xsl = "xml",
+		mdx = "markdown.mdx",
+	},
+})
+
 -- SQL indentation
 -- vim.cmd("autocmd FileType sql setlocal noautoindent")
 -- vim.cmd("autocmd FileType sql setlocal nosmartindent")
