@@ -9,3 +9,13 @@ token-optimizer/
 zsh/plugins/
 .local/bin/aic
 
+# Matugen generated theme outputs
+.config/kitty/colors.conf
+.config/waybar/colors.css
+.config/rofi/colors.rasi
+.config/hypr/colors.lua
+.config/qutebrowser/themes/palette.py
+.config/btop/themes/matugen.theme
+.config/bat/themes/Matugen.tmTheme
+.config/herdr/theme-colors.toml
+.tmux_colors.conf
