@@ -1,0 +1,80 @@
+#!/bin/bash
+
+# ==============================================================================
+# walset-select: Interactive Wallpaper Picker with Visual Previews (Rofi)
+# ==============================================================================
+
+WALL_DIR="$HOME/wall"
+
+if [ ! -d "$WALL_DIR" ]; then
+    echo "Error: Directory '$WALL_DIR' does not exist." >&2
+    exit 1
+fi
+
+# Gather wallpapers into Rofi dmenu format with icon metadata
+ROFI_INPUT=""
+while IFS= read -r img; do
+    [ -z "$img" ] && continue
+    filename=$(basename "$img")
+    ROFI_INPUT+="${filename}\0icon\x1f${img}\n"
+done < <(find "$WALL_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.gif" -o -iname "*.webp" \) | sort)
+
+if [ -z "$ROFI_INPUT" ]; then
+    echo "Error: No wallpapers found in '$WALL_DIR'." >&2
+    exit 1
+fi
+
+# Launch Rofi grid menu with thumbnail previews
+SELECTED_NAME=$(echo -en "$ROFI_INPUT" | rofi -dmenu \
+    -p "Wallpaper Picker" \
+    -i \
+    -theme-str '
+        window {
+            width: 70%;
+            height: 65%;
+            border-radius: 20px;
+        }
+        mainbox {
+            children: [ "inputbar", "listview" ];
+            spacing: 15px;
+            padding: 20px;
+        }
+        element {
+            orientation: vertical;
+            padding: 10px;
+            border-radius: 12px;
+        }
+        element-icon {
+            size: 160px;
+            horizontal-align: 0.5;
+        }
+        element-text {
+            horizontal-align: 0.5;
+            vertical-align: 0.5;
+            margin: 6px 0px 0px 0px;
+        }
+        listview {
+            columns: 4;
+            lines: 2;
+            spacing: 15px;
+            cycle: true;
+            dynamic: true;
+        }
+    ')
+
+# If user cancelled selection, exit cleanly
+if [ -z "$SELECTED_NAME" ]; then
+    exit 0
+fi
+
+# Resolve full wallpaper file path
+FULL_PATH=$(find "$WALL_DIR" -type f -name "$SELECTED_NAME" -print -quit)
+
+if [ -z "$FULL_PATH" ] || [ ! -f "$FULL_PATH" ]; then
+    echo "Error: Could not resolve file path for '$SELECTED_NAME'." >&2
+    exit 1
+fi
+
+# Set runtime wallpaper link and trigger Matugen backend update
+ln -sf "$FULL_PATH" /tmp/random_bg
+"$HOME/.local/bin/walset-backend" "$FULL_PATH"

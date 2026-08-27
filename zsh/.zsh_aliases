@@ -215,3 +215,10 @@ alias dx="docker exec -it"
 # C++ Development
 # ==============================
 alias cmp='g++ -std=c++20 -o'
+
+# ==============================
+# Wallpaper Management
+# ==============================
+alias wals="~/.local/bin/walset-select"
+alias walr="~/.local/bin/walset"
+
