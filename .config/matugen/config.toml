@@ -28,9 +28,9 @@
   input_path  = './templates/qtbrowser.py'
   output_path = '~/.config/qutebrowser/themes/palette.py'
 
-[templates.startship]
+[templates.starship]
   input_path  = './templates/terminal/starship-colors.toml'
-  output_path = '~/.config/starship/starship.toml'
+  output_path = '~/.config/starship.toml'
 
 # [templates.hyprlock-icon]
 #   input_path  = './templates/hypr/icon.svg'

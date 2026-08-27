@@ -9,6 +9,9 @@ alias mkdir='mkdir -p'
 alias cl='clear'
 alias e='exit'
 alias off='shutdown -h now'
+alias -- -='cd -'
+alias df='df -h'
+alias diff='diff --color=auto'
 
 # ==============================
 # Editor Aliases
@@ -65,6 +68,8 @@ alias gp="git push"
 alias gpl="git pull"
 alias gl="git log --oneline --graph --decorate"
 alias gla="git log --graph --all --oneline --decorate --parents"
+alias glog='PAGER="less -F -X" git log'
+alias gadog='PAGER="less -F -X" git log --all --decorate --oneline --graph'
 alias gm="git merge"
 alias grb="git rebase"
 alias gst="git stash"
@@ -185,9 +190,15 @@ fi
 # Bat Integration
 # ==============================
 if command -v bat &>/dev/null; then
-    alias cat='cat'
     alias bathelp='bat --plain --language=help'
     # help function is defined in .zsh_functions
+fi
+
+# ==============================
+# Search (ripgrep)
+# ==============================
+if command -v rg &>/dev/null; then
+    alias grep='rg --color=auto'
 fi
 
 # ==============================

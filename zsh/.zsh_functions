@@ -128,42 +128,6 @@ init_project() {
 }
 
 # ==============================
-# Window Manager Functions
-# ==============================
-
-# Dynamic WM detection and configuration
-detect_wm() {
-    if [[ "$XDG_SESSION_DESKTOP" == "sway" ]] || [[ "$WAYLAND_DISPLAY" ]]; then
-        echo "sway"
-    elif [[ "$XDG_SESSION_DESKTOP" == "i3" ]] || [[ "$DISPLAY" && -z "$WAYLAND_DISPLAY" ]]; then
-        echo "i3"
-    else
-        echo "unknown"
-    fi
-}
-
-# WM-aware screenshot function
-screenshot() {
-    local wm=$(detect_wm)
-    local filename="screenshot-$(date +%Y%m%d_%H%M%S).png"
-
-    case "$wm" in
-        sway)
-            grim -g "$(slurp)" "$HOME/Pictures/$filename"
-            ;;
-        i3)
-            scrot -s "$HOME/Pictures/$filename"
-            ;;
-        *)
-            echo "Unsupported window manager"
-            return 1
-            ;;
-    esac
-
-    echo "Screenshot saved to ~/Pictures/$filename"
-}
-
-# ==============================
 # Utility Functions
 # ==============================
 

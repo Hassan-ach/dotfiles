@@ -36,6 +36,7 @@ return {
 					"angularls",
 					"pbls",
 					"vue_ls",
+					"terraformls",
 				},
 				automatic_enable = false,
 			})
@@ -87,6 +88,7 @@ return {
 				"pbls",
 				"kotlin_language_server",
 				-- "vue_ls",
+				"terraformls",
 			}
 
 			for _, server in ipairs(servers) do
@@ -103,6 +105,8 @@ return {
 							},
 						},
 					}
+				-- elseif server == "pyright" then
+				-- 	opts.root_dir = vim.fs.root(0, { "venv", ".venv", ".git", "pyproject.toml", "poetry.lock" })
 				elseif server == "angularls" then
 					local util = require("lspconfig.util")
 

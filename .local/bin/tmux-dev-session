@@ -114,8 +114,5 @@ create_or_attach_session() {
     fi
 }
 
-# Source this function in the tmux session
-tmux source-file ~/.local/bin/tmux-dev-session
-
 # Execute the main logic
 create_or_attach_session

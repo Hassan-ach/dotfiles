@@ -8,7 +8,7 @@ IMAGE="$1"
 awww img "$IMAGE" --transition-type none --transition-duration 1
 wal -i "$IMAGE" -nste --backend haishoku
 matugen image "$IMAGE"
-python3 /home/bagi/.config/nvim/pywal/chadwal.py & disown
+python3 "$HOME/.config/nvim/pywal/chadwal.py" & disown
 
 pkill waybar; waybar &>/dev/null &
 swaync &>/dev/null &

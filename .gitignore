@@ -1,5 +1,11 @@
 .zsh_secrets
+zsh/.zsh_secrets
 *.zwc
+*.log
+*.db
 bgs
 install.sh
 token-optimizer/
+zsh/plugins/
+.local/bin/aic
+
