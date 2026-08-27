@@ -16,6 +16,7 @@
         "swaync",
         "battery",
         "pulseaudio",
+        "pulseaudio#microphone",
         "backlight",
         "network",
        // "custom/gpu_usage",
@@ -136,6 +137,18 @@
         "on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +5%",
         "on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -5%",
         "tooltip": true
+    },
+
+    "pulseaudio#microphone": {
+        "format": "{format_source}",
+        "format-source": "<span foreground='#ebbcba'> </span>{volume}%",
+        "format-source-muted": "<span foreground='#6e6a86'>  Muted</span>",
+        "on-click": "pactl set-source-mute @DEFAULT_SOURCE@ toggle",
+        "on-scroll-up": "pactl set-source-volume @DEFAULT_SOURCE@ +5%",
+        "on-scroll-down": "pactl set-source-volume @DEFAULT_SOURCE@ -5%",
+        "scroll-step": 5,
+        "tooltip": true,
+        "tooltip-format": "Microphone: {volume}%"
     },
 
 "backlight": {

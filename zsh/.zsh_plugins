@@ -4,14 +4,15 @@
 
 export ZSH_PLUGINS_DIR="$HOME/dotfiles/zsh/plugins"
 
-# Auto-install a plugin if missing, then source it
+# Auto-install a plugin if missing or incomplete, then source it
 _zplugin_load() {
   local repo=$1
   local name=${repo:t}
   local plugin_path="${ZSH_PLUGINS_DIR}/${name}"
 
-  if [[ ! -d "$plugin_path" ]]; then
+  if [[ ! -d "$plugin_path" || ( ! -f "${plugin_path}/${name}.plugin.zsh" && ! -f "${plugin_path}/${name}.zsh" ) ]]; then
     echo "Installing ${name}..."
+    rm -rf "$plugin_path"
     mkdir -p "$ZSH_PLUGINS_DIR"
     git clone --depth=1 "https://github.com/${repo}.git" "$plugin_path" \
       || { echo "ERROR: failed to install ${name}" >&2; return 1; }

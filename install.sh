@@ -165,8 +165,9 @@ clone_zsh_plugin() {
     local repo=$1
     local name=$(basename "$repo")
     local target="$ZSH_PLUGINS_DIR/$name"
-    if [ ! -d "$target" ]; then
+    if [ ! -d "$target" ] || [ ! -f "$target/$name.plugin.zsh" -a ! -f "$target/$name.zsh" ]; then
         info "Cloning Zsh plugin: $name..."
+        rm -rf "$target"
         git clone --depth=1 "https://github.com/$repo.git" "$target"
     fi
 }

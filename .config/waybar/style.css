@@ -27,6 +27,7 @@ window#waybar {
 #network,
 #battery,
 #pulseaudio,
+#pulseaudio.microphone,
 #backlight,
 #clock,
 #sway-mode,
@@ -57,6 +58,7 @@ window#waybar {
 #network,
 #battery,
 #pulseaudio,
+#pulseaudio.microphone,
 #backlight,
 /* #clock, */
 #mode,
