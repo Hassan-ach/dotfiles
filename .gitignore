@@ -4,7 +4,6 @@ zsh/.zsh_secrets
 *.log
 *.db
 bgs
-install.sh
 token-optimizer/
 zsh/plugins/
 .local/bin/aic
