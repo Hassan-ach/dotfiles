@@ -19,3 +19,7 @@ zsh/plugins/
 .config/bat/themes/Matugen.tmTheme
 .config/herdr/theme-colors.toml
 .tmux_colors.conf
+
+# Python bytecode caches
+__pycache__/
+*.pyc
