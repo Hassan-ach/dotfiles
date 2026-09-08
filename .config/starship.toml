@@ -1,25 +1,25 @@
 # Prompt symbols
 [character]
-success_symbol = "[❯](bold #adc6ff)"  # Foam color
-error_symbol = "[❯](bold #debcdf)"  # Love color
+success_symbol = "[❯](bold #ffb2be)"  # Foam color
+error_symbol = "[❯](bold #ebbe90)"  # Love color
 
 # Directory Path
 [directory]
 format            = "[$path](cyan) "
-style = "bold #c4c6d0"  # Text color
+style = "bold #d6c2c4"  # Text color
 read_only = " "
-read_only_style = "bold #adc6ff"  # Gold color
+read_only_style = "bold #ffb2be"  # Gold color
 truncation_length = 4
 truncate_to_repo  = true
 
 # Git Branch
 [git_branch]
 symbol = " "
-style = "bold #adc6ff"  # Iris color
+style = "bold #ffb2be"  # Iris color
 
 # Git Status
 [git_status]
-style = "bold #adc6ff"  # Gold
+style = "bold #ffb2be"  # Gold
 conflicted = "⚔ "
 ahead = "⇡${count}"
 behind = "⇣${count}"
