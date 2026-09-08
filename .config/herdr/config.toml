@@ -311,3 +311,27 @@ panel_bg = "#0e1415"
 accent = "#80d4d8"
 red = "#ffb4ab"
 green = "#91d5ad"
+
+[theme.custom]
+panel_bg = "#111318"
+accent = "#aac7ff"
+red = "#ffb4ab"
+green = "#91d5ad"
+
+[theme.custom]
+panel_bg = "#18120b"
+accent = "#f4bd6f"
+red = "#ffb4ab"
+green = "#b1d18a"
+
+[theme.custom]
+panel_bg = "#0e1514"
+accent = "#81d5ce"
+red = "#ffb4ab"
+green = "#91d5ad"
+
+[theme.custom]
+panel_bg = "#111318"
+accent = "#adc6ff"
+red = "#ffb4ab"
+green = "#91d5ad"

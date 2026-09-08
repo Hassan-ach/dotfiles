@@ -5,8 +5,7 @@ return {
 		"nvim-telescope/telescope.nvim",
 		"MunifTanjim/nui.nvim",
 		"kevinhwang91/promise-async",
-		    "nvim-neotest/nvim-nio",
-
+		"nvim-neotest/nvim-nio",
 	},
 	cmd = { "Laravel" },
 	keys = {
@@ -15,6 +14,16 @@ return {
 		{ "<leader>lm", ":Laravel related<cr>", desc = "Laravel related" },
 	},
 	ft = { "php" },
+
+	config = function(_, opts)
+		local root = vim.fs.root(0, { "artisan", "composer.json" })
+
+		if root then
+			vim.cmd("lcd " .. vim.fn.fnameescape(root))
+		end
+
+		require("laravel").setup(opts)
+	end,
+
 	opts = {},
-	config = true,
 }
