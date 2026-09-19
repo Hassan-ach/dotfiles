@@ -98,3 +98,8 @@ Collection of custom executable Bash and Python utility scripts.
 ### 19. `poetry` & `colorz` / `wal`
 - **Description**: Environment and color generation wrapper shortcuts.
 
+### 20. `papirus-accent`
+- **Description**: Recolors the Papirus-Dark folder icons to match the current matugen wallpaper accent.
+- **Usage**: `papirus-accent` (auto-invoked by `walset-backend` after `herdr-merge-theme`)
+- **Features**: Reads the primary accent (`rgba(rrggbbff)`) from the matugen-generated `~/.config/hypr/colors.lua`, then hue-shifts only the colored folder bodies across all icon sizes (16→96px including `@2x` HiDPI copies) to the wallpaper accent — grays, whites, and near-black fills are preserved so shading/depth stays intact. Keeps GTK (Thunar, Nautilus) and Qt (Telegram, Brave dialogs, OBS) file managers synced to the wallpaper since both point at the same `Papirus-Dark` theme. Prints the recolored icon count and the hex accent used.
+

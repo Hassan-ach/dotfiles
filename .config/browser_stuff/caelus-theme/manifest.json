@@ -1,0 +1,23 @@
+{
+  "manifest_version": 2,
+  "version": "1.0",
+  "name": "caelus",
+  "theme": {
+    "images": {},
+    "properties": {},
+    "colors": {
+      "toolbar": "rgb(30, 31, 30)",
+      "toolbar_text": "rgb(244, 222, 205)",
+      "frame": "rgb(15, 15, 15)",
+      "tab_background_text": "rgb(244, 222, 205)",
+      "toolbar_field": "rgb(15, 15, 15)",
+      "toolbar_field_text": "rgb(244, 222, 205)",
+      "tab_line": "rgb(244, 222, 205)",
+      "popup": "rgb(30, 31, 30)",
+      "popup_text": "rgb(244, 222, 205)",
+      "ntp_background": "rgb(15, 15, 15)",
+      "ntp_text": "rgb(244, 222, 205)",
+      "tab_loading": "rgb(244, 222, 205)"
+    }
+  }
+}

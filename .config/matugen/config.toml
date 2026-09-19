@@ -80,13 +80,13 @@
 #   input_path  = './templates/terminal/fzf.zsh'
 #   output_path = '~/zsh/themes/fzf_theme.zsh'
 
-# [templates.gtk4]
-#   input_path  = './templates/gtk/colors.css'
-#   output_path = '~/.config/gtk-4.0/gtk.css'
-#
-# [templates.gtk3]
-#   input_path  = './templates/gtk/colors.css'
-#   output_path = '~/.config/gtk-3.0/gtk.css'
+[templates.gtk4]
+  input_path  = './templates/gtk/colors.css'
+  output_path = '~/.config/gtk-4.0/gtk.css'
+
+[templates.gtk3]
+  input_path  = './templates/gtk/colors.css'
+  output_path = '~/.config/gtk-3.0/gtk.css'
 
 # [templates.folders-color]
 #   input_path  = './templates/folder-color.txt'
@@ -123,6 +123,14 @@
 # [templates.dank]
 #   input_path  = "./templates/dank.json"
 #   output_path = "~/.cache/DankMaterialShell/dms-colors.json"
+
+[templates.kvantum]
+  input_path = './templates/kvantum/caelus.kvconfig'
+  output_path = '~/.config/Kvantum/caelus/caelus.kvconfig'
+
+[templates.kvantum-svg]
+  input_path = './templates/kvantum/caelus.svg'
+  output_path = '~/.config/Kvantum/caelus/caelus.svg'
 
 [templates.nvim]
 input_path = '~/.config/nvim/pywal/templates/matugen.lua'

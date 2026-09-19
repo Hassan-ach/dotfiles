@@ -15,4 +15,7 @@ swaync &>/dev/null &
 tmux source-file ~/.tmux.conf
 herdr-merge-theme
 
+# Recolor Papirus-Dark folder icons to the new accent so file managers follow the wallpaper.
+papirus-accent
+
 notify-send "Wallpaper applied" "Theme updated."

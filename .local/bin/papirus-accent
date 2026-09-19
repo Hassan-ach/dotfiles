@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+# Recolor the Papirus-Dark folder icons to match the current matugen accent.
+# Called automatically by walset-backend after matugen regenerates the theme.
+set -euo pipefail
+
+THEME_ROOT="${XDG_DATA_HOME:-$HOME/.local/share}/icons/Papirus-Dark"
+
+# Extract the primary color (rrggbb) from the matugen-generated hypr colors.
+primary=$(sed -n -E "s/^[[:space:]]*primary[[:space:]]*=.*\"rgba\(([0-9a-fA-F]{6}).*/\1/p" "$HOME/.config/hypr/colors.lua")
+
+if [ -z "$primary" ]; then
+    echo "papirus-accent: no primary color found in colors.lua" >&2
+    exit 1
+fi
+
+python3 - "$primary" "$THEME_ROOT" <<'PY' || exit 1
+import sys, glob, colorsys, os, re
+
+accent = sys.argv[1]
+root   = sys.argv[2]
+
+r = int(accent[0:2], 16) / 255
+g = int(accent[2:4], 16) / 255
+b = int(accent[4:6], 16) / 255
+ah = colorsys.rgb_to_hsv(r, g, b)[0]   # accent hue
+
+pat = re.compile(r'#([0-9a-fA-F]{6})\b')
+
+def shift(m):
+    c = m.group(1)
+    r = int(c[0:2], 16) / 255
+    g = int(c[2:4], 16) / 255
+    b = int(c[4:6], 16) / 255
+    h, s, v = colorsys.rgb_to_hsv(r, g, b)
+    if s < 0.10 or v < 0.10:           # neutrals / blacks / whites stay
+        return m.group(0)
+    r2, g2, b2 = colorsys.hsv_to_rgb(ah, min(s * 1.15, 1.0), v)
+    return '#%02x%02x%02x' % (round(r2 * 255), round(g2 * 255), round(b2 * 255))
+
+count = 0
+patterns = ('folder*.svg', 'user-*-home.svg')
+for p in patterns:
+    for f in sorted(glob.glob(os.path.join(root, '*', 'places', p), recursive=True)):
+        with open(f) as fh:
+            data = fh.read()
+        if not pat.search(data):
+            continue
+        with open(f, 'w') as fh:
+            fh.write(pat.sub(shift, data))
+        count += 1
+
+print(f'papirus-accent: recolored {count} icons to #{accent}')
+PY

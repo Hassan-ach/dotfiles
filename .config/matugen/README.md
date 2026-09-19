@@ -19,6 +19,10 @@ Material You color generation engine that extracts vibrant color palettes from w
   - `terminal/bat.tmTheme` $\rightarrow$ `~/.config/bat/themes/Matugen.tmTheme`
   - `terminal/yazi.toml` $\rightarrow$ `~/.config/yazi/theme.toml`
   - `terminal/herdr-theme.toml` $\rightarrow$ `~/.config/herdr/theme-colors.toml`
+  - `kvantum/caelus.kvconfig` $\rightarrow$ `~/.config/Kvantum/caelus/caelus.kvconfig`
+  - `kvantum/caelus.svg` $\rightarrow$ `~/.config/Kvantum/caelus/caelus.svg`
+  
+GTK + Qt folder/file icons follow the same accent: after `matugen` writes `colors.lua`, `walset-backend` calls `papirus-accent` to hue-shift the `Papirus-Dark` folder icons to the wallpaper primary (both GTK — Thunar/Nautilus — and Qt — Telegram/Brave dialogs — point at `Papirus-Dark`, so file managers stay wallpaper-synced in every toolkit).
 
 ---
 
