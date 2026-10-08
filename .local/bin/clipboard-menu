@@ -1,0 +1,56 @@
+#!/bin/bash
+# Clipboard Manager — cliphist + rofi
+
+if ! command -v cliphist &>/dev/null; then
+    notify-send "Clipboard" "cliphist is not installed" -u critical
+    exit 1
+fi
+
+# Ensure cliphist daemon is watching the clipboard
+if ! pgrep -f "cliphist store" >/dev/null 2>&1; then
+    wl-paste --type text --watch cliphist store >/dev/null 2>&1 &
+    wl-paste --type image --watch cliphist store >/dev/null 2>&1 &
+fi
+
+case "$1" in
+    --clear)
+        cliphist wipe
+        notify-send "Clipboard" "History cleared" -i edit-clear
+        ;;
+    *)
+        items=$(cliphist list 2>/dev/null)
+        if [ -z "$items" ]; then
+            notify-send "Clipboard History" "No items copied yet. Copy some text/images to populate clipboard history!" -i edit-copy
+            exit 0
+        fi
+
+        selected=$(echo "$items" | rofi -dmenu \
+            -p "📋 Clipboard" \
+            -theme ~/.config/rofi/colors.rasi \
+            -theme-str '
+                window {
+                    width: 45%;
+                    height: 55%;
+                    border-radius: 16px;
+                }
+                mainbox {
+                    children: [ "inputbar", "listview" ];
+                    spacing: 10px;
+                    padding: 20px;
+                }
+                listview {
+                    columns: 1;
+                    lines: 10;
+                    spacing: 5px;
+                }
+                element {
+                    padding: 10px;
+                    border-radius: 8px;
+                }
+            ')
+
+        [ -z "$selected" ] && exit 0
+        echo "$selected" | cliphist decode | wl-copy
+        notify-send "Clipboard" "Copied item to clipboard" -i edit-paste
+        ;;
+esac

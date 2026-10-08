@@ -1,0 +1,36 @@
+#!/bin/bash
+# Power Menu — rofi-based power options with Nerd Font icons
+
+chosen=$(printf "🔒  Lock\n󰗽  Logout\n󰤄  Suspend\n󰑐  Reboot\n󰐥  Shutdown" | rofi -dmenu \
+    -p "Power Menu" \
+    -theme ~/.config/rofi/colors.rasi \
+    -theme-str '
+        window {
+            width: 240px;
+            height: 290px;
+            border-radius: 16px;
+            location: center;
+        }
+        mainbox {
+            children: [ "inputbar", "listview" ];
+            spacing: 10px;
+            padding: 15px;
+        }
+        listview {
+            columns: 1;
+            lines: 5;
+            spacing: 6px;
+        }
+        element {
+            padding: 10px 14px;
+            border-radius: 8px;
+        }
+    ')
+
+case "$chosen" in
+    *Lock)      pidof hyprlock || hyprlock ;;
+    *Logout)    hyprctl dispatch exit ;;
+    *Suspend)   systemctl suspend ;;
+    *Reboot)    systemctl reboot ;;
+    *Shutdown)  systemctl poweroff ;;
+esac

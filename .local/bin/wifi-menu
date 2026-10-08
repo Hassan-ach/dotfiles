@@ -1,0 +1,100 @@
+#!/bin/bash
+# WiFi Menu — nmcli + rofi with Nerd Font icons
+
+if ! command -v nmcli &>/dev/null; then
+    notify-send "WiFi" "NetworkManager is not installed" -u critical
+    exit 1
+fi
+
+# Rescan WiFi networks
+nmcli device wifi rescan 2>/dev/null
+
+# Get active interface & connected SSID
+current=$(nmcli -t -f active,ssid dev wifi 2>/dev/null | grep '^yes' | cut -d: -f2)
+
+# Build formatted network list with signal icons and security locks
+wifi_list=$(nmcli -t -f active,ssid,signal,security dev wifi list 2>/dev/null | \
+    awk -F: '{
+        active=$1; ssid=$2; signal=$3; security=$4
+        if (ssid == "") next
+
+        # Icon for active connection
+        if (active == "yes") status="󰖩 "
+        else status="  "
+
+        # Security icon
+        if (security != "") lock="🔒"
+        else lock="🔓"
+
+        # Signal strength icon
+        if (signal >= 75) sig="󰤨"
+        else if (signal >= 50) sig="󰤥"
+        else if (signal >= 25) sig="󰤢"
+        else sig="󰤟"
+
+        printf "%s %s %s  %s (%s%%)\n", status, sig, lock, ssid, signal
+    }' | sort -u)
+
+menu="󰖪  Disconnect\n󰑐  Rescan Networks\n$wifi_list"
+
+chosen=$(echo -e "$menu" | rofi -dmenu \
+    -p "WiFi ${current:+(Connected: $current)}" \
+    -theme ~/.config/rofi/colors.rasi \
+    -theme-str '
+        window {
+            width: 440px;
+            height: 420px;
+            border-radius: 16px;
+            location: center;
+        }
+        mainbox {
+            children: [ "inputbar", "listview" ];
+            spacing: 10px;
+            padding: 15px;
+        }
+        listview {
+            columns: 1;
+            lines: 8;
+            spacing: 5px;
+        }
+        element {
+            padding: 8px 12px;
+            border-radius: 8px;
+        }
+    ')
+
+[ -z "$chosen" ] && exit 0
+
+case "$chosen" in
+    *Disconnect*)
+        nmcli device disconnect wlan0 2>/dev/null || nmcli device disconnect wifi 2>/dev/null
+        notify-send "WiFi" "Disconnected from network" -i network-wireless-offline
+        ;;
+    *Rescan*)
+        nmcli device wifi rescan
+        notify-send "WiFi" "Rescanning available networks..." -i network-wireless
+        exec "$0"
+        ;;
+    *)
+        # Extract SSID name from row (field 4)
+        ssid=$(echo "$chosen" | awk '{print $4}')
+        [ -z "$ssid" ] && exit 0
+
+        if nmcli -t -f name connection show | grep -qx "$ssid"; then
+            nmcli connection up "$ssid" && \
+                notify-send "WiFi" "Connected to $ssid" -i network-wireless || \
+                notify-send "WiFi" "Failed to connect to $ssid" -u critical
+        else
+            pass=$(rofi -dmenu -p "Password for $ssid" -password \
+                -theme ~/.config/rofi/colors.rasi \
+                -theme-str '
+                    window { width: 320px; border-radius: 16px; }
+                    mainbox { children: [ "inputbar" ]; padding: 15px; }
+                ')
+            [ -z "$pass" ] && exit 0
+            nmcli device wifi connect "$ssid" password "$pass" && \
+                notify-send "WiFi" "Connected to $ssid" -i network-wireless || \
+                notify-send "WiFi" "Failed to connect to $ssid" -u critical
+        fi
+        ;;
+esac
