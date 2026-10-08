@@ -1,9 +1,8 @@
 #!/bin/bash
 # Power Menu — rofi-based power options with Nerd Font icons
 
-chosen=$(printf "🔒  Lock\n󰗽  Logout\n󰤄  Suspend\n󰑐  Reboot\n󰐥  Shutdown" | rofi -dmenu \
+chosen=$(printf "🔒  Lock\n󰗽  Logout\n󰤄  Suspend\n󰑐  Reboot\n󰐥  Shutdown" | rofi -dmenu -i \
     -p "Power Menu" \
-    -theme ~/.config/rofi/colors.rasi \
     -theme-str '
         window {
             width: 240px;

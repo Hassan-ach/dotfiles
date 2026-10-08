@@ -7,7 +7,7 @@ if ! command -v nmcli &>/dev/null; then
 fi
 
 # Rescan WiFi networks
-nmcli device wifi rescan 2>/dev/null
+# nmcli device wifi rescan 2>/dev/null
 
 # Get active interface & connected SSID
 current=$(nmcli -t -f active,ssid dev wifi 2>/dev/null | grep '^yes' | cut -d: -f2)
@@ -37,9 +37,8 @@ wifi_list=$(nmcli -t -f active,ssid,signal,security dev wifi list 2>/dev/null | 
 
 menu="󰖪  Disconnect\n󰑐  Rescan Networks\n$wifi_list"
 
-chosen=$(echo -e "$menu" | rofi -dmenu \
+chosen=$(echo -e "$menu" | rofi -dmenu -i \
     -p "WiFi ${current:+(Connected: $current)}" \
-    -theme ~/.config/rofi/colors.rasi \
     -theme-str '
         window {
             width: 440px;

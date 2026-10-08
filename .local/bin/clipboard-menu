@@ -24,9 +24,8 @@ case "$1" in
             exit 0
         fi
 
-        selected=$(echo "$items" | rofi -dmenu \
+        selected=$(echo "$items" | rofi -dmenu -i \
             -p "📋 Clipboard" \
-            -theme ~/.config/rofi/colors.rasi \
             -theme-str '
                 window {
                     width: 45%;

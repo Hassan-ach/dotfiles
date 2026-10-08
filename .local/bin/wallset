@@ -31,7 +31,7 @@ apply_wallpaper() {
     # Run your backend commands
     awww img "$img" --transition-type none --transition-duration 1
     # wal -i "$img" -nste --backend haishoku  # Disabled: using matugen as primary theme engine
-    matugen image "$img"
+    matugen image "$img" --source-color-index 0
 
     pkill waybar
     waybar &>/dev/null &
