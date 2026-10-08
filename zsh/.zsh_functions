@@ -183,3 +183,14 @@ netstat_quick() {
 manbt() {
    command man "$@" | col -bx | bat -l man
 }
+
+yt() {
+  local res="1080"
+  case "$1" in
+    4k|2160) res="2160"; shift ;;
+    2k|1440) res="1440"; shift ;;
+    1k|1080|fhd) res="1080"; shift ;;
+    720|hd) res="720"; shift ;;
+  esac
+  ytfzf --ytdl-pref="bv*[height<=$res]+ba/b[height<=$res]" "$@"
+}

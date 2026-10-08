@@ -232,3 +232,17 @@ alias retroarch-nv="__NV_PRIME_RENDER_OFFLOAD=1 __VK_LAYER_NV_optimus=NVIDIA_onl
 alias gamepad="~/Downloads/gamepad/remotegamepad"
 
 alias fm="nnn -e"
+
+
+# ==============================
+# AWS Management
+# ==============================
+aws-term() {
+    local account="${1:=bagi}"
+    aws-vault exec "$account" --no-session
+}
+
+aws-login() {
+    local account="${1:=bagi}"
+    aws-vault login "$account"
+}
