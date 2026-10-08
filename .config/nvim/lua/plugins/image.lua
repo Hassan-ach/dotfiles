@@ -4,6 +4,9 @@ return {
 		priority = 1001, -- this plugin needs to run before anything else
 		opts = {
 			rocks = { "magick" },
+			luarocks_build_args = {
+				"--lua-version=5.1 --local config variables.LUA DIR=$(luarocks path --lua-version=5.1 --lr-path | cut -d: -f1) --local config variables.LUA_INCDIR=$(luarocks path --lua-version=5.1 --lr-path | cut -d: -f2) --local config variables.LUA_LIBDIR=$(luarocks path --lua-version=5.1 --lr-path | cut -d: -f3)",
+			},
 		},
 	},
 	{
