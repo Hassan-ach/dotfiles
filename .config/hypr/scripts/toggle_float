@@ -1,31 +1,32 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-floating=$(hyprctl activewindow -j | jq '.floating')
-window=$(hyprctl activewindow -j | jq '.initialClass' | tr -d "\"")
+aw=$(hyprctl activewindow -j)
+[[ "$(jq -r '.address // empty' <<<"$aw")" ]] || exit 0
 
-function toggle() {
-  width=$1
-  height=$2
-
-  hyprctl --batch "dispatch togglefloating; dispatch resizeactive exact ${width} ${height}; dispatch centerwindow"
-}
-
-function un-toggle() {
-  hyprctl dispatch togglefloating
-}
-
-function handle() {
-  width=$1
-  height=$2
-
-  if [ "$floating" == "false" ]; then
-    toggle "$width" "$height"
-  else
-    un-toggle
-  fi
-}
+floating=$(jq -r '.floating' <<<"$aw")
+window=$(jq -r '.initialClass' <<<"$aw")
+mon_id=$(jq -r '.monitor' <<<"$aw")
 
 case $window in
-kitty | Alacritty | com.mitchellh.ghostty | foot) handle "65%" "65%" ;;
-*) handle "75%" "75%" ;;
+kitty | Alacritty | com.mitchellh.ghostty | foot) pct=65 ;;
+*) pct=75 ;;
 esac
+
+if [[ "$floating" == "true" ]]; then
+  hyprctl dispatch 'hl.dsp.window.float({ action = "toggle" })'
+  exit 0
+fi
+
+# logical monitor size (physical / scale)
+read -r mw mh < <(
+  hyprctl monitors -j | jq -r --argjson id "$mon_id" \
+    '.[] | select(.id == $id) | "\((.width / .scale) | floor) \((.height / .scale) | floor)"'
+)
+
+width=$((mw * pct / 100))
+height=$((mh * pct / 100))
+
+hyprctl --batch "\
+dispatch hl.dsp.window.float({ action = \"set\" });\
+dispatch hl.dsp.window.resize({ x = ${width}, y = ${height} });\
+dispatch hl.dsp.window.center()"

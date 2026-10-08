@@ -1,31 +1,37 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
+TMP_FILE="$XDG_RUNTIME_DIR/hyprland-show-desktop"
 
-TMP_FILE="${XDG_RUNTIME_DIR:-/tmp}/hyprland-show-desktop"
+CURRENT_WORKSPACE=$(hyprctl monitors -j | jq -r '.[] | select(.focused) | .activeWorkspace.name')
+STATE="$TMP_FILE-$CURRENT_WORKSPACE"
 
-CURRENT_WORKSPACE=$(
-    hyprctl monitors -j |
-    jq -r '.[] | select(.focused == true) | .activeWorkspace.name'
-)
+CMDS=""
 
-STATE_FILE="${TMP_FILE}-${CURRENT_WORKSPACE}"
+move() { # $1 = workspace, $2 = address
+  printf 'dispatch hl.dsp.window.move({workspace="%s", follow=false, window="address:%s"});' "$1" "$2"
+}
 
-if [[ -f "$STATE_FILE" && -s "$STATE_FILE" ]]; then
-    while IFS= read -r address; do
-        [[ -z "$address" ]] && continue
-        hyprctl eval "hl.dispatch(hl.dsp.movetoworkspacesilent({ workspace = \"name:${CURRENT_WORKSPACE}\", address = \"${address}\" }))"
-    done < "$STATE_FILE"
+if [ -s "$STATE" ]; then
+  while IFS= read -r address; do
+    [[ -n "$address" ]] && CMDS+="$(move "name:$CURRENT_WORKSPACE" "$address")"
+  done <"$STATE"
 
-    rm -f "$STATE_FILE"
+  [[ -n "$CMDS" ]] && hyprctl --batch "$CMDS"
+  rm -f "$STATE"
 else
-    hyprctl clients -j |
-    jq -r --arg ws "$CURRENT_WORKSPACE" '
-        .[]
-        | select(.workspace.name == $ws)
-        | .address
-    ' | tee "$STATE_FILE" | while IFS= read -r address; do
-        [[ -z "$address" ]] && continue
-        hyprctl eval "hl.dispatch(hl.dsp.movetoworkspacesilent({ workspace = \"special:desktop\", address = \"${address}\" }))"
-    done
+  mapfile -t ADDRESS_ARRAY < <(
+    hyprctl clients -j | jq -r --arg CW "$CURRENT_WORKSPACE" \
+      '.[] | select(.workspace.name == $CW) | .address'
+  )
+
+  [[ ${#ADDRESS_ARRAY[@]} -eq 0 ]] && exit 0
+
+  : >"$STATE"
+  for address in "${ADDRESS_ARRAY[@]}"; do
+    [[ -z "$address" ]] && continue
+    echo "$address" >>"$STATE"
+    CMDS+="$(move "special:desktop" "$address")"
+  done
+
+  hyprctl --batch "$CMDS"
 fi

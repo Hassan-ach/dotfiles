@@ -14,5 +14,5 @@ hl.gesture({
 	end,
 	mods = "CTRL",
 })
-hl.gesture({ fingers = 3, direction = "swipe", action = "resize", mods = "ALT" })
+hl.gesture({ fingers = 3, direction = "swipe", action = "resize", mods = "SHIFT" })
 hl.gesture({ fingers = 3, direction = "swipe", action = "move", mods = "CTRL" })
