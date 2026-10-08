@@ -13,8 +13,8 @@ hl.bind(mainMod .. " + A", hl.dsp.exec_cmd(screenShot .. " output"))
 hl.bind(mainMod .. " + SHIFT + A", hl.dsp.exec_cmd(screenShot .. " region"))
 hl.bind(mainMod .. " + C", hl.dsp.exec_cmd(lockBg .. " && hyprlock"))
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen())
-hl.bind(mainMod .. " + X", hl.dsp.exec_cmd(changBg))
-hl.bind(mainMod .. " + SHIFT + X", hl.dsp.exec_cmd(walset))
+hl.bind(mainMod .. " + X", hl.dsp.exec_cmd(wallset))
+hl.bind(mainMod .. " + SHIFT + X", hl.dsp.exec_cmd(wallset .. "-r"))
 hl.bind(mainMod .. " + SHIFT + T", hl.dsp.exec_cmd(waybarToggle))
 hl.bind(
 	mainMod .. " + SHIFT + R",
