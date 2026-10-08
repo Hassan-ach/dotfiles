@@ -8,6 +8,11 @@ lockBg = "~/.local/bin/random-lock-bg.sh"
 screenShot = "hyprshot -m"
 waybarToggle = "~/.local/bin/waybarToggle.sh"
 wallset = "~/.local/bin/wallset"
+powerMenu = "~/.local/bin/power-menu"
+clipboardMenu = "~/.local/bin/clipboard-menu"
+wifiMenu = "~/.local/bin/wifi-menu"
+screenshotMenu = "~/.local/bin/screenshot-menu"
+themeSet = "~/.local/bin/theme-set"
 
 require("env")
 require("colors")

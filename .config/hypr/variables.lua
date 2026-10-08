@@ -34,7 +34,16 @@ hl.config({
 })
 
 hl.config({
-    cursor = { inactive_timeout = 20 },
+    cursor = {
+        inactive_timeout = 20,
+        no_hardware_cursors = true,
+    },
+})
+
+hl.config({
+    render = {
+        direct_scanout = true,
+    },
 })
 
 hl.config({
