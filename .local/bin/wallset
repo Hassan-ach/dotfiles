@@ -1,0 +1,138 @@
+#!/bin/bash
+
+# ==============================================================================
+# wallset: Unified Wallpaper & Theme Manager (Random or Interactive Rofi Picker)
+# ==============================================================================
+
+WALL_DIR="$HOME/wall"
+
+[ ! -d "$WALL_DIR" ] && {
+    echo "Error: Directory '$WALL_DIR' not found." >&2
+    exit 1
+}
+
+# Helper function to pick a random wallpaper
+pick_random() {
+    find "$WALL_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.gif" -o -iname "*.webp" \) |
+        shuf -n 1
+}
+
+# Helper function to run the common backend application steps
+apply_wallpaper() {
+    local img="$1"
+    [ -z "$img" ] || [ ! -f "$img" ] && {
+        echo "Error: Invalid image path." >&2
+        exit 1
+    }
+
+    # Set runtime link
+    ln -sf "$img" /tmp/random_bg
+
+    # Run your backend commands
+    awww img "$img" --transition-type none --transition-duration 1
+    wal -i "$img" -nste --backend haishoku
+    matugen image "$img"
+
+    pkill waybar
+    waybar &>/dev/null &
+    swaync &>/dev/null &
+
+    tmux source-file ~/.tmux.conf
+    herdr-merge-theme
+
+    # Recolor Papirus-Dark folder icons to the new accent
+    papirus-accent
+
+    notify-send "Wallpaper applied" "Theme updated."
+}
+
+# --- MODE HANDLING ---
+
+case "$1" in
+    --random | -r)
+        IMG=$(pick_random)
+        [ -z "$IMG" ] && {
+            echo "No image resolved." >&2
+            exit 1
+        }
+        apply_wallpaper "$IMG"
+        ;;
+    -*)
+        echo "Error: Unknown option '$1'." >&2
+        echo "Usage: walset [PATH_TO_IMAGE | --random]" >&2
+        exit 1
+        ;;
+    *)
+        if [ -n "$1" ]; then
+            # Case A: Direct file path provided
+            if [ -f "$1" ]; then
+                apply_wallpaper "$1"
+            else
+                echo "Error: File '$1' not found." >&2
+                exit 1
+            fi
+        else
+            # Case B: Interactive Mode (Rofi Grid Menu)
+            ROFI_INPUT=""
+            while IFS= read -r img; do
+                [ -z "$img" ] && continue
+                filename=$(basename "$img")
+                ROFI_INPUT+="${filename}\0icon\x1f${img}\n"
+            done < <(find "$WALL_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.gif" -o -iname "*.webp" \) | sort)
+
+            [ -z "$ROFI_INPUT" ] && {
+                echo "Error: No wallpapers found in '$WALL_DIR'." >&2
+                exit 1
+            }
+
+            SELECTED_NAME=$(echo -en "$ROFI_INPUT" | rofi -dmenu \
+                -p "Wallpaper Picker" \
+                -i \
+                -show-icons \
+                -theme-str '
+                    window {
+                        width: 70%;
+                        height: 75%;
+                        border-radius: 20px;
+                    }
+                    mainbox {
+                        children: [ "inputbar", "listview" ];
+                        spacing: 15px;
+                        padding: 20px;
+                    }
+                    element {
+                        orientation: vertical;
+                        padding: 10px;
+                        border-radius: 12px;
+                    }
+                    element-icon {
+                        size: 140px;
+                        horizontal-align: 0.5;
+                    }
+                    element-text {
+                        horizontal-align: 0.5;
+                        vertical-align: 0.5;
+                        margin: 6px 0px 0px 0px;
+                    }
+                    listview {
+                        columns: 4;
+                        lines: 3;
+                        spacing: 15px;
+                        cycle: true;
+                        dynamic: true;
+                    }
+                ')
+
+            # Exit cleanly if user cancelled Rofi
+            [ -z "$SELECTED_NAME" ] && exit 0
+
+            FULL_PATH=$(find "$WALL_DIR" -type f -name "$SELECTED_NAME" -print -quit)
+            [ -z "$FULL_PATH" ] || [ ! -f "$FULL_PATH" ] && {
+                echo "Error: Could not resolve file path for '$SELECTED_NAME'." >&2
+                exit 1
+            }
+
+            apply_wallpaper "$FULL_PATH"
+        fi
+        ;;
+esac
