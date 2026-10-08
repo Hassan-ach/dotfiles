@@ -1,0 +1,7 @@
+[submodule ".config/nvim/pywal"]
+	path = .config/nvim/pywal
+	url = https://github.com/NvChad/pywal
+	branch = main
+[submodule ".config/qutebrowser/solarized-everything-css"]
+	path = .config/qutebrowser/solarized-everything-css
+	url = https://github.com/alphapapa/solarized-everything-css

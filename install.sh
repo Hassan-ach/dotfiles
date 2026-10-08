@@ -184,6 +184,13 @@ clone_zsh_plugin "zsh-users/zsh-syntax-highlighting"
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 info "Stowing dotfiles from $DOTFILES_DIR into $HOME via GNU Stow..."
 
+# Initialize git submodules (nvim WallSync/pywal + qutebrowser solarized-everything-css)
+if [ -d "$DOTFILES_DIR/.git" ] && command -v git >/dev/null 2>&1; then
+    info "Initializing git submodules..."
+    git -C "$DOTFILES_DIR" submodule update --init --recursive \
+        || warn "Submodule init failed (offline?). Continuing without them."
+fi
+
 mkdir -p "$HOME/.config"
 mkdir -p "$HOME/.local/bin"
 
@@ -222,6 +229,6 @@ success " Dotfiles and Hyprland + Matugen environment installation complete!"
 success "======================================================================"
 echo -e "${BLUE}Next steps:${NC}"
 echo " 1. Place your wallpapers inside ~/wall/"
-echo " 2. Run 'wals' or '~/.local/bin/walset-select' to pick a wallpaper and generate Matugen themes."
+echo " 2. Run 'wals' (wallset) to pick a wallpaper, or 'walr' (wallset -r) for a random one, and generate Matugen themes."
 echo " 3. Start Hyprland or log out and log in to your new Hyprland session."
 echo ""

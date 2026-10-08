@@ -455,3 +455,51 @@ panel_bg = "#0e1415"
 accent = "#81d3e0"
 red = "#ffb4ab"
 green = "#91d5ad"
+
+[theme.custom]
+panel_bg = "#101417"
+accent = "#93cdf6"
+red = "#ffb4ab"
+green = "#91d5ad"
+
+[theme.custom]
+panel_bg = "#1a110e"
+accent = "#ffb599"
+red = "#ffb4ab"
+green = "#b1d18a"
+
+[theme.custom]
+panel_bg = "#141318"
+accent = "#c9beff"
+red = "#ffb4ab"
+green = "#91d5ad"
+
+[theme.custom]
+panel_bg = "#121318"
+accent = "#bac3ff"
+red = "#ffb4ab"
+green = "#91d5ad"
+
+[theme.custom]
+panel_bg = "#181115"
+accent = "#f9b1da"
+red = "#ffb4ab"
+green = "#b1d18a"
+
+[theme.custom]
+panel_bg = "#181115"
+accent = "#f9b1da"
+red = "#ffb4ab"
+green = "#b1d18a"
+
+[theme.custom]
+panel_bg = "#101418"
+accent = "#9acbfa"
+red = "#ffb4ab"
+green = "#91d5ad"
+
+[theme.custom]
+panel_bg = "#14140c"
+accent = "#cacb77"
+red = "#ffb4ab"
+green = "#b1d18a"

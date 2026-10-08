@@ -59,7 +59,7 @@ case "$1" in
         ;;
     -*)
         echo "Error: Unknown option '$1'." >&2
-        echo "Usage: walset [PATH_TO_IMAGE | --random]" >&2
+        echo "Usage: wallset [PATH_TO_IMAGE | --random|-r]" >&2
         exit 1
         ;;
     *)

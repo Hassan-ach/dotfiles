@@ -6,19 +6,25 @@ High-performance, dynamic tiling Wayland compositor configuration written in mod
 
 ## 📂 File Architecture
 
-- **`hyprland.lua`**: Main entry point that sets core variables (`terminal`, `browser`, `menu`, `mainMod`) and imports all modular `.lua` files.
-- **`keybinds.lua`**: Complete keybindings reference for applications, window management, workspaces, and submap modes.
+- **`hyprland.lua`**: Main entry point that sets core variables (`terminal`, `browser`, `menu`, `mainMod`, script paths) and imports all modular `.lua` files.
+- **`keybinds.lua`**: Complete keybindings reference for applications, window management, workspaces, groups, and submap modes.
 - **`colors.lua`**: Dynamic color palette generated automatically by Matugen template (`templates/hypr/hyprland.conf`).
 - **`rules.lua`**: Window rules, floating rules, opacity, and workspace assignment rules.
 - **`variables.lua`**: General decorations, active/inactive borders, gaps, drop shadows, and blur effects.
-- **`inputs.lua`**: Keyboard layouts (`us`), mouse sensitivity, caps-lock to Ctrl remapping, and touchpad gestures.
-- **`monitors.lua`**: Display monitor resolutions, refresh rates, scaling, and positioning.
-- **`startup.lua`**: Autostart daemons (`waybar`, `swaync`, `hypridle`).
+- **`inputs.lua`**: Keyboard layout (`us`), mouse sensitivity/acceleration, key repeat, and touchpad options (natural scroll, tap-to-click, drag lock).
+- **`monitors.lua`**: Display monitor resolutions, refresh rates, scaling, and positioning (`eDP-1` 1920x1080@165 + `HDMI-A-1` 1920x1080@100 to the left).
+
+> ⚠️ **Known config caveat**: `rules.lua` pins workspaces 8/9/0 to `HDMI-A-2`, but `monitors.lua` only configures `HDMI-A-1` — the two files disagree on the external monitor's name (a config bug, not a doc typo). If a second monitor is attached, workspace routing to 8–0 may land on the wrong output until the names are aligned.
+- **`startup.lua`**: Autostart daemons (`waybar`, `swaync`, `awww-daemon`, `hypridle`, lockscreen background, and two `wl-paste`/`cliphist` watchers).
 - **`animations.lua`**: Window animations, bezier curves, and workspace transitions.
 - **`gestures.lua`**: Touchpad gesture configuration.
 - **`env.lua`**: Wayland environment variables (`MOZ_ENABLE_WAYLAND`, `QT_QPA_PLATFORM`, `GDK_BACKEND`).
-- **`hyprlock.conf`**: Screen locker interface config.
-- **`hypridle.conf`**: Idle listener daemon (dim screen, lock after timeout, suspend).
+- **`scripts/`**: Helper scripts invoked by binds — `gamemode`, `minimize`, `toggle_float`.
+- **`hyprlock.conf`** / **`hyprlock.conf.tmpl`**: Screen locker config (the `.tmpl` is a Matugen template source).
+- **`hypridle.conf`** / **`hypridle.conf.tmpl`**: Idle listener daemon (dim screen, lock after timeout, DPMS off, suspend).
+- **`hyprpaper.conf`**: Wallpaper configuration.
+- **`hyprpanel_config.json`**: Hyprpanel settings (if used).
+- **`hypr.png` / `foreground.png`**: Branding/notification icons.
 
 ---
 
@@ -35,14 +41,21 @@ High-performance, dynamic tiling Wayland compositor configuration written in mod
 | `SUPER + Q` | Close Active Window |
 | `SUPER + SHIFT + E` | Exit Hyprland Session |
 | `SUPER + SHIFT + R` | Reload Hyprland Configuration & Notify |
-| `SUPER + SHIFT + G` | Toggle Gamemode (Disables animations & blur) |
+| `SUPER + CTRL + G` | Toggle Gamemode (runs `scripts/gamemode` — disables animations & blur) |
+
+### Rofi Utility Menus & Quick Actions
+| Keybinding | Action / Command |
+| :--- | :--- |
+| `SUPER + SHIFT + Q` | Power Menu (`power-menu` — Lock/Logout/Suspend/Reboot/Shutdown) |
+| `SUPER + SHIFT + V` | Clipboard History (`clipboard-menu` via cliphist) |
+| `SUPER + SHIFT + W` | WiFi Menu (`wifi-menu` via nmcli) |
 
 ### Wallpaper & Interface Controls
 | Keybinding | Action / Command |
 | :--- | :--- |
-| `SUPER + X` | Apply Random Wallpaper (`random-bg.sh`) |
-| `SUPER + SHIFT + X` | Pick Random Wallpaper & Apply Matugen Theme (`walset`) |
-| `SUPER + C` | Lock Screen (`hyprlock`) |
+| `SUPER + X` | Open Interactive Wallpaper Picker (`wallset` — Rofi grid) |
+| `SUPER + SHIFT + X` | Apply Random Wallpaper & Theme (`wallset -r`) |
+| `SUPER + C` | Pick Random Lock Background & Lock Screen (`random-lock-bg.sh && hyprlock`) |
 | `SUPER + SHIFT + T` | Toggle Waybar Visibility (`waybarToggle.sh`) |
 
 ### Screenshots (Hyprshot)
@@ -68,15 +81,25 @@ High-performance, dynamic tiling Wayland compositor configuration written in mod
 | `SUPER + P` | Toggle Pseudo Tiling Mode |
 | `SUPER + M` | Toggle Split Layout Direction |
 
-### Workspaces
+### Window Groups (Tabbed Layout)
+| Keybinding | Action / Command |
+| :--- | :--- |
+| `SUPER + G` | Toggle Window Group |
+| `SUPER + SHIFT + N` | Focus Next Group Member |
+| `SUPER + SHIFT + P` | Focus Previous Group Member |
+| `SUPER + SHIFT + G` | Lock/Unlock Window Group |
+
+### Workspaces & Scratchpads
 | Keybinding | Action / Command |
 | :--- | :--- |
 | `SUPER + [1-9, 0]` | Switch to Workspace 1–10 |
 | `SUPER + SHIFT + [1-9, 0]` | Move Active Window to Workspace 1–10 |
 | `SUPER + S` | Toggle Special Scratchpad Workspace ("magic") |
-| `SUPER + SHIFT + S` | Move Active Window to Special Scratchpad |
-| `SUPER + Mouse Scroll Up` | Switch to Next Workspace (`e+1`) |
-| `SUPER + Mouse Scroll Down` | Switch to Previous Workspace (`e-1`) |
+| `SUPER + SHIFT + S` | Move Active Window to Special Scratchpad ("magic") |
+| `SUPER + `` ` `` | Toggle Terminal Scratchpad |
+| `SUPER + SHIFT + `` ` `` | Move Active Window to Terminal Scratchpad |
+| `SUPER + Mouse Scroll Down` | Switch to Next Workspace (`e+1`) |
+| `SUPER + Mouse Scroll Up` | Switch to Previous Workspace (`e-1`) |
 | `SUPER + Left Mouse Click` | Drag & Move Window |
 | `SUPER + Right Mouse Click` | Resize Window |
 
@@ -99,6 +122,12 @@ Press `SUPER + R` to enter Resize Submap Mode:
 | `XF86AudioNext` | Next Track (`playerctl`) |
 | `XF86AudioPrev` | Previous Track (`playerctl`) |
 
+### Laptop Lid Switch
+| Event | Action |
+| :--- | :--- |
+| Lid closed | Lock screen (`hyprlock`, unless already locked) |
+| Lid opened | Re-enable DPMS output |
+
 ---
 
 ## 🛠️ How to Edit & Customize
@@ -108,4 +137,5 @@ Press `SUPER + R` to enter Resize Submap Mode:
 3. **Animations & Bezier Curves**: Edit `~/.config/hypr/animations.lua`.
 4. **Borders & Shadows**: Edit `~/.config/hypr/variables.lua`.
 5. **Autostart Apps**: Edit `~/.config/hypr/startup.lua`.
-6. Reload after editing with `SUPER + SHIFT + R`.
+6. **Input / Touchpad**: Edit `~/.config/hypr/inputs.lua`.
+7. Reload after editing with `SUPER + SHIFT + R`.

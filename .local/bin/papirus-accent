@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Recolor the Papirus-Dark folder icons to match the current matugen accent.
-# Called automatically by walset-backend after matugen regenerates the theme.
+# Called automatically by wallset after matugen regenerates the theme.
 set -euo pipefail
 
 THEME_ROOT="${XDG_DATA_HOME:-$HOME/.local/share}/icons/Papirus-Dark"

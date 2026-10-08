@@ -14,9 +14,15 @@ Highly customizable Wayland top bar for Hyprland.
 
 ## 💡 Modules Enabled
 
-- **Left**: `hyprland/workspaces`, `hyprland/window`
+- **Left**: `hyprland/workspaces#roman` (roman-numeral workspace indicator), `hyprland/window`
 - **Center**: `clock` (Date & Time)
-- **Right**: `cpu`, `memory`, `pulseaudio` (Volume), `tray`
+- **Right**: `swaync` (notification center), `battery`, `pulseaudio` (Volume), `pulseaudio#microphone`, `backlight`, `network`, `cpu`, `memory`, `custom/bluetooth`, `temperature`
+
+> `tray` and `custom/gpu_usage` exist in the config but are **commented out**.
+
+### Notable Behaviors
+- **Workspace scroll**: `on-scroll-up`/`on-scroll-down` on the workspaces module run `hyprctl eval` with Lua dispatches (`hl.dispatch(hl.dsp.focus({ workspace = "e±1" }))`) to switch workspaces from the bar.
+- **Volume scroll**: `pulseaudio` and `pulseaudio#microphone` adjust sink/source volume ±5% on scroll.
 
 ---
 

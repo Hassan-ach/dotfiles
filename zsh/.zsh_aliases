@@ -221,8 +221,8 @@ alias cmp='g++ -std=c++20 -o'
 # ==============================
 # Wallpaper Management
 # ==============================
-alias wals="~/.local/bin/walset-select"
-alias walr="~/.local/bin/walset"
+alias wals="~/.local/bin/wallset"
+alias walr="~/.local/bin/wallset -r"
 
 
 alias dv="~/.local/bin/resolve-fix"
