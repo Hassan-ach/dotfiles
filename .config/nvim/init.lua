@@ -61,6 +61,7 @@ ts.setup({
 		"svelte",
 		"vue",
 		"regex",
+		"terraform",
 	},
 	-- sql being slow on large files :(
 	highlight = {

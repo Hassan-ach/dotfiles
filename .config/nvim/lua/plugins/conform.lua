@@ -34,6 +34,8 @@ return {
 				typst = { "typstyle", "prettypst" },
 				sql = { "pgformatter", "sleek" },
 				xml = { "xmlformat", "lemminx", "prettier" },
+				terraform = { "terraform_fmt" },
+				tf = { "terraform_fmt" },
 				-- For filetypes without a formatter:
 				["_"] = { "trim_whitespace", "trim_newlines" },
 			},

@@ -10,7 +10,7 @@ return {
 		local basename = vim.fs.basename(cwd)
 		_99.setup({
 			-- provider = _99.Providers.ClaudeCodeProvider,  -- default: OpenCodeProvider
-			model = "deepseek/deepseek-v4-flash",
+			model = "opencode/big-pickle",
 			logger = {
 				level = _99.INFO,
 				path = "/tmp/" .. basename .. ".99.info",
