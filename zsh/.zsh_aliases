@@ -191,6 +191,8 @@ fi
 # ==============================
 if command -v bat &>/dev/null; then
     alias bathelp='bat --plain --language=help'
+    export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+    export MANROFFOPT="-c"
     # help function is defined in .zsh_functions
 fi
 

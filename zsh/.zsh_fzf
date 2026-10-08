@@ -22,8 +22,14 @@ export FZF_DEFAULT_OPTS='
   --preview-window=right:65%:wrap:border-left
 '
 
-# bat preview (used by Ctrl-T and Ctrl-F)
-export _FZF_PREVIEW_CMD='bat --color=always --style=plain,numbers --line-range=:500 {}'
+# Smart preview: images via kitty icat, text via bat
+export _FZF_PREVIEW_CMD='
+    if file --mime-type {} 2>/dev/null | grep -qF image/; then
+        kitty icat --clear --transfer-mode=memory --stdin=no --place=${FZF_PREVIEW_COLUMNS:-80}x${FZF_PREVIEW_LINES:-40}@0x0 {} 2>/dev/null
+    else
+        bat --color=always --style=plain,numbers --line-range=:500 {} 2>/dev/null || cat {}
+    fi
+'
 export FZF_CTRL_T_OPTS="--preview '$_FZF_PREVIEW_CMD'"
 
 # Ctrl+F: file picker excluding hidden files
