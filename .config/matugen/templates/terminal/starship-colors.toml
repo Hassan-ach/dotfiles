@@ -33,4 +33,6 @@ untracked = "?"
 [package]
 disabled = true
 
+
+command_timeout = 2000
 # scan_timeout = 0
