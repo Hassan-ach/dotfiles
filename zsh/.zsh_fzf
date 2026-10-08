@@ -24,7 +24,7 @@ export FZF_DEFAULT_OPTS='
 
 # Smart preview: images via kitty icat, text via bat
 export _FZF_PREVIEW_CMD='
-    if file --mime-type {} 2>/dev/null | grep -qF image/; then
+    if file --mime-type -b {} 2>/dev/null | grep -q "^image/"; then
         kitty icat --clear --transfer-mode=memory --stdin=no --place=${FZF_PREVIEW_COLUMNS:-80}x${FZF_PREVIEW_LINES:-40}@0x0 {} 2>/dev/null
     else
         bat --color=always --style=plain,numbers --line-range=:500 {} 2>/dev/null || cat {}

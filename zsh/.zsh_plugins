@@ -68,5 +68,13 @@ _zplugin_load zsh-users/zsh-syntax-highlighting
 
 # fzf-tab: preview dirs with eza, files with bat
 zstyle ':fzf-tab:complete:*:*' fzf-preview \
-  '[[ -d $realpath ]] && eza -la --color=always --icons=auto $realpath || bat --color=always --style=numbers --line-range=:500 $realpath 2>/dev/null'
+  'if [[ -d $realpath ]]; then
+    eza -la --color=always --icons=auto "$realpath"
+  elif file --mime-type -b "$realpath" 2>/dev/null | grep -q "^image/"; then
+    kitty icat --clear --transfer-mode=memory --stdin=no \
+      --place=${FZF_PREVIEW_COLUMNS:-80}x${FZF_PREVIEW_LINES:-40}@0x0 \
+      "$realpath" 2>/dev/null
+  else
+    bat --color=always --style=numbers --line-range=:500 "$realpath" 2>/dev/null
+  fi'
 zstyle ':fzf-tab:*' switch-group '<' '>'
