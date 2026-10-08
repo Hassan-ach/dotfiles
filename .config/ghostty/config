@@ -1,0 +1,34 @@
+# Ghostty Terminal Configuration
+
+# Font
+font-family = Iosevka Nerd Font
+font-size = 18
+
+# Appearance
+background-opacity = 0.7
+background-blur-radius = 10
+window-decoration = false
+window-padding-x = 0
+window-padding-y = 0
+
+# Cursor
+cursor-style = block
+cursor-style-blink = true
+
+# Shell
+command = tmux
+
+# Behavior
+mouse-hide-while-typing = true
+copy-on-select = clipboard
+confirm-close-surface = false
+
+# Keybindings
+keybind = ctrl+equal=increase_font_size:1
+keybind = ctrl+minus=decrease_font_size:1
+keybind = super+u=set_background_opacity:0.0
+keybind = super+shift+u=set_background_opacity:default
+keybind = super+shift+i=set_background_opacity:1.0
+
+# Theme - sourced from matugen-generated colors
+# To use: symlink or copy generated colors to ~/.config/ghostty/themes/matugen
