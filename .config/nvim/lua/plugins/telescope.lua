@@ -34,6 +34,15 @@ return {
 							"/",
 						},
 					},
+					live_grep = {
+						additional_args = function()
+							return {
+								"--hidden",
+								"--glob",
+								"!{.git/*,.next/*,.svelte-kit/*,target/*,node_modules/*}",
+							}
+						end,
+					},
 				},
 			})
 
