@@ -82,20 +82,26 @@ hl.bind(mainMod .. " + SHIFT + P", hl.dsp.group.prev())
 hl.bind(mainMod .. " + SHIFT + G", hl.dsp.group.lock())
 
 -- ==========================================
--- 6. Resize Submap (SUPER + R)
 -- ==========================================
+-- 6. Window Resize Binds & Submap (SUPER + R)
+-- ==========================================
+hl.bind(mainMod .. " + ALT + h", hl.dsp.window.resize({ x = -10, y = 0, relative = true }), { repeating = true })
+hl.bind(mainMod .. " + ALT + j", hl.dsp.window.resize({ x = 0, y = 10, relative = true }), { repeating = true })
+hl.bind(mainMod .. " + ALT + k", hl.dsp.window.resize({ x = 0, y = -10, relative = true }), { repeating = true })
+hl.bind(mainMod .. " + ALT + l", hl.dsp.window.resize({ x = 10, y = 0, relative = true }), { repeating = true })
+
 hl.bind(mainMod .. " + R", hl.dsp.submap("resize"))
 
 hl.define_submap("resize", function()
-	hl.bind("h", hl.dsp.window.resize({ x = -10, y = 0 }), { repeating = true })
-	hl.bind("l", hl.dsp.window.resize({ x = 10, y = 0 }), { repeating = true })
-	hl.bind("k", hl.dsp.window.resize({ x = 0, y = -10 }), { repeating = true })
-	hl.bind("j", hl.dsp.window.resize({ x = 0, y = 10 }), { repeating = true })
+	hl.bind("h", hl.dsp.window.resize({ x = -10, y = 0, relative = true }), { repeating = true })
+	hl.bind("l", hl.dsp.window.resize({ x = 10, y = 0, relative = true }), { repeating = true })
+	hl.bind("k", hl.dsp.window.resize({ x = 0, y = -10, relative = true }), { repeating = true })
+	hl.bind("j", hl.dsp.window.resize({ x = 0, y = 10, relative = true }), { repeating = true })
 
-	hl.bind("SHIFT + h", hl.dsp.window.resize({ x = -50, y = 0 }), { repeating = true })
-	hl.bind("SHIFT + l", hl.dsp.window.resize({ x = 50, y = 0 }), { repeating = true })
-	hl.bind("SHIFT + k", hl.dsp.window.resize({ x = 0, y = -50 }), { repeating = true })
-	hl.bind("SHIFT + j", hl.dsp.window.resize({ x = 0, y = 50 }), { repeating = true })
+	hl.bind("SHIFT + h", hl.dsp.window.resize({ x = -50, y = 0, relative = true }), { repeating = true })
+	hl.bind("SHIFT + l", hl.dsp.window.resize({ x = 50, y = 0, relative = true }), { repeating = true })
+	hl.bind("SHIFT + k", hl.dsp.window.resize({ x = 0, y = -50, relative = true }), { repeating = true })
+	hl.bind("SHIFT + j", hl.dsp.window.resize({ x = 0, y = 50, relative = true }), { repeating = true })
 
 	hl.bind("escape", hl.dsp.submap("reset"))
 	hl.bind("Return", hl.dsp.submap("reset"))
