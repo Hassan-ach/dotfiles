@@ -2,26 +2,31 @@
 
 HYPRGAMEMODE=$(hyprctl getoption animations:enabled | awk 'NR==1{print $2}')
 
-if [ "$HYPRGAMEMODE" = "true" ]; then
-    hyprctl eval '
-        keyword animations:enabled 0
-        keyword animation borderangle,0
-        keyword decoration:shadow:enabled 0
-        keyword decoration:blur:enabled 0
-        keyword general:gaps_in 0
-        keyword general:gaps_out 0
-        keyword decoration:active_opacity 1
-        keyword decoration:inactive_opacity 1
-        keyword general:border_size 1
-        keyword decoration:rounding 0
-        '
+if [ "$HYPRGAMEMODE" = "1" ] || [ "$HYPRGAMEMODE" = "true" ]; then
+    hyprctl eval "hl.config({
+        animations = { enabled = false },
+        decoration = {
+            shadow = { enabled = false },
+            blur = { enabled = false },
+            active_opacity = 1.0,
+            inactive_opacity = 1.0,
+            rounding = 0
+        },
+        general = {
+            gaps_in = 0,
+            gaps_out = 0,
+            border_size = 1
+        }
+    })"
 
-  qs -c dms ipc call bar hide
-  notify-send --icon=dialog-information "Gamemode activated" "Animations and blur disabled"
-  exit
+    killall waybar 2>/dev/null || true
+    notify-send --icon=dialog-information "Gamemode activated" "Animations and blur disabled"
+    exit 0
 else
-  hyprctl reload
-  qs -c dms ipc call bar reveal
-  notify-send --icon=dialog-information "Gamemode deactivated" "Default settings restored"
-  exit 0
+    hyprctl reload
+    notify-send --icon=dialog-information "Gamemode deactivated" "Default settings restored"
+    exit 0
 fi
+
+
+
